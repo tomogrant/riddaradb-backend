@@ -1,5 +1,6 @@
 package com.se.riddaradb.controllers;
 
+import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.dtos.MsDto;
 import com.se.riddaradb.services.MsService;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class MsController {
     @GetMapping("/getmsentries")
     Collection<MsDto> getMsEntries(){
         return msService.getMsEntries();
+    }
+
+    @GetMapping("/getmsentrybyid/{id}")
+    MsDto getMsEntryById(@PathVariable int id){
+        return msService.getMsEntryById(id);
     }
 
     @PostMapping("/postmsentry")

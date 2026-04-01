@@ -1,5 +1,6 @@
 package com.se.riddaradb.controllers;
 
+import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.dtos.PersonDto;
 import com.se.riddaradb.services.PersonService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,11 @@ public class PersonController {
     @GetMapping("/getpersonentries")
     Collection<PersonDto> getPersonEntry(){
         return personService.getPersonEntries();
+    }
+
+    @GetMapping("/getpersonentrybyid/{id}")
+    PersonDto getPersonEntryById(@PathVariable int id){
+        return personService.getPersonEntryById(id);
     }
 
     @PostMapping("/postpersonentry")

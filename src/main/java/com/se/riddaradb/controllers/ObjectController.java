@@ -1,5 +1,6 @@
 package com.se.riddaradb.controllers;
 
+import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.dtos.ObjectDto;
 import com.se.riddaradb.services.ObjectService;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class ObjectController {
     @GetMapping("/getobjectentries")
     Collection<ObjectDto> getObjectEntries(){
         return objectService.getObjectEntries();
+    }
+
+    @GetMapping("/getobjectentrybyid/{id}")
+    ObjectDto getObjectEntryById(@PathVariable int id){
+        return objectService.getObjectEntryById(id);
     }
 
     @PostMapping("/postobjectentry")

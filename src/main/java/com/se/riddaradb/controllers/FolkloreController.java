@@ -22,6 +22,11 @@ public class FolkloreController {
         return folkloreService.getFolkloreEntries();
     }
 
+    @GetMapping("/getfolkloreentrybyid/{id}")
+    FolkloreDto getFolkloreEntryById(@PathVariable int id){
+        return folkloreService.getFolkloreEntryById(id);
+    }
+
     @PostMapping("/postfolkloreentry")
     FolkloreDto postFolkloreEntry(@RequestBody FolkloreDto folkloreDto){
         return folkloreService.saveFolkloreEntry(folkloreDto);

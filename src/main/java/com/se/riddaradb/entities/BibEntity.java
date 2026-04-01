@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
-//INSERT INTO BIB
-//VALUES (1, 'text', 'text', 'text', 'text', 1, 'text', 'text', 'text', 'text', 'text');
-
 @Entity
 @Table(name = "BIB")
 public class BibEntity {
@@ -16,6 +13,9 @@ public class BibEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Enumerated(EnumType.STRING)
+    PublicationType publicationType;
 
     @NotBlank
     String authors;
@@ -70,6 +70,12 @@ public class BibEntity {
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.pageNumbers = pageNumbers;
+    }
+
+    public enum PublicationType {
+        JOURNAL_ARTICLE,
+        BOOK_CHAPTER,
+        BOOK
     }
 
     public int getId() {

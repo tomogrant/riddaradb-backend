@@ -1,5 +1,6 @@
 package com.se.riddaradb.controllers;
 
+import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.dtos.PlaceDto;
 import com.se.riddaradb.services.PlaceService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,11 @@ public class PlaceController {
     @GetMapping("/getplaceentries")
     Collection<PlaceDto> getPlaceEntry(){
         return placeService.getPlaceEntries();
+    }
+
+    @GetMapping("/getplaceentrybyid/{id}")
+    PlaceDto getPlaceEntryById(@PathVariable int id){
+        return placeService.getPlaceEntryById(id);
     }
 
     @PostMapping("/postplaceentry")

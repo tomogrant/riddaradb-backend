@@ -36,6 +36,15 @@ public class PersonService {
                 .toList();
     }
 
+    public PersonDto getPersonEntryById(int id){
+        if (personRepository.findById(id).isPresent()){
+            return personMapper.mapToDto(personRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
+    }
+
     public PersonDto savePersonEntry(PersonDto personDto){
         PersonEntity personEntity = personMapper.mapFromDto(personDto);
         personEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(personDto.getSagaIds())));

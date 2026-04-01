@@ -47,6 +47,15 @@ public class SagaService {
                 .toList();
     }
 
+    public SagaDto getSagaById(int id){
+        if (sagaRepository.findById(id).isPresent()){
+            return sagaMapper.mapToDto(sagaRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
+    }
+
     public SagaDto saveSaga(SagaDto sagaDto){
         SagaEntity sagaEntity = sagaMapper.mapFromDto(sagaDto);
 

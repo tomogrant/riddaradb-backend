@@ -32,6 +32,15 @@ public class BibService {
                 .toList();
     }
 
+    public BibDto getBibEntryById(int id){
+        if (bibRepository.findById(id).isPresent()){
+            return bibMapper.mapToDto(bibRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
+    }
+
     public BibDto saveBibEntry(BibDto bibDto){
         BibEntity bibEntity = bibMapper.mapFromDto(bibDto);
         bibEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(bibDto.getSagaIds())));

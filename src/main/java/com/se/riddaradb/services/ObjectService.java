@@ -32,6 +32,15 @@ public class ObjectService {
                 .toList();
     }
 
+    public ObjectDto getObjectEntryById(int id){
+        if (objectRepository.findById(id).isPresent()){
+            return objectMapper.mapToDto(objectRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
+    }
+
     public ObjectDto saveObjectEntry(ObjectDto objectDto){
         ObjectEntity objectEntity = objectMapper.mapFromDto(objectDto);
         objectEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(objectDto.getSagaIds())));

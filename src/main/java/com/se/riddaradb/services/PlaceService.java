@@ -1,7 +1,6 @@
 package com.se.riddaradb.services;
 
 import com.se.riddaradb.dtos.PlaceDto;
-import com.se.riddaradb.entities.FolkloreEntity;
 import com.se.riddaradb.entities.PersonEntity;
 import com.se.riddaradb.entities.PlaceEntity;
 import com.se.riddaradb.entities.SagaEntity;
@@ -35,6 +34,15 @@ public class PlaceService {
                 .stream()
                 .map(placeMapper::mapToDto)
                 .toList();
+    }
+
+    public PlaceDto getPlaceEntryById(int id){
+        if (placeRepository.findById(id).isPresent()){
+            return placeMapper.mapToDto(placeRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
     }
 
     public PlaceDto savePlaceEntry(PlaceDto placeDto){

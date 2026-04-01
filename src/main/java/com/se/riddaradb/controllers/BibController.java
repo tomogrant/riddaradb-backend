@@ -16,22 +16,27 @@ public class BibController {
         this.bibService = bibService;
     }
 
-    @GetMapping("/getbibentries")
+    @GetMapping("/bibentries/getbibentries")
     Collection<BibDto> getBibEntries(){
         return bibService.getBibEntries();
     }
 
-    @PostMapping("/postbibentry")
+    @GetMapping("/bibentries/getbibentrybyid/{id}")
+    BibDto getBibEntryById(@PathVariable int id){
+        return bibService.getBibEntryById(id);
+    }
+
+    @PostMapping("/bibentries/postbibentry")
     BibDto postBibEntry(@RequestBody @Valid BibDto bibDto){
         return bibService.saveBibEntry(bibDto);
     }
 
-    @PutMapping("/putbibentry")
+    @PutMapping("/bibentries/putbibentry")
     BibDto putBibEntry(@RequestBody @Valid BibDto bibDto){
         return bibService.saveBibEntry(bibDto);
     }
 
-    @DeleteMapping("/deletebibentry/{id}")
+    @DeleteMapping("/bibentries/deletebibentry/{id}")
     void deleteSaga(@PathVariable int id){
         bibService.deleteBibEntryById(id);
     }

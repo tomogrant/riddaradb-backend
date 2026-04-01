@@ -32,6 +32,15 @@ public class MsService {
                 .toList();
     }
 
+    public MsDto getMsEntryById(int id){
+        if (msRepository.findById(id).isPresent()){
+            return msMapper.mapToDto(msRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
+    }
+
     public MsDto saveMsEntry(MsDto msDto){
         MsEntity msEntity = msMapper.mapFromDto(msDto);
         msEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(msDto.getSagaIds())));

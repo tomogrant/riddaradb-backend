@@ -1,7 +1,6 @@
 package com.se.riddaradb.services;
 
 import com.se.riddaradb.dtos.FolkloreDto;
-import com.se.riddaradb.entities.BibEntity;
 import com.se.riddaradb.entities.FolkloreEntity;
 import com.se.riddaradb.entities.SagaEntity;
 import com.se.riddaradb.mappers.FolkloreMapper;
@@ -31,6 +30,15 @@ public class FolkloreService {
                 .stream()
                 .map(folkloreMapper::mapToDto)
                 .toList();
+    }
+
+    public FolkloreDto getFolkloreEntryById(int id){
+        if (folkloreRepository.findById(id).isPresent()){
+            return folkloreMapper.mapToDto(folkloreRepository.findById(id).get());
+        }
+        else {
+            return null;
+        }
     }
 
     public FolkloreDto saveFolkloreEntry(FolkloreDto folkloreDto){

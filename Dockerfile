@@ -2,7 +2,7 @@
 ### Use to run: docker run -p9090:9090 tg:v1
 
 #Type
-FROM openjdk:21
+FROM eclipse-temurin
 
 #Label
 LABEL authors="TGRANT"
@@ -18,7 +18,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 #Copies app to container in /app
-COPY riddaradbapp/target/riddaradb.jar /app
+COPY riddaradb-backend/target/riddaradb.jar /app
 
 #Starts app from location when container is run
 ENTRYPOINT ["java","-jar","riddaradb.jar"]
