@@ -2,7 +2,7 @@ package com.se.riddaradb.mappers;
 
 import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.entities.BibEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -23,9 +23,9 @@ public class BibMapper {
                 bibEntity.getPublicationYear(),
                 bibEntity.getPageNumbers());
 
-        bibDto.setSagaIds(bibEntity.getSagaEntity()
+        bibDto.setSagaVersionIds(bibEntity.getSagaVersionEntity()
                 .stream()
-                .map(SagaEntity::getId)
+                .map(SagaVersionEntity::getId)
                 .collect(Collectors.toSet()));
 
         return bibDto;

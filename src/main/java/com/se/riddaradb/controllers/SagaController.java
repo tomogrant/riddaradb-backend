@@ -1,6 +1,5 @@
 package com.se.riddaradb.controllers;
 
-import com.se.riddaradb.dtos.BibDto;
 import com.se.riddaradb.dtos.SagaDto;
 import com.se.riddaradb.services.SagaService;
 import org.springframework.web.bind.annotation.*;

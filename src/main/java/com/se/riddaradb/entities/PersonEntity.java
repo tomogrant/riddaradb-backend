@@ -28,7 +28,7 @@ public class PersonEntity {
     Set<PlaceEntity> placeEntity = new HashSet<>();
 
     @ManyToMany(mappedBy = "personEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
     protected PersonEntity() {
     }
@@ -80,12 +80,12 @@ public class PersonEntity {
         this.placeEntity = placeEntity;
     }
 
-    public Set<SagaEntity> getSagaEntity() {
-        return sagaEntity;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaEntity(Set<SagaEntity> sagaEntity) {
-        this.sagaEntity = sagaEntity;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
     }
 
 

@@ -2,10 +2,10 @@ package com.se.riddaradb.services;
 
 import com.se.riddaradb.dtos.MsDto;
 import com.se.riddaradb.entities.MsEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import com.se.riddaradb.mappers.MsMapper;
 import com.se.riddaradb.repositories.MsRepository;
-import com.se.riddaradb.repositories.SagaRepository;
+import com.se.riddaradb.repositories.SagaVersionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,12 +16,12 @@ import java.util.Set;
 public class MsService {
 
     final MsRepository msRepository;
-    final SagaRepository sagaRepository;
+    final SagaVersionRepository sagaVersionRepository;
     final MsMapper msMapper;
 
-    public MsService(MsRepository msRepository, SagaRepository sagaRepository, MsMapper msMapper) {
+    public MsService(MsRepository msRepository, SagaVersionRepository sagaVersionRepository, MsMapper msMapper) {
         this.msRepository = msRepository;
-        this.sagaRepository = sagaRepository;
+        this.sagaVersionRepository = sagaVersionRepository;
         this.msMapper = msMapper;
     }
 
@@ -43,7 +43,7 @@ public class MsService {
 
     public MsDto saveMsEntry(MsDto msDto){
         MsEntity msEntity = msMapper.mapFromDto(msDto);
-        msEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(msDto.getSagaIds())));
+        msEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(msDto.getSagaVersionIds())));
         return msMapper.mapToDto(msRepository.save(msEntity));
     }
 
@@ -56,9 +56,9 @@ public class MsService {
 
     private void removeMsFromSagaEntries(int id){
         //Stores each saga in database.
-        Set<SagaEntity> sagaEntities = new HashSet<SagaEntity>(sagaRepository.findAll());
+        Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
         //For each saga in database...
-        for(SagaEntity saga : sagaEntities){
+        for(SagaVersionEntity saga : sagaEntities){
             Set<MsEntity> sagaMsEntity = new HashSet<MsEntity>(saga.getMsEntity());
             //get the bibliography entries for that saga.
             for(MsEntity msEntity : sagaMsEntity){
@@ -66,7 +66,7 @@ public class MsService {
                 if (msEntity.getId() == id) {
                     sagaMsEntity.remove(msEntity);
                     saga.setMsEntity(sagaMsEntity);
-                    sagaRepository.save(saga);
+                    sagaVersionRepository.save(saga);
                 }
             }
         }

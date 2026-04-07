@@ -20,7 +20,7 @@ public class MsEntity {
     String description;
 
     @ManyToMany(mappedBy = "msEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
     protected MsEntity() {
     }
@@ -64,11 +64,11 @@ public class MsEntity {
         this.shelfMark = shelfMark;
     }
 
-    public Set<SagaEntity> getSagaEntity() {
-        return sagaEntity;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaEntity(Set<SagaEntity> sagaEntity) {
-        this.sagaEntity = sagaEntity;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
     }
 }

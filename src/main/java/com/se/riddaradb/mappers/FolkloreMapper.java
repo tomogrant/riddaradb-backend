@@ -2,7 +2,7 @@ package com.se.riddaradb.mappers;
 
 import com.se.riddaradb.dtos.FolkloreDto;
 import com.se.riddaradb.entities.FolkloreEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -13,9 +13,9 @@ public class FolkloreMapper {
     public FolkloreDto mapToDto(FolkloreEntity folkloreEntity){
         FolkloreDto folkloreDto = new FolkloreDto(folkloreEntity.getId(), folkloreEntity.getName(), folkloreEntity.getDescription(), folkloreEntity.getMotifCode());
 
-        folkloreDto.setSagaIds(folkloreEntity.getSagaEntity()
+        folkloreDto.setSagaVersionIds(folkloreEntity.getSagaVersionEntity()
                 .stream()
-                .map(SagaEntity::getId)
+                .map(SagaVersionEntity::getId)
                 .collect(Collectors.toSet()));
 
         return folkloreDto;

@@ -14,7 +14,7 @@ public class BibDto {
         String publisher;
         String publicationYear;
         String pageNumbers;
-        Set<Integer> sagaIds;
+        Set<Integer> SagaVersionIds;
 
         protected BibDto(){
         }
@@ -41,7 +41,7 @@ public class BibDto {
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.pageNumbers = pageNumbers;
-        sagaIds = new HashSet<>();
+        SagaVersionIds = new HashSet<>();
     }
 
     public int getId() {
@@ -132,11 +132,11 @@ public class BibDto {
         this.pageNumbers = pageNumbers;
     }
 
-    public Set<Integer> getSagaIds() {
-        return sagaIds;
+    public Set<Integer> getSagaVersionIds() {
+        return SagaVersionIds;
     }
 
-    public void setSagaIds(Set<Integer> sagaIds) {
-        this.sagaIds = sagaIds;
+    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
+        this.SagaVersionIds = SagaVersionIds;
     }
 }

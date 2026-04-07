@@ -43,7 +43,7 @@ public class BibEntity {
     String pageNumbers;
 
     @ManyToMany(mappedBy = "bibEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
     protected BibEntity(){
     }
@@ -166,11 +166,11 @@ public class BibEntity {
         this.pageNumbers = pageNumbers;
     }
 
-    public Set<SagaEntity> getSagaEntity() {
-        return sagaEntity;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaEntity(Set<SagaEntity> sagaEntity) {
-        this.sagaEntity = sagaEntity;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
     }
 }

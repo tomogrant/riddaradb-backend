@@ -3,11 +3,11 @@ package com.se.riddaradb.services;
 import com.se.riddaradb.dtos.PersonDto;
 import com.se.riddaradb.entities.PersonEntity;
 import com.se.riddaradb.entities.PlaceEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import com.se.riddaradb.mappers.PersonMapper;
 import com.se.riddaradb.repositories.PersonRepository;
 import com.se.riddaradb.repositories.PlaceRepository;
-import com.se.riddaradb.repositories.SagaRepository;
+import com.se.riddaradb.repositories.SagaVersionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -18,13 +18,13 @@ import java.util.Set;
 public class PersonService {
 
     final PlaceRepository placeRepository;
-    final SagaRepository sagaRepository;
+    final SagaVersionRepository sagaVersionRepository;
     final PersonRepository personRepository;
     final PersonMapper personMapper;
 
-    public PersonService(PlaceRepository placeRepository, SagaRepository sagaRepository, PersonRepository personRepository, PersonMapper personMapper) {
+    public PersonService(PlaceRepository placeRepository, SagaVersionRepository sagaVersionRepository, PersonRepository personRepository, PersonMapper personMapper) {
         this.placeRepository = placeRepository;
-        this.sagaRepository = sagaRepository;
+        this.sagaVersionRepository = sagaVersionRepository;
         this.personRepository = personRepository;
         this.personMapper = personMapper;
     }
@@ -47,7 +47,7 @@ public class PersonService {
 
     public PersonDto savePersonEntry(PersonDto personDto){
         PersonEntity personEntity = personMapper.mapFromDto(personDto);
-        personEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(personDto.getSagaIds())));
+        personEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(personDto.getSagaVersionIds())));
         personEntity.setPlaceEntity(new HashSet<>(placeRepository.findAllById(personDto.getPlaceIds())));
         return personMapper.mapToDto(personRepository.save(personEntity));
     }
@@ -61,16 +61,16 @@ public class PersonService {
     }
 
     private void removePersonFromSagaEntries(int id){
-        Set<SagaEntity> sagaEntities = new HashSet<SagaEntity>(sagaRepository.findAll());
+        Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
 
         //REMOVE PLACE FROM SAGA
-        for (SagaEntity saga : sagaEntities) {
+        for (SagaVersionEntity saga : sagaEntities) {
             Set<PersonEntity> sagaPersonEntity = new HashSet<PersonEntity>(saga.getPersonEntity());
             for (PersonEntity personEntity : sagaPersonEntity) {
                 if (personEntity.getId() == id) {
                     sagaPersonEntity.remove(personEntity);
                     saga.setPersonEntity(sagaPersonEntity);
-                    sagaRepository.save(saga);
+                    sagaVersionRepository.save(saga);
                 }
             }
         }

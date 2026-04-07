@@ -12,7 +12,7 @@ public class PersonDto {
     PersonEntity.Species species;
     String realWorldRef;
     Set<Integer> placeIds;
-    Set<Integer> sagaIds;
+    Set<Integer> SagaVersionIds;
 
     public PersonDto(int id, String name, PersonEntity.Species species, String realWorldRef) {
         this.id = id;
@@ -20,7 +20,7 @@ public class PersonDto {
         this.species = species;
         this.realWorldRef = realWorldRef;
         placeIds = new HashSet<>();
-        sagaIds = new HashSet<>();
+        SagaVersionIds = new HashSet<>();
     }
 
     public int getId() {
@@ -63,11 +63,11 @@ public class PersonDto {
         this.placeIds = placeIds;
     }
 
-    public Set<Integer> getSagaIds() {
-        return sagaIds;
+    public Set<Integer> getSagaVersionIds() {
+        return SagaVersionIds;
     }
 
-    public void setSagaIds(Set<Integer> sagaIds) {
-        this.sagaIds = sagaIds;
+    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
+        this.SagaVersionIds = SagaVersionIds;
     }
 }

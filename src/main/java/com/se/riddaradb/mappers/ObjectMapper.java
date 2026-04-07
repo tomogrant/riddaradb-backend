@@ -1,10 +1,8 @@
 package com.se.riddaradb.mappers;
 
-import com.se.riddaradb.dtos.FolkloreDto;
 import com.se.riddaradb.dtos.ObjectDto;
-import com.se.riddaradb.entities.FolkloreEntity;
 import com.se.riddaradb.entities.ObjectEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -15,9 +13,9 @@ public class ObjectMapper {
     public ObjectDto mapToDto(ObjectEntity objectEntity){
         ObjectDto objectDto = new ObjectDto(objectEntity.getId(), objectEntity.getName(), objectEntity.getDescription(), objectEntity.getType());
 
-        objectDto.setSagaIds(objectEntity.getSagaEntity()
+        objectDto.setSagaVersionIds(objectEntity.getSagaVersionEntity()
                 .stream()
-                .map(SagaEntity::getId)
+                .map(SagaVersionEntity::getId)
                 .collect(Collectors.toSet()));
 
         return objectDto;

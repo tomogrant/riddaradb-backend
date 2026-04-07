@@ -25,7 +25,7 @@ public class ObjectEntity {
     }
 
     @ManyToMany(mappedBy = "objectEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
     protected ObjectEntity() {
     }
@@ -69,11 +69,11 @@ public class ObjectEntity {
         this.type = type;
     }
 
-    public Set<SagaEntity> getSagaEntity() {
-        return sagaEntity;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaEntity(Set<SagaEntity> sagaEntity) {
-        this.sagaEntity = sagaEntity;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
     }
 }

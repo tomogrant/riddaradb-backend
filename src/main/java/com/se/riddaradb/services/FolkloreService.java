@@ -2,10 +2,10 @@ package com.se.riddaradb.services;
 
 import com.se.riddaradb.dtos.FolkloreDto;
 import com.se.riddaradb.entities.FolkloreEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import com.se.riddaradb.mappers.FolkloreMapper;
 import com.se.riddaradb.repositories.FolkloreRepository;
-import com.se.riddaradb.repositories.SagaRepository;
+import com.se.riddaradb.repositories.SagaVersionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,12 +16,12 @@ import java.util.Set;
 public class FolkloreService {
 
     final FolkloreRepository folkloreRepository;
-    final SagaRepository sagaRepository;
+    final SagaVersionRepository sagaVersionRepository;
     final FolkloreMapper folkloreMapper;
 
-    public FolkloreService(FolkloreRepository folkloreRepository, SagaRepository sagaRepository, FolkloreMapper folkloreMapper) {
+    public FolkloreService(FolkloreRepository folkloreRepository, SagaVersionRepository sagaVersionRepository, FolkloreMapper folkloreMapper) {
         this.folkloreRepository = folkloreRepository;
-        this.sagaRepository = sagaRepository;
+        this.sagaVersionRepository = sagaVersionRepository;
         this.folkloreMapper = folkloreMapper;
     }
 
@@ -43,7 +43,7 @@ public class FolkloreService {
 
     public FolkloreDto saveFolkloreEntry(FolkloreDto folkloreDto){
         FolkloreEntity folkloreEntity = folkloreMapper.mapFromDto(folkloreDto);
-        folkloreEntity.setSagaEntity(new HashSet<>(sagaRepository.findAllById(folkloreDto.getSagaIds())));
+        folkloreEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(folkloreDto.getSagaVersionIds())));
         return folkloreMapper.mapToDto(folkloreRepository.save(folkloreEntity));
     }
 
@@ -56,9 +56,9 @@ public class FolkloreService {
 
     private void removeFolkloreFromSagaEntries(int id){
         //Stores each saga in database.
-        Set<SagaEntity> sagaEntities = new HashSet<SagaEntity>(sagaRepository.findAll());
+        Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
         //For each saga in database...
-        for(SagaEntity saga : sagaEntities){
+        for(SagaVersionEntity saga : sagaEntities){
             Set<FolkloreEntity> sagaFolkloreEntity = new HashSet<FolkloreEntity>(saga.getFolkloreEntity());
             //get the bibliography entries for that saga.
             for(FolkloreEntity folkloreEntity : sagaFolkloreEntity){
@@ -66,7 +66,7 @@ public class FolkloreService {
                 if (folkloreEntity.getId() == id) {
                     sagaFolkloreEntity.remove(folkloreEntity);
                     saga.setFolkloreEntity(sagaFolkloreEntity);
-                    sagaRepository.save(saga);
+                    sagaVersionRepository.save(saga);
                 }
             }
         }

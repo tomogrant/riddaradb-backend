@@ -1,10 +1,9 @@
 package com.se.riddaradb.mappers;
 
-import com.se.riddaradb.dtos.PersonDto;
 import com.se.riddaradb.dtos.PlaceDto;
 import com.se.riddaradb.entities.PersonEntity;
 import com.se.riddaradb.entities.PlaceEntity;
-import com.se.riddaradb.entities.SagaEntity;
+import com.se.riddaradb.entities.SagaVersionEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -20,9 +19,9 @@ public class PlaceMapper {
                 .map(PersonEntity::getId)
                 .collect(Collectors.toSet()));
 
-        placeDto.setSagaIds(placeEntity.getSagaEntity()
+        placeDto.setSagaVersionIds(placeEntity.getSagaVersionEntity()
                 .stream()
-                .map(SagaEntity::getId)
+                .map(SagaVersionEntity::getId)
                 .collect(Collectors.toSet()));
 
         return placeDto;

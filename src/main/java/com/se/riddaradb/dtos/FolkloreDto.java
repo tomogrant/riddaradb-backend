@@ -9,14 +9,14 @@ public class FolkloreDto {
     String name;
     String description;
     String motifCode;
-    Set<Integer> sagaIds;
+    Set<Integer> SagaVersionIds;
 
     public FolkloreDto(int id, String name, String description, String motifCode) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.motifCode = motifCode;
-        sagaIds = new HashSet<>();
+        SagaVersionIds = new HashSet<>();
     }
 
     public int getId() {
@@ -51,11 +51,11 @@ public class FolkloreDto {
         this.motifCode = motifCode;
     }
 
-    public Set<Integer> getSagaIds() {
-        return sagaIds;
+    public Set<Integer> getSagaVersionIds() {
+        return SagaVersionIds;
     }
 
-    public void setSagaIds(Set<Integer> sagaIds) {
-        this.sagaIds = sagaIds;
+    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
+        this.SagaVersionIds = SagaVersionIds;
     }
 }

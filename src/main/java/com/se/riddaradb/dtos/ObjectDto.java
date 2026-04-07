@@ -9,7 +9,7 @@ public class ObjectDto {
         String name;
         String description;
         ObjectEntity.Type type;
-        Set<Integer> sagaIds;
+        Set<Integer> SagaVersionIds;
 
         protected ObjectDto(){
         }
@@ -22,7 +22,7 @@ public class ObjectDto {
         this.name = name;
         this.description = description;
         this.type = type;
-        sagaIds = new HashSet<>();
+        SagaVersionIds = new HashSet<>();
     }
 
     public int getId() {
@@ -57,11 +57,11 @@ public class ObjectDto {
         this.type = type;
     }
 
-    public Set<Integer> getSagaIds() {
-        return sagaIds;
+    public Set<Integer> getSagaVersionIds() {
+        return SagaVersionIds;
     }
 
-    public void setSagaIds(Set<Integer> sagaIds) {
-        this.sagaIds = sagaIds;
+    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
+        this.SagaVersionIds = SagaVersionIds;
     }
 }

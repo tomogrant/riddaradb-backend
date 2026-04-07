@@ -11,13 +11,13 @@ public class PlaceDto {
     String name;
     PlaceEntity.Type type;
     Set<Integer> personIds;
-    Set<Integer> sagaIds;
+    Set<Integer> SagaVersionIds;
 
     public PlaceDto(int id, String name, PlaceEntity.Type type) {
         this.id = id;
         this.name = name;
         this.type = type;
-        sagaIds = new HashSet<>();
+        SagaVersionIds = new HashSet<>();
         personIds = new HashSet<>();
     }
 
@@ -53,11 +53,11 @@ public class PlaceDto {
         this.personIds = personIds;
     }
 
-    public Set<Integer> getSagaIds() {
-        return sagaIds;
+    public Set<Integer> getSagaVersionIds() {
+        return SagaVersionIds;
     }
 
-    public void setSagaIds(Set<Integer> sagaIds) {
-        this.sagaIds = sagaIds;
+    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
+        this.SagaVersionIds = SagaVersionIds;
     }
 }

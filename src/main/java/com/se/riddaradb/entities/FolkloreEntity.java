@@ -19,7 +19,7 @@ public class FolkloreEntity {
     String motifCode;
 
     @ManyToMany(mappedBy = "folkloreEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
     protected FolkloreEntity() {
     }
@@ -62,12 +62,12 @@ public class FolkloreEntity {
         this.motifCode = motifCode;
     }
 
-    public Set<SagaEntity> getSagaEntity() {
-        return sagaEntity;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaEntity(Set<SagaEntity> sagaEntity) {
-        this.sagaEntity = sagaEntity;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
     }
 
     public void setId(int id) {
