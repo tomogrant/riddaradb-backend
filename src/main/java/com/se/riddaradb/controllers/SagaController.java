@@ -1,6 +1,7 @@
 package com.se.riddaradb.controllers;
 
-import com.se.riddaradb.dtos.SagaDto;
+import com.se.riddaradb.dtos.SagaRequestDto;
+import com.se.riddaradb.dtos.SagaResponseDto;
 import com.se.riddaradb.services.SagaService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,23 +16,23 @@ public class SagaController {
     }
 
     @GetMapping("/sagas/getsagas")
-    Collection<SagaDto> getSagas(){
+    Collection<SagaResponseDto> getSagas(){
         return sagaService.getSagas();
     }
 
     @GetMapping("/sagas/getsagabyid/{id}")
-    SagaDto getSagaById(@PathVariable int id){
+    SagaResponseDto getSagaById(@PathVariable int id){
         return sagaService.getSagaById(id);
     }
 
     @PostMapping("/sagas/postsaga")
-    SagaDto postSagas(@RequestBody SagaDto sagaDto){
-        return sagaService.saveSaga(sagaDto);
+    SagaResponseDto postSagas(@RequestBody SagaRequestDto sagaRequestDto){
+        return sagaService.saveSaga(sagaRequestDto);
     }
 
     @PutMapping("/sagas/putsaga")
-    SagaDto putSaga(@RequestBody SagaDto sagaDto){
-        return sagaService.saveSaga(sagaDto);
+    SagaResponseDto putSaga(@RequestBody SagaRequestDto sagaRequestDto){
+        return sagaService.saveSaga(sagaRequestDto);
     }
 
     @DeleteMapping("/sagas/deletesaga/{id}")

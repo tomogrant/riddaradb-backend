@@ -1,8 +1,7 @@
 package com.se.riddaradb.services;
 
-import com.se.riddaradb.dtos.SagaDto;
-import com.se.riddaradb.entities.SagaEntity;
-import com.se.riddaradb.entities.SagaVersionEntity;
+import com.se.riddaradb.dtos.SagaRequestDto;
+import com.se.riddaradb.dtos.SagaResponseDto;
 import com.se.riddaradb.mappers.SagaMapper;
 import com.se.riddaradb.repositories.*;
 import org.springframework.stereotype.Service;
@@ -24,14 +23,14 @@ public class SagaService {
         this.sagaVersionRepository = sagaVersionRepository;
     }
 
-    public Collection<SagaDto> getSagas(){
+    public Collection<SagaResponseDto> getSagas(){
         return sagaRepository.findAll()
                 .stream()
                 .map(sagaMapper::mapToDto)
                 .toList();
     }
 
-    public SagaDto getSagaById(int id){
+    public SagaResponseDto getSagaById(int id){
         if (sagaRepository.findById(id).isPresent()){
             return sagaMapper.mapToDto(sagaRepository.findById(id).get());
         }
@@ -40,7 +39,7 @@ public class SagaService {
         }
     }
 
-    public SagaDto saveSaga(SagaDto sagaDto){
+    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
 
 //        SagaEntity sagaEntity = new SagaEntity(1, "saga title", "saga description");
 //        SagaVersionEntity sagaVersionEntity = new SagaVersionEntity(1, "saga version title", "saga version description", 1300, true);
@@ -49,7 +48,7 @@ public class SagaService {
 //        sagaRepository.save(sagaEntity);
 //        sagaVersionRepository.save(sagaVersionEntity);
 
-        return sagaMapper.mapToDto(sagaRepository.save(sagaMapper.mapFromDto(sagaDto)));
+          return sagaMapper.mapToDto(sagaRepository.save(sagaMapper.mapFromDto(sagaRequestDto)));
     }
 
     public void deleteSagaById(int id) {

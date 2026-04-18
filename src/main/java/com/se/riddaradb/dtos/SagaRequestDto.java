@@ -1,16 +1,15 @@
 package com.se.riddaradb.dtos;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class SagaDto {
+public class SagaRequestDto {
 
     int id;
     String title;
     String description;
     Set<Integer> sagaVersionIds;
 
-    public SagaDto(int id, String title, String description) {
+    public SagaRequestDto(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
