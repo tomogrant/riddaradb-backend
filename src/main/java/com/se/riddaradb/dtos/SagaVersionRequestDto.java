@@ -3,7 +3,7 @@ package com.se.riddaradb.dtos;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SagaVersionDto {
+public class SagaVersionRequestDto {
 
     int id;
     String title;
@@ -18,7 +18,7 @@ public class SagaVersionDto {
     Set<Integer> objectIds;
     Set<Integer> msIds;
 
-    public SagaVersionDto(int id, String title, String description, int date, Boolean isTranslated) {
+    public SagaVersionRequestDto(int id, String title, String description, int date, Boolean isTranslated) {
         this.id = id;
         this.title = title;
         this.description = description;

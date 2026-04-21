@@ -8,13 +8,12 @@ public class SagaResponseDto {
     int id;
     String title;
     String description;
-    Collection<SagaVersionDto> sagaVersions;
+    Set<SagaVersionResponseDto> sagaVersions;
 
-    public SagaResponseDto(int id, String title, String description, Set<SagaVersionDto> sagaVersions) {
+    public SagaResponseDto(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.sagaVersions = sagaVersions;
     }
 
     public int getId() {
@@ -41,11 +40,11 @@ public class SagaResponseDto {
         this.description = description;
     }
 
-    public Collection<SagaVersionDto> getSagaVersions() {
+    public Set<SagaVersionResponseDto> getSagaVersions() {
         return this.sagaVersions;
     }
 
-    public void setSagaVersions(Collection<SagaVersionDto> sagaVersions) {
+    public void setSagaVersions(Set<SagaVersionResponseDto> sagaVersions) {
         this.sagaVersions = sagaVersions;
     }
 }

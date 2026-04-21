@@ -1,6 +1,7 @@
 package com.se.riddaradb.mappers;
 
-import com.se.riddaradb.dtos.SagaVersionDto;
+import com.se.riddaradb.dtos.SagaVersionRequestDto;
+import com.se.riddaradb.dtos.SagaVersionResponseDto;
 import com.se.riddaradb.entities.*;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
@@ -8,45 +9,53 @@ import java.util.stream.Collectors;
 @Service
 public class SagaVersionMapper {
 
-    public SagaVersionDto mapToDto(SagaVersionEntity sagaVersionEntity){
-        SagaVersionDto sagaVersionDto = new SagaVersionDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate(), sagaVersionEntity.getIsTranslated());
+    final BibMapper bibMapper;
 
-        sagaVersionDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
+    public SagaVersionMapper(BibMapper bibMapper){
+        this.bibMapper = bibMapper;
+    }
 
-        sagaVersionDto.setBibIds(sagaVersionEntity.getBibEntity()
+    //Consumes DB entity and produces response for frontend
+    public SagaVersionResponseDto mapToDto(SagaVersionEntity sagaVersionEntity){
+        SagaVersionResponseDto sagaVersionResponseDto = new SagaVersionResponseDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate(), sagaVersionEntity.getIsTranslated());
+
+        sagaVersionResponseDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
+
+        sagaVersionResponseDto.setBibDto(sagaVersionEntity.getBibEntity()
                 .stream()
-                .map(BibEntity::getId)
+                .map(bibMapper::mapToDto)
                 .collect(Collectors.toSet()));
 
-        sagaVersionDto.setFolkloreIds(sagaVersionEntity.getFolkloreEntity()
+        sagaVersionResponseDto.setFolkloreIds(sagaVersionEntity.getFolkloreEntity()
                 .stream()
                 .map(FolkloreEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionDto.setPersonIds(sagaVersionEntity.getPersonEntity()
+        sagaVersionResponseDto.setPersonIds(sagaVersionEntity.getPersonEntity()
                 .stream()
                 .map(PersonEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionDto.setPlaceIds(sagaVersionEntity.getPlaceEntity()
+        sagaVersionResponseDto.setPlaceIds(sagaVersionEntity.getPlaceEntity()
                 .stream()
                 .map(PlaceEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionDto.setObjectIds(sagaVersionEntity.getObjectEntity()
+        sagaVersionResponseDto.setObjectIds(sagaVersionEntity.getObjectEntity()
                 .stream()
                 .map(ObjectEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionDto.setMsIds(sagaVersionEntity.getMsEntity()
+        sagaVersionResponseDto.setMsIds(sagaVersionEntity.getMsEntity()
                 .stream()
                 .map(MsEntity::getId)
                 .collect(Collectors.toSet()));
 
-        return sagaVersionDto;
+        return sagaVersionResponseDto;
     }
 
-    public SagaVersionEntity mapFromDto(SagaVersionDto sagaVersionDto){
-        return new SagaVersionEntity(sagaVersionDto.getId(), sagaVersionDto.getTitle(), sagaVersionDto.getDescription(), sagaVersionDto.getDate(), sagaVersionDto.getIsTranslated());
+    //Consumes request from frontend and produces DB entity for persistence
+    public SagaVersionEntity mapFromDto(SagaVersionRequestDto sagaVersionRequestDto){
+        return new SagaVersionEntity(sagaVersionRequestDto.getId(), sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate(), sagaVersionRequestDto.getIsTranslated());
     }
 }

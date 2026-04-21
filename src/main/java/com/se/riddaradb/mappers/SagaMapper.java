@@ -17,10 +17,13 @@ public class SagaMapper {
     }
 
     public SagaResponseDto mapToDto(SagaEntity sagaEntity){
-        return new SagaResponseDto(sagaEntity.getId(), sagaEntity.getTitle(), sagaEntity.getDescription(), sagaEntity.getSagaVersionEntities()
-                .stream()
-                .map(sagaVersionMapper::mapToDto)
-                .collect(Collectors.toSet()));
+        SagaResponseDto sagaResponseDto = new SagaResponseDto(sagaEntity.getId(), sagaEntity.getTitle(), sagaEntity.getDescription());
+
+        sagaResponseDto.setSagaVersions(sagaEntity.getSagaVersionEntities().stream()
+        .map(sagaVersionMapper::mapToDto)
+        .collect(Collectors.toSet()));
+
+        return sagaResponseDto;
     }
 
     public SagaEntity mapFromDto(SagaRequestDto sagaRequestDto){

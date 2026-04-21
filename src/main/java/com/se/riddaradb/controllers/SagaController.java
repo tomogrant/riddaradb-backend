@@ -4,8 +4,7 @@ import com.se.riddaradb.dtos.SagaRequestDto;
 import com.se.riddaradb.dtos.SagaResponseDto;
 import com.se.riddaradb.services.SagaService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
+import java.util.Set;
 
 @RestController
 public class SagaController {
@@ -16,7 +15,7 @@ public class SagaController {
     }
 
     @GetMapping("/sagas/getsagas")
-    Collection<SagaResponseDto> getSagas(){
+    Set<SagaResponseDto> getSagas(){
         return sagaService.getSagas();
     }
 
@@ -26,7 +25,7 @@ public class SagaController {
     }
 
     @PostMapping("/sagas/postsaga")
-    SagaResponseDto postSagas(@RequestBody SagaRequestDto sagaRequestDto){
+    SagaResponseDto postSaga(@RequestBody SagaRequestDto sagaRequestDto){
         return sagaService.saveSaga(sagaRequestDto);
     }
 

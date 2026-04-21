@@ -1,13 +1,14 @@
 package com.se.riddaradb.services;
 
-import com.se.riddaradb.dtos.SagaVersionDto;
+import com.se.riddaradb.dtos.SagaVersionRequestDto;
+import com.se.riddaradb.dtos.SagaVersionResponseDto;
 import com.se.riddaradb.entities.*;
 import com.se.riddaradb.mappers.SagaVersionMapper;
 import com.se.riddaradb.repositories.*;
 import org.springframework.stereotype.Service;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SagaVersionService {
@@ -43,14 +44,14 @@ public class SagaVersionService {
         this.sagaVersionMapper = sagaVersionMapper;
     }
 
-    public Collection<SagaVersionDto> getSagaVersions(){
+    public Set<SagaVersionResponseDto> getSagaVersions(){
         return sagaVersionRepository.findAll()
                 .stream()
                 .map(sagaVersionMapper::mapToDto)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    public SagaVersionDto getSagaVersionById(int id){
+    public SagaVersionResponseDto getSagaVersionById(int id){
         if (sagaVersionRepository.findById(id).isPresent()){
             return sagaVersionMapper.mapToDto(sagaVersionRepository.findById(id).get());
         }
@@ -59,19 +60,19 @@ public class SagaVersionService {
         }
     }
 
-    public SagaVersionDto saveSagaVersion(SagaVersionDto sagaVersionDto){
-        SagaVersionEntity sagaVersionEntity = sagaVersionMapper.mapFromDto(sagaVersionDto);
+    public SagaVersionResponseDto saveSagaVersion(SagaVersionRequestDto sagaVersionRequestDto){
+        SagaVersionEntity sagaVersionEntity = sagaVersionMapper.mapFromDto(sagaVersionRequestDto);
 
-        if (sagaRepository.findById(sagaVersionDto.getSagaId()).isPresent()){
-            sagaVersionEntity.setSagaEntity(sagaRepository.findById(sagaVersionDto.getSagaId()).get());
+        if (sagaRepository.findById(sagaVersionRequestDto.getSagaId()).isPresent()){
+            sagaVersionEntity.setSagaEntity(sagaRepository.findById(sagaVersionRequestDto.getSagaId()).get());
         }
 
-        sagaVersionEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaVersionDto.getBibIds())));
-        sagaVersionEntity.setFolkloreEntity(new HashSet<>(folkloreRepository.findAllById(sagaVersionDto.getFolkloreIds())));
-        sagaVersionEntity.setPersonEntity(new HashSet<>(personRepository.findAllById(sagaVersionDto.getPersonIds())));
-        sagaVersionEntity.setPlaceEntity(new HashSet<>(placeRepository.findAllById(sagaVersionDto.getPlaceIds())));
-        sagaVersionEntity.setObjectEntity(new HashSet<>(objectRepository.findAllById(sagaVersionDto.getObjectIds())));
-        sagaVersionEntity.setMsEntity(new HashSet<>(msRepository.findAllById(sagaVersionDto.getMsIds())));
+        sagaVersionEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaVersionRequestDto.getBibIds())));
+        sagaVersionEntity.setFolkloreEntity(new HashSet<>(folkloreRepository.findAllById(sagaVersionRequestDto.getFolkloreIds())));
+        sagaVersionEntity.setPersonEntity(new HashSet<>(personRepository.findAllById(sagaVersionRequestDto.getPersonIds())));
+        sagaVersionEntity.setPlaceEntity(new HashSet<>(placeRepository.findAllById(sagaVersionRequestDto.getPlaceIds())));
+        sagaVersionEntity.setObjectEntity(new HashSet<>(objectRepository.findAllById(sagaVersionRequestDto.getObjectIds())));
+        sagaVersionEntity.setMsEntity(new HashSet<>(msRepository.findAllById(sagaVersionRequestDto.getMsIds())));
 
         return sagaVersionMapper.mapToDto(sagaVersionRepository.save(sagaVersionEntity));
     }
