@@ -19,7 +19,8 @@ public class SagaVersionMapper {
     public SagaVersionResponseDto mapToDto(SagaVersionEntity sagaVersionEntity){
         SagaVersionResponseDto sagaVersionResponseDto = new SagaVersionResponseDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate(), sagaVersionEntity.getIsTranslated());
 
-        sagaVersionResponseDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
+        if (sagaVersionEntity.getSagaEntity() != null)
+            sagaVersionResponseDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
 
         sagaVersionResponseDto.setBibDto(sagaVersionEntity.getBibEntity()
                 .stream()

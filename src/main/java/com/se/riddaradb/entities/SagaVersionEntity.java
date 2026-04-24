@@ -1,6 +1,8 @@
 package com.se.riddaradb.entities;
 
 import jakarta.persistence.*;
+import jakarta.websocket.Encoder;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ public class SagaVersionEntity {
 
     String title;
 
+    @Column(columnDefinition = "TEXT")
     String description;
 
     int date;
