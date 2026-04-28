@@ -1,7 +1,6 @@
 package com.se.riddaradb.entities;
 
 import jakarta.persistence.*;
-import jakarta.websocket.Encoder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +8,17 @@ import java.util.Set;
 @Entity
 @Table(name = "SAGAVERSION")
 public class SagaVersionEntity {
+
+    public enum SagaDate {
+        UNDEFINED,
+        UNKNOWN,
+        _1250_1300,
+        _1300_1350,
+        _1350_1400,
+        _1400_1450,
+        _1450_1500,
+        _1500_1550
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +29,7 @@ public class SagaVersionEntity {
     @Column(columnDefinition = "TEXT")
     String description;
 
-    int date;
-
-    Boolean isTranslated;
+    SagaDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sagaId")
@@ -66,12 +74,11 @@ public class SagaVersionEntity {
     protected SagaVersionEntity() {
     }
 
-    public SagaVersionEntity(int id, String title, String description, int date, Boolean isTranslated) {
+    public SagaVersionEntity(int id, String title, String description, SagaDate date) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
-        this.isTranslated = isTranslated;
     }
 
     public int getId() {
@@ -98,20 +105,12 @@ public class SagaVersionEntity {
         this.description = description;
     }
 
-    public int getDate() {
+    public SagaDate getDate() {
         return date;
     }
 
-    public void setDate(int date) {
-        this.date = date;
-    }
-
-    public Boolean getIsTranslated() {
-        return isTranslated;
-    }
-
-    public void setIsTranslated(Boolean isTranslated) {
-        this.isTranslated = isTranslated;
+    public void setDate(SagaDate sagaDate) {
+        this.date = sagaDate;
     }
 
     public SagaEntity getSagaEntity() {

@@ -1,5 +1,7 @@
 package com.se.riddaradb.dtos;
 
+import com.se.riddaradb.entities.SagaVersionEntity;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,8 +10,7 @@ public class SagaVersionRequestDto {
     int id;
     String title;
     String description;
-    int date;
-    Boolean isTranslated;
+    SagaVersionEntity.SagaDate date;
     Integer sagaId;
     Set<Integer> bibIds;
     Set<Integer> folkloreIds;
@@ -18,12 +19,11 @@ public class SagaVersionRequestDto {
     Set<Integer> objectIds;
     Set<Integer> msIds;
 
-    public SagaVersionRequestDto(int id, String title, String description, int date, Boolean isTranslated) {
+    public SagaVersionRequestDto(int id, String title, String description, SagaVersionEntity.SagaDate date, Boolean isTranslated) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
-        this.isTranslated = isTranslated;
         bibIds = new HashSet<>();
         folkloreIds = new HashSet<>();
         personIds = new HashSet<>();
@@ -56,20 +56,12 @@ public class SagaVersionRequestDto {
         this.description = description;
     }
 
-    public int getDate() {
+    public SagaVersionEntity.SagaDate getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(SagaVersionEntity.SagaDate date) {
         this.date = date;
-    }
-
-    public Boolean getIsTranslated() {
-        return isTranslated;
-    }
-
-    public void setIsTranslated(Boolean isTranslated) {
-        this.isTranslated = isTranslated;
     }
 
     public int getSagaId() {

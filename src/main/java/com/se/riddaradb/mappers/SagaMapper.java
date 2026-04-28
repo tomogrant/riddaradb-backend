@@ -17,7 +17,7 @@ public class SagaMapper {
     }
 
     public SagaResponseDto mapToDto(SagaEntity sagaEntity){
-        SagaResponseDto sagaResponseDto = new SagaResponseDto(sagaEntity.getId(), sagaEntity.getTitle(), sagaEntity.getDescription());
+        SagaResponseDto sagaResponseDto = new SagaResponseDto(sagaEntity.getId(), sagaEntity.getTitle(), sagaEntity.getDescription(), sagaEntity.getTranslated());
 
         sagaResponseDto.setSagaVersions(sagaEntity.getSagaVersionEntities().stream()
         .map(sagaVersionMapper::mapToDto)
@@ -27,6 +27,6 @@ public class SagaMapper {
     }
 
     public SagaEntity mapFromDto(SagaRequestDto sagaRequestDto){
-        return new SagaEntity(sagaRequestDto.getId(), sagaRequestDto.getTitle(), sagaRequestDto.getDescription());
+        return new SagaEntity(sagaRequestDto.getId(), sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
     }
 }

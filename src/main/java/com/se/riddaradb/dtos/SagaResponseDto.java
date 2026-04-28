@@ -8,12 +8,14 @@ public class SagaResponseDto {
     int id;
     String title;
     String description;
+    Boolean translated;
     Set<SagaVersionResponseDto> sagaVersions;
 
-    public SagaResponseDto(int id, String title, String description) {
+    public SagaResponseDto(int id, String title, String description, Boolean translated) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.translated = translated;
     }
 
     public int getId() {
@@ -38,6 +40,14 @@ public class SagaResponseDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getTranslated() {
+        return translated;
+    }
+
+    public void setTranslated(Boolean translated) {
+        this.translated = translated;
     }
 
     public Set<SagaVersionResponseDto> getSagaVersions() {

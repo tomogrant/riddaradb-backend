@@ -20,16 +20,19 @@ public class SagaEntity {
 
     String description;
 
+    Boolean translated;
+
     @OneToMany(mappedBy = "sagaEntity", cascade = CascadeType.ALL)
     Set<SagaVersionEntity> sagaVersionEntities = new HashSet<>();
 
     protected SagaEntity(){
     }
 
-    public SagaEntity(int id, String title, String description) {
+    public SagaEntity(int id, String title, String description, Boolean translated) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.translated = translated;
     }
 
     public int getId() {
@@ -54,6 +57,14 @@ public class SagaEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getTranslated() {
+        return translated;
+    }
+
+    public void setTranslated(Boolean translated) {
+        this.translated = translated;
     }
 
     public Set<SagaVersionEntity> getSagaVersionEntities() {

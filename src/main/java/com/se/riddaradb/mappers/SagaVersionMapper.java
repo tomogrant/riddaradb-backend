@@ -17,7 +17,7 @@ public class SagaVersionMapper {
 
     //Consumes DB entity and produces response for frontend
     public SagaVersionResponseDto mapToDto(SagaVersionEntity sagaVersionEntity){
-        SagaVersionResponseDto sagaVersionResponseDto = new SagaVersionResponseDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate(), sagaVersionEntity.getIsTranslated());
+        SagaVersionResponseDto sagaVersionResponseDto = new SagaVersionResponseDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate());
 
         if (sagaVersionEntity.getSagaEntity() != null)
             sagaVersionResponseDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
@@ -57,6 +57,6 @@ public class SagaVersionMapper {
 
     //Consumes request from frontend and produces DB entity for persistence
     public SagaVersionEntity mapFromDto(SagaVersionRequestDto sagaVersionRequestDto){
-        return new SagaVersionEntity(sagaVersionRequestDto.getId(), sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate(), sagaVersionRequestDto.getIsTranslated());
+        return new SagaVersionEntity(sagaVersionRequestDto.getId(), sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate());
     }
 }
