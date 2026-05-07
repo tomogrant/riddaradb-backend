@@ -12,16 +12,22 @@ public class BibMapper {
 
     public BibDto mapToDto(BibEntity bibEntity){
         BibDto bibDto = new BibDto(bibEntity.getId(),
+                bibEntity.getPublicationType(),
                 bibEntity.getAuthors(),
-                bibEntity.getTitle(),
                 bibEntity.getEditors(),
+                bibEntity.getTranslators(),
+                bibEntity.getTitle(),
+                bibEntity.getUrl(),
+                bibEntity.getBookEditors(),
                 bibEntity.getBook(),
                 bibEntity.getBookSeries(),
+                bibEntity.getVolume(),
                 bibEntity.getNumOfVolumes(),
                 bibEntity.getPlaceOfPublication(),
                 bibEntity.getPublisher(),
                 bibEntity.getPublicationYear(),
-                bibEntity.getPageNumbers());
+                bibEntity.getPageNumbers(),
+                bibEntity.getRecommended());
 
         bibDto.setSagaVersionIds(bibEntity.getSagaVersionEntity()
                 .stream()
@@ -33,15 +39,21 @@ public class BibMapper {
 
     public BibEntity mapFromDto(BibDto bibDto){
         return new BibEntity(bibDto.getId(),
+                bibDto.getPublicationType(),
                 bibDto.getAuthors(),
-                bibDto.getTitle(),
                 bibDto.getEditors(),
+                bibDto.getTranslators(),
+                bibDto.getTitle(),
+                bibDto.getUrl(),
+                bibDto.getBookEditors(),
                 bibDto.getBook(),
                 bibDto.getBookSeries(),
+                bibDto.getVolume(),
                 bibDto.getNumOfVolumes(),
                 bibDto.getPlaceOfPublication(),
                 bibDto.getPublisher(),
                 bibDto.getPublicationYear(),
-                bibDto.getPageNumbers());
+                bibDto.getPageNumbers(),
+                bibDto.getRecommended());
     }
 }

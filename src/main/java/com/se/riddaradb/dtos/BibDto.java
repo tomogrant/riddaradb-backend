@@ -1,46 +1,66 @@
 package com.se.riddaradb.dtos;
+import com.se.riddaradb.entities.BibEntity;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class BibDto {
         int id;
+        BibEntity.PublicationType publicationType;
         String authors;
-        String title;
         String editors;
+        String translators;
+        String title;
+        String url;
+        String bookEditors;
         String book;
         String bookSeries;
-        int numOfVolumes;
+        String volume;
+        String numOfVolumes;
         String placeOfPublication;
         String publisher;
         String publicationYear;
         String pageNumbers;
+        Boolean recommended;
         Set<Integer> SagaVersionIds;
 
         protected BibDto(){
         }
 
     public BibDto(int id,
+                  BibEntity.PublicationType publicationType,
                   String authors,
-                  String title,
                   String editors,
+                  String translators,
+                  String title,
+                  String url,
+                  String bookEditors,
                   String book,
                   String bookSeries,
-                  int numOfVolumes,
+                  String volume,
+                  String numOfVolumes,
                   String placeOfPublication,
                   String publisher,
                   String publicationYear,
-                  String pageNumbers) {
+                  String pageNumbers,
+                  Boolean recommended) {
         this.id = id;
+        this.publicationType = publicationType;
         this.authors = authors;
         this.title = title;
+        this.url = url;
         this.editors = editors;
+        this.translators = translators;
+        this.bookEditors = bookEditors;
         this.book = book;
         this.bookSeries = bookSeries;
+        this.volume = volume;
         this.numOfVolumes = numOfVolumes;
         this.placeOfPublication = placeOfPublication;
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.pageNumbers = pageNumbers;
+        this.recommended = recommended;
         SagaVersionIds = new HashSet<>();
     }
 
@@ -52,12 +72,36 @@ public class BibDto {
         this.id = id;
     }
 
+    public BibEntity.PublicationType getPublicationType() {
+        return publicationType;
+    }
+
+    public void setPublicationType(BibEntity.PublicationType publicationType) {
+        this.publicationType = publicationType;
+    }
+
     public String getAuthors() {
         return authors;
     }
 
     public void setAuthors(String authors) {
         this.authors = authors;
+    }
+
+    public String getEditors() {
+        return editors;
+    }
+
+    public void setEditors(String editors) {
+        this.editors = editors;
+    }
+
+    public String getTranslators() {
+        return translators;
+    }
+
+    public void setTranslators(String translators) {
+        this.translators = translators;
     }
 
     public String getTitle() {
@@ -68,12 +112,20 @@ public class BibDto {
         this.title = title;
     }
 
-    public String getEditors() {
-        return editors;
+    public String getUrl() {
+        return url;
     }
 
-    public void setEditors(String editors) {
-        this.editors = editors;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getBookEditors() {
+        return bookEditors;
+    }
+
+    public void setBookEditors(String bookEditors) {
+        this.bookEditors = bookEditors;
     }
 
     public String getBook() {
@@ -92,11 +144,19 @@ public class BibDto {
         this.bookSeries = bookSeries;
     }
 
-    public int getNumOfVolumes() {
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public String getNumOfVolumes() {
         return numOfVolumes;
     }
 
-    public void setNumOfVolumes(int numOfVolumes) {
+    public void setNumOfVolumes(String numOfVolumes) {
         this.numOfVolumes = numOfVolumes;
     }
 
@@ -132,11 +192,19 @@ public class BibDto {
         this.pageNumbers = pageNumbers;
     }
 
+    public Boolean getRecommended() {
+        return recommended;
+    }
+
+    public void setRecommended(Boolean recommended) {
+        this.recommended = recommended;
+    }
+
     public Set<Integer> getSagaVersionIds() {
         return SagaVersionIds;
     }
 
-    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
-        this.SagaVersionIds = SagaVersionIds;
+    public void setSagaVersionIds(Set<Integer> sagaVersionIds) {
+        SagaVersionIds = sagaVersionIds;
     }
 }

@@ -42,14 +42,25 @@ public class BibService {
     }
 
     public BibDto saveBibEntry(BibDto bibDto){
+        //REMOVE BIB ENTRY FROM SAGAS
+
+        //SAVE BIB ENTRY
         BibEntity bibEntity = bibMapper.mapFromDto(bibDto);
         bibEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(bibDto.getSagaVersionIds())));
         return bibMapper.mapToDto(bibRepository.save(bibEntity));
+
+        //ADD BIB ENTRY TO SAGAS; SAVE
     }
 
     public void deleteBibEntryById(int id){
 
-        //Stores each saga in database.
+        removeBibFromSagaVersions(id);
+
+        bibRepository.deleteById(id);
+    }
+
+    private void removeBibFromSagaVersions(int id){
+        //Gets each saga in database.
         Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
 
         //For each saga in database...
@@ -65,7 +76,6 @@ public class BibService {
                 }
             }
         }
-
-        bibRepository.deleteById(id);
     }
+
 }
