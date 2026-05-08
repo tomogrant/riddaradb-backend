@@ -129,6 +129,11 @@ public class SagaVersionEntity {
         this.bibEntity = bibEntity;
     }
 
+    public void addBib(BibEntity bib){
+        bibEntity.add(bib);
+        bib.getSagaVersionEntity().add(this);
+    }
+
     public Set<FolkloreEntity> getFolkloreEntity() {
         return folkloreEntity;
     }

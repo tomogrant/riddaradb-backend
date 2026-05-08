@@ -7,12 +7,15 @@ import com.se.riddaradb.entities.BibEntity;
 import com.se.riddaradb.repositories.BibRepository;
 import com.se.riddaradb.repositories.SagaVersionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class BibService {
 
     final BibRepository bibRepository;
@@ -42,40 +45,33 @@ public class BibService {
     }
 
     public BibDto saveBibEntry(BibDto bibDto){
-        //REMOVE BIB ENTRY FROM SAGAS
 
-        //SAVE BIB ENTRY
+        //This is the most beautiful code I've ever written.
+        //Removes bib entity from sagas
+        if (bibRepository.existsById(bibDto.getId())){
+            removeBibFromSagaVersions(bibDto.getId());
+        }
+
+        //Creates bib entity
         BibEntity bibEntity = bibMapper.mapFromDto(bibDto);
-        bibEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(bibDto.getSagaVersionIds())));
-        return bibMapper.mapToDto(bibRepository.save(bibEntity));
 
-        //ADD BIB ENTRY TO SAGAS; SAVE
+        //Add bib entry to sagas
+        for (int id : bibDto.getSagaVersionIds()){
+            sagaVersionRepository.findById(id).ifPresent(sagaVersion -> sagaVersion.addBib(bibEntity));
+        }
+
+        return bibMapper.mapToDto(bibRepository.save(bibEntity));
     }
 
     public void deleteBibEntryById(int id){
 
         removeBibFromSagaVersions(id);
-
         bibRepository.deleteById(id);
     }
 
     private void removeBibFromSagaVersions(int id){
-        //Gets each saga in database.
-        Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
-
-        //For each saga in database...
-        for(SagaVersionEntity saga : sagaEntities){
-            Set<BibEntity> sagaBibEntity = new HashSet<BibEntity>(saga.getBibEntity());
-            //get the bibliography entries for that saga.
-            for(BibEntity bibEntity : sagaBibEntity){
-                //if a bibliography entry matches the ID supplied, remove it from the saga.
-                if (bibEntity.getId() == id) {
-                    sagaBibEntity.remove(bibEntity);
-                    saga.setBibEntity(sagaBibEntity);
-                    sagaVersionRepository.save(saga);
-                }
-            }
+        for (SagaVersionEntity saga : sagaVersionRepository.findAll()){
+            saga.getBibEntity().removeIf(bib -> bib.getId() == id);
         }
     }
-
 }
