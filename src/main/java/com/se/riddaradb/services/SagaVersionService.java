@@ -94,19 +94,9 @@ public class SagaVersionService {
         }
     }
 
-    //THIS SHOULD ACTUALLY BE PART OF THE BIB SERVICE, AND REMOVE BIB FROM SAGA VERSIONS SHOULD BE
-    //IN THE SAGA VERSION SERVICE. FIX THIS!
     private void removeSagaVersionFromBibEntries(int id){
-        Set<BibEntity> bibEntitiesSet = new HashSet<>(bibRepository.findAll());
-        for(BibEntity bibEntity : bibEntitiesSet){
-            Set<SagaVersionEntity> bibSagaEntitiesSet = new HashSet<>(bibEntity.getSagaVersionEntity());
-            for(SagaVersionEntity sagaVersionEntity : bibSagaEntitiesSet){
-                if (sagaVersionEntity.getId() == id) {
-                    bibSagaEntitiesSet.remove(sagaVersionEntity);
-                    bibEntity.setSagaVersionEntity(bibSagaEntitiesSet);
-                    bibRepository.save(bibEntity);
-                }
-            }
+        for (SagaVersionEntity saga : sagaVersionRepository.findAll()) {
+            saga.getBibEntity().removeIf(bib -> bib.getId() == id);
         }
     }
 

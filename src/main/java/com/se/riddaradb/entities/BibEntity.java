@@ -44,9 +44,12 @@ public class BibEntity {
 
     String publicationYear;
 
+    String pageNumbers;
+
     Boolean recommended;
 
-    String pageNumbers;
+    @Column(columnDefinition = "TEXT")
+    String description;
 
     @ManyToMany(mappedBy = "bibEntity")
     Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
@@ -70,7 +73,8 @@ public class BibEntity {
                      String publisher,
                      String publicationYear,
                      String pageNumbers,
-                     Boolean recommended) {
+                     Boolean recommended,
+                     String description) {
         this.id = id;
         this.publicationType = publicationType;
         this.authors = authors;
@@ -88,6 +92,7 @@ public class BibEntity {
         this.publicationYear = publicationYear;
         this.pageNumbers = pageNumbers;
         this.recommended = recommended;
+        this.description = description;
     }
 
     public enum PublicationType {
@@ -237,6 +242,14 @@ public class BibEntity {
 
     public void setRecommended(Boolean recommended) {
         this.recommended = recommended;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<SagaVersionEntity> getSagaVersionEntity() {

@@ -29,6 +29,11 @@ public class SagaController {
         return sagaService.saveSaga(sagaRequestDto);
     }
 
+    @PostMapping("/sagas/postsagawithversion")
+    SagaResponseDto postSagaWithVersion(@RequestBody SagaRequestDto sagaRequestDto){
+        return sagaService.saveSagaWithVersion(sagaRequestDto);
+    }
+
     @PutMapping("/sagas/putsaga")
     SagaResponseDto putSaga(@RequestBody SagaRequestDto sagaRequestDto){
         return sagaService.saveSaga(sagaRequestDto);

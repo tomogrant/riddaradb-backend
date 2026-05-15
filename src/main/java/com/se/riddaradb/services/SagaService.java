@@ -7,10 +7,13 @@ import com.se.riddaradb.entities.SagaVersionEntity;
 import com.se.riddaradb.mappers.SagaMapper;
 import com.se.riddaradb.repositories.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SagaService {
 
     final SagaRepository sagaRepository;
@@ -47,15 +50,16 @@ public class SagaService {
 
     public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
         return sagaMapper.mapToDto(sagaRepository.save(sagaMapper.mapFromDto(sagaRequestDto)));
+    }
 
-//        SagaEntity sagaEntity = new SagaEntity(1, "saga title", "saga description");
-//        SagaVersionEntity sagaVersionEntity = new SagaVersionEntity(1, "saga version title", "saga version description", 1300, true);
-//        sagaVersionEntity.setSagaEntity(sagaEntity);
-//
-//        sagaRepository.save(sagaEntity);
-//        sagaVersionRepository.save(sagaVersionEntity);
+    public SagaResponseDto saveSagaWithVersion(SagaRequestDto sagaRequestDto){
 
-          //return sagaMapper.mapToDto(sagaRepository.save(sagaMapper.mapFromDto(sagaRequestDto)));
+        SagaVersionEntity sagaVersionEntity = new SagaVersionEntity(0, sagaRequestDto.getTitle(), "", SagaVersionEntity.SagaDate.UNDEFINED);
+
+        SagaEntity sagaEntity = sagaMapper.mapFromDto(sagaRequestDto);
+        sagaEntity.addSagaVersion(sagaVersionEntity);
+
+        return sagaMapper.mapToDto(sagaRepository.save(sagaEntity));
     }
 
     public void deleteSagaById(int id) {

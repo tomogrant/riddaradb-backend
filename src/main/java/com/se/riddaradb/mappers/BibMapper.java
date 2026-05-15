@@ -27,7 +27,8 @@ public class BibMapper {
                 bibEntity.getPublisher(),
                 bibEntity.getPublicationYear(),
                 bibEntity.getPageNumbers(),
-                bibEntity.getRecommended());
+                bibEntity.getRecommended(),
+                bibEntity.getDescription());
 
         bibDto.setSagaVersionIds(bibEntity.getSagaVersionEntity()
                 .stream()
@@ -54,6 +55,7 @@ public class BibMapper {
                 bibDto.getPublisher(),
                 bibDto.getPublicationYear(),
                 bibDto.getPageNumbers(),
-                bibDto.getRecommended());
+                bibDto.getRecommended(),
+                bibDto.getDescription());
     }
 }

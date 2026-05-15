@@ -59,6 +59,8 @@ public class SagaEntity {
         this.description = description;
     }
 
+
+
     public Boolean getTranslated() {
         return translated;
     }
@@ -73,5 +75,10 @@ public class SagaEntity {
 
     public void setSagaVersionEntities(Set<SagaVersionEntity> sagaVersionEntities) {
         this.sagaVersionEntities = sagaVersionEntities;
+    }
+
+    public void addSagaVersion(SagaVersionEntity sagaVersion){
+        sagaVersionEntities.add(sagaVersion);
+        sagaVersion.setSagaEntity(this);
     }
 }

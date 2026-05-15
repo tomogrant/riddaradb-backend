@@ -22,6 +22,7 @@ public class BibDto {
         String publicationYear;
         String pageNumbers;
         Boolean recommended;
+        String description;
         Set<Integer> SagaVersionIds;
 
         protected BibDto(){
@@ -43,7 +44,8 @@ public class BibDto {
                   String publisher,
                   String publicationYear,
                   String pageNumbers,
-                  Boolean recommended) {
+                  Boolean recommended,
+                  String description) {
         this.id = id;
         this.publicationType = publicationType;
         this.authors = authors;
@@ -61,6 +63,7 @@ public class BibDto {
         this.publicationYear = publicationYear;
         this.pageNumbers = pageNumbers;
         this.recommended = recommended;
+        this.description = description;
         SagaVersionIds = new HashSet<>();
     }
 
@@ -198,6 +201,14 @@ public class BibDto {
 
     public void setRecommended(Boolean recommended) {
         this.recommended = recommended;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<Integer> getSagaVersionIds() {
