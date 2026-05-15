@@ -13,7 +13,7 @@ public class SagaVersionRequestDto {
     SagaVersionEntity.SagaDate date;
     Integer sagaId;
     Set<Integer> bibIds;
-    Set<Integer> folkloreIds;
+    Set<Integer> motifIds;
     Set<Integer> personIds;
     Set<Integer> placeIds;
     Set<Integer> objectIds;
@@ -25,7 +25,7 @@ public class SagaVersionRequestDto {
         this.description = description;
         this.date = date;
         bibIds = new HashSet<>();
-        folkloreIds = new HashSet<>();
+        motifIds = new HashSet<>();
         personIds = new HashSet<>();
         placeIds = new HashSet<>();
         objectIds = new HashSet<>();
@@ -80,12 +80,12 @@ public class SagaVersionRequestDto {
         this.bibIds = bibIds;
     }
 
-    public Set<Integer> getFolkloreIds() {
-        return folkloreIds;
+    public Set<Integer> getMotifIds() {
+        return motifIds;
     }
 
-    public void setFolkloreIds(Set<Integer> folkloreIds) {
-        this.folkloreIds = folkloreIds;
+    public void setMotifIds(Set<Integer> motifIds) {
+        this.motifIds = motifIds;
     }
 
     public Set<Integer> getPersonIds() {

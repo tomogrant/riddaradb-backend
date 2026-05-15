@@ -16,7 +16,7 @@ public class SagaVersionService {
     final SagaRepository sagaRepository;
     final SagaVersionRepository sagaVersionRepository;
     final BibRepository bibRepository;
-    final FolkloreRepository folkloreRepository;
+    final MotifRepository motifRepository;
     final PersonRepository personRepository;
     final PlaceRepository placeRepository;
     final ObjectRepository objectRepository;
@@ -26,7 +26,7 @@ public class SagaVersionService {
     public SagaVersionService(SagaRepository sagaRepository,
                               SagaVersionRepository sagaVersionRepository,
                               BibRepository bibRepository,
-                              FolkloreRepository folkloreRepository,
+                              MotifRepository motifRepository,
                               PersonRepository personRepository,
                               PlaceRepository placeRepository,
                               ObjectRepository objectRepository,
@@ -36,7 +36,7 @@ public class SagaVersionService {
         this.sagaRepository = sagaRepository;
         this.sagaVersionRepository = sagaVersionRepository;
         this.bibRepository = bibRepository;
-        this.folkloreRepository = folkloreRepository;
+        this.motifRepository = motifRepository;
         this.personRepository = personRepository;
         this.placeRepository = placeRepository;
         this.objectRepository = objectRepository;
@@ -68,7 +68,7 @@ public class SagaVersionService {
         }
 
         sagaVersionEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaVersionRequestDto.getBibIds())));
-        sagaVersionEntity.setFolkloreEntity(new HashSet<>(folkloreRepository.findAllById(sagaVersionRequestDto.getFolkloreIds())));
+        sagaVersionEntity.setMotifEntity(new HashSet<>(motifRepository.findAllById(sagaVersionRequestDto.getMotifIds())));
         sagaVersionEntity.setPersonEntity(new HashSet<>(personRepository.findAllById(sagaVersionRequestDto.getPersonIds())));
         sagaVersionEntity.setPlaceEntity(new HashSet<>(placeRepository.findAllById(sagaVersionRequestDto.getPlaceIds())));
         sagaVersionEntity.setObjectEntity(new HashSet<>(objectRepository.findAllById(sagaVersionRequestDto.getObjectIds())));
@@ -81,7 +81,7 @@ public class SagaVersionService {
 
         if (sagaVersionRepository.existsById(id)){
             removeSagaVersionFromBibEntries(id);
-            removeSagaVersionFromFolkloreEntries(id);
+            removeSagaVersionFromMotifEntries(id);
             removeSagaVersionFromMsEntries(id);
             removeSagaVersionFromObjectEntries(id);
             removeSagaVersionFromPersonEntries(id);
@@ -100,15 +100,15 @@ public class SagaVersionService {
         }
     }
 
-    private void removeSagaVersionFromFolkloreEntries(int id){
-        Set<FolkloreEntity> folkloreEntitiesSet = new HashSet<>(folkloreRepository.findAll());
-        for(FolkloreEntity folkloreEntity : folkloreEntitiesSet){
-            Set<SagaVersionEntity> folkloreSagaEntitiesSet = new HashSet<>(folkloreEntity.getSagaVersionEntity());
-            for(SagaVersionEntity sagaVersionEntity : folkloreSagaEntitiesSet){
+    private void removeSagaVersionFromMotifEntries(int id){
+        Set<MotifEntity> motifEntitiesSet = new HashSet<>(motifRepository.findAll());
+        for(MotifEntity motifEntity : motifEntitiesSet){
+            Set<SagaVersionEntity> motifSagaEntitiesSet = new HashSet<>(motifEntity.getSagaVersionEntity());
+            for(SagaVersionEntity sagaVersionEntity : motifSagaEntitiesSet){
                 if (sagaVersionEntity.getId() == id) {
-                    folkloreSagaEntitiesSet.remove(sagaVersionEntity);
-                    folkloreEntity.setSagaVersionEntity(folkloreSagaEntitiesSet);
-                    folkloreRepository.save(folkloreEntity);
+                    motifSagaEntitiesSet.remove(sagaVersionEntity);
+                    motifEntity.setSagaVersionEntity(motifSagaEntitiesSet);
+                    motifRepository.save(motifEntity);
                 }
             }
         }

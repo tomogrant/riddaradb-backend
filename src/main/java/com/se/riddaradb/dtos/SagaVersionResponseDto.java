@@ -14,7 +14,7 @@ public class SagaVersionResponseDto {
     Boolean isTranslated;
     Integer sagaId;
     Set<BibDto> bibDto;
-    Set<Integer> folkloreIds;
+    Set<Integer> motifIds;
     Set<Integer> personIds;
     Set<Integer> placeIds;
     Set<Integer> objectIds;
@@ -25,7 +25,7 @@ public class SagaVersionResponseDto {
         this.title = title;
         this.description = description;
         this.date = date;
-        folkloreIds = new HashSet<>();
+        motifIds = new HashSet<>();
         personIds = new HashSet<>();
         placeIds = new HashSet<>();
         objectIds = new HashSet<>();
@@ -84,12 +84,12 @@ public class SagaVersionResponseDto {
         this.bibDto = bibDto;
     }
 
-    public Set<Integer> getFolkloreIds() {
-        return folkloreIds;
+    public Set<Integer> getMotifIds() {
+        return motifIds;
     }
 
-    public void setFolkloreIds(Set<Integer> folkloreIds) {
-        this.folkloreIds = folkloreIds;
+    public void setMotifIds(Set<Integer> motifIds) {
+        this.motifIds = motifIds;
     }
 
     public Set<Integer> getPersonIds() {

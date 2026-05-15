@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "SAGAVERSION")
+@Table(name = "sagaversion")
 public class SagaVersionEntity {
 
     public enum SagaDate {
@@ -42,10 +42,10 @@ public class SagaVersionEntity {
     Set<BibEntity> bibEntity = new HashSet<>();
 
     @ManyToMany()
-    @JoinTable(name = "sagaversion-folklore",
+    @JoinTable(name = "sagaversion-motif",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "folklore_id"))
-    Set<FolkloreEntity> folkloreEntity = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "motif_id"))
+    Set<MotifEntity> motifEntity = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-person",
@@ -134,12 +134,12 @@ public class SagaVersionEntity {
         bib.getSagaVersionEntity().add(this);
     }
 
-    public Set<FolkloreEntity> getFolkloreEntity() {
-        return folkloreEntity;
+    public Set<MotifEntity> getMotifEntity() {
+        return motifEntity;
     }
 
-    public void setFolkloreEntity(Set<FolkloreEntity> folkloreEntity) {
-        this.folkloreEntity = folkloreEntity;
+    public void setMotifEntity(Set<MotifEntity> motifEntity) {
+        this.motifEntity = motifEntity;
     }
 
     public Set<PersonEntity> getPersonEntity() {

@@ -32,7 +32,7 @@ public class ObjectController {
     }
 
     @PutMapping("/putobjectentry")
-    ObjectDto putFolkloreEntry(@RequestBody ObjectDto objectDto){
+    ObjectDto putMotifEntry(@RequestBody ObjectDto objectDto){
         return objectService.saveObjectEntry(objectDto);
     }
 

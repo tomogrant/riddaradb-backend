@@ -27,9 +27,9 @@ public class SagaVersionMapper {
                 .map(bibMapper::mapToDto)
                 .collect(Collectors.toSet()));
 
-        sagaVersionResponseDto.setFolkloreIds(sagaVersionEntity.getFolkloreEntity()
+        sagaVersionResponseDto.setMotifIds(sagaVersionEntity.getMotifEntity()
                 .stream()
-                .map(FolkloreEntity::getId)
+                .map(MotifEntity::getId)
                 .collect(Collectors.toSet()));
 
         sagaVersionResponseDto.setPersonIds(sagaVersionEntity.getPersonEntity()

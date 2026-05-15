@@ -1,30 +1,41 @@
-package com.se.riddaradb.dtos;
+package com.se.riddaradb.entities;
 
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FolkloreDto {
+@Entity
+@Table(name = "motif")
+public class MotifEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    String name;
-    String description;
-    String motifCode;
-    Set<Integer> SagaVersionIds;
 
-    public FolkloreDto(int id, String name, String description, String motifCode) {
+    String name;
+
+    String description;
+
+    String motifCode;
+
+    @ManyToMany(mappedBy = "motifEntity")
+    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
+
+    protected MotifEntity() {
+    }
+
+    public MotifEntity(int id,
+                       String name,
+                       String description,
+                       String motifCode) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.motifCode = motifCode;
-        SagaVersionIds = new HashSet<>();
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -51,11 +62,17 @@ public class FolkloreDto {
         this.motifCode = motifCode;
     }
 
-    public Set<Integer> getSagaVersionIds() {
-        return SagaVersionIds;
+    public Set<SagaVersionEntity> getSagaVersionEntity() {
+        return sagaVersionEntity;
     }
 
-    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
-        this.SagaVersionIds = SagaVersionIds;
+    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
+        this.sagaVersionEntity = sagaVersionEntity;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+
+
     }
 }
