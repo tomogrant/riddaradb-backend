@@ -1,6 +1,8 @@
 package com.se.riddaradb.entities;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,11 +14,18 @@ public class MotifEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    String name;
+    String motifCode;
+
+    String motifName;
 
     String description;
 
-    String motifCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="parent_id")
+    MotifEntity parent;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    Set<MotifEntity> children = new HashSet<>();
 
     @ManyToMany(mappedBy = "motifEntity")
     Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
@@ -25,25 +34,38 @@ public class MotifEntity {
     }
 
     public MotifEntity(int id,
-                       String name,
-                       String description,
-                       String motifCode) {
+                       String motifCode,
+                       String motifName,
+                       String description) {
         this.id = id;
-        this.name = name;
-        this.description = description;
         this.motifCode = motifCode;
+        this.motifName = motifName;
+        this.description = description;
+    }
+
+    public void addChildMotif(MotifEntity childMotif){
+        this.getChildren().add(childMotif);
+        childMotif.setParent(this);
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getMotifCode() {
+        return motifCode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMotifCode(String motifCode) {
+        this.motifCode = motifCode;
+    }
+
+    public String getMotifName() {
+        return motifName;
+    }
+
+    public void setMotifName(String motifName) {
+        this.motifName = motifName;
     }
 
     public String getDescription() {
@@ -54,12 +76,20 @@ public class MotifEntity {
         this.description = description;
     }
 
-    public String getMotifCode() {
-        return motifCode;
+    public MotifEntity getParent() {
+        return parent;
     }
 
-    public void setMotifCode(String motifCode) {
-        this.motifCode = motifCode;
+    public void setParent(MotifEntity parent) {
+        this.parent = parent;
+    }
+
+    public Set<MotifEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<MotifEntity> children) {
+        this.children = children;
     }
 
     public Set<SagaVersionEntity> getSagaVersionEntity() {
@@ -72,7 +102,5 @@ public class MotifEntity {
 
     public void setId(int id) {
         this.id = id;
-
-
     }
 }

@@ -6,16 +6,20 @@ import java.util.Set;
 public class MotifDto {
 
     int id;
-    String name;
-    String description;
     String motifCode;
+    String motifName;
+    String description;
+    Integer parentId;
+    Boolean hasChildren;
     Set<Integer> SagaVersionIds;
 
-    public MotifDto(int id, String name, String description, String motifCode) {
+    public MotifDto(int id, String motifCode, String motifName, String description, Boolean hasChildren) {
         this.id = id;
-        this.name = name;
-        this.description = description;
         this.motifCode = motifCode;
+        this.motifName = motifName;
+        this.description = description;
+        this.parentId = 0;
+        this.hasChildren = hasChildren;
         SagaVersionIds = new HashSet<>();
     }
 
@@ -27,12 +31,21 @@ public class MotifDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    public String getMotifCode() {
+        return motifCode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMotifCode(String motifCode) {
+        this.motifCode = motifCode;
+    }
+
+    public String getMotifName() {
+        return motifName;
+    }
+
+    public void setMotifName(String motifName) {
+        this.motifName = motifName;
     }
 
     public String getDescription() {
@@ -43,12 +56,20 @@ public class MotifDto {
         this.description = description;
     }
 
-    public String getMotifCode() {
-        return motifCode;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setMotifCode(String motifCode) {
-        this.motifCode = motifCode;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Boolean getHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(Boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 
     public Set<Integer> getSagaVersionIds() {

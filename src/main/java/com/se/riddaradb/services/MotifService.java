@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MotifService {
@@ -41,9 +42,34 @@ public class MotifService {
         }
     }
 
+    public Collection<MotifDto> getRootMotifs(){
+        return motifRepository.findByParentIsNull()
+                .stream()
+                .map(motifMapper::mapToDto)
+                .collect(Collectors.toSet());
+    }
+
+    public Collection<MotifDto> getChildMotifs(int parentId){
+        Set<MotifDto> childMotifs = new HashSet<>();
+
+        if (motifRepository.findById(parentId).isPresent()){
+            childMotifs = motifRepository.findById(parentId).get().getChildren()
+                    .stream()
+                    .map(motifMapper::mapToDto)
+                    .collect(Collectors.toSet());
+        }
+
+        return childMotifs;
+    }
+
     public MotifDto saveMotifEntry(MotifDto motifDto){
+
         MotifEntity motifEntity = motifMapper.mapFromDto(motifDto);
-        motifEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(motifDto.getSagaVersionIds())));
+
+        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif -> {
+            parentMotif.addChildMotif(motifEntity);
+        });
+
         return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }
 
