@@ -6,7 +6,9 @@ import com.se.riddaradb.entities.SagaVersionEntity;
 import com.se.riddaradb.mappers.MotifMapper;
 import com.se.riddaradb.repositories.MotifRepository;
 import com.se.riddaradb.repositories.SagaVersionRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,16 +16,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class MotifService {
 
     final MotifRepository motifRepository;
     final SagaVersionRepository sagaVersionRepository;
     final MotifMapper motifMapper;
+    final EntityManager entityManager;
 
-    public MotifService(MotifRepository motifRepository, SagaVersionRepository sagaVersionRepository, MotifMapper motifMapper) {
+    public MotifService(MotifRepository motifRepository, SagaVersionRepository sagaVersionRepository, MotifMapper motifMapper, EntityManager entityManager) {
         this.motifRepository = motifRepository;
         this.sagaVersionRepository = sagaVersionRepository;
         this.motifMapper = motifMapper;
+        this.entityManager = entityManager;
     }
 
     public Collection<MotifDto> getMotifEntries(){
@@ -66,35 +71,38 @@ public class MotifService {
 
         MotifEntity motifEntity = motifMapper.mapFromDto(motifDto);
 
-        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif -> {
-            parentMotif.addChildMotif(motifEntity);
-        });
+        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+            parentMotif.addChildMotif(motifEntity));
 
+        //This DTO can never have 'hasChildren' set to true, as
+        //the motif entity passed in is mapped from a DTO without
+        //a child field. This is accounted for in the frontend, but
+        //it might be worth changing this somehow.
         return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }
 
     public void deleteMotifEntryById(int id){
 
-        removeMotifFromSagaEntries(id);
+        MotifEntity motifEntity = motifRepository.findById(id).orElseThrow();
+
+        if (motifEntity.getParent() != null){
+            MotifEntity motifParent = motifRepository.findById(motifEntity.getParent().getId()).orElseThrow();
+            motifParent.getChildren().removeIf(child -> child.getId() == id);
+        }
+
+        removeChildren(id);
+
+        motifRepository.deleteById(id);
+    }
+
+    void removeChildren(int id){
+        motifRepository.findById(id).ifPresent(motif -> {
+            motif.getChildren().forEach((child -> removeChildren(child.getId())));
+        });
 
         motifRepository.deleteById(id);
     }
 
     private void removeMotifFromSagaEntries(int id){
-        //Stores each saga in database.
-        Set<SagaVersionEntity> sagaEntities = new HashSet<SagaVersionEntity>(sagaVersionRepository.findAll());
-        //For each saga in database...
-        for(SagaVersionEntity saga : sagaEntities){
-            Set<MotifEntity> sagaMotifEntity = new HashSet<MotifEntity>(saga.getMotifEntity());
-            //get the bibliography entries for that saga.
-            for(MotifEntity motifEntity : sagaMotifEntity){
-                //if a bibliography entry matches the ID supplied, remove it from the saga.
-                if (motifEntity.getId() == id) {
-                    sagaMotifEntity.remove(motifEntity);
-                    saga.setMotifEntity(sagaMotifEntity);
-                    sagaVersionRepository.save(saga);
-                }
-            }
-        }
     }
 }

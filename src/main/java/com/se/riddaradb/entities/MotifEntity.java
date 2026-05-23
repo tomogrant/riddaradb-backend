@@ -24,7 +24,7 @@ public class MotifEntity {
     @JoinColumn(name="parent_id")
     MotifEntity parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent")
     Set<MotifEntity> children = new HashSet<>();
 
     @ManyToMany(mappedBy = "motifEntity")

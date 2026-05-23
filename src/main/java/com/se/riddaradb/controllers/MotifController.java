@@ -15,37 +15,37 @@ public class MotifController {
         this.motifService = motifService;
     }
 
-    @GetMapping("/getmotifs")
+    @GetMapping("/motifs/getmotifs")
     Collection<MotifDto> getMotifEntries(){
         return motifService.getMotifEntries();
     }
 
-    @GetMapping("/getmotifbyid/{id}")
+    @GetMapping("/motifs/getmotifbyid/{id}")
     MotifDto getMotifEntryById(@PathVariable int id){
         return motifService.getMotifEntryById(id);
     }
 
-    @GetMapping("/getrootmotifs")
+    @GetMapping("/motifs/getrootmotifs")
     Collection<MotifDto> getRootMotifs(){
         return motifService.getRootMotifs();
     }
 
-    @GetMapping("/getchildmotifsbyid/{id}")
+    @GetMapping("/motifs/getchildmotifsbyid/{id}")
     Collection<MotifDto> getChildMotifsById(@PathVariable int id){
         return motifService.getChildMotifs(id);
     }
 
-    @PostMapping("/postmotif")
+    @PostMapping("/motifs/postmotif")
     MotifDto postMotifEntry(@RequestBody MotifDto motifDto){
         return motifService.saveMotifEntry(motifDto);
     }
 
-    @PutMapping("/putmotif")
+    @PutMapping("/motifs/putmotif")
     MotifDto putMotifEntry(@RequestBody MotifDto motifDto){
         return motifService.saveMotifEntry(motifDto);
     }
 
-    @DeleteMapping("/deletemotif/{id}")
+    @DeleteMapping("/motifs/deletemotif/{id}")
     void deleteMotifEntry(@PathVariable int id){
         motifService.deleteMotifEntryById(id);
     }
