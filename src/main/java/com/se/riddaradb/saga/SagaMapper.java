@@ -1,0 +1,30 @@
+package com.se.riddaradb.saga;
+
+import com.se.riddaradb.sagaversion.SagaVersionMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
+
+@Service
+public class SagaMapper {
+
+    final SagaVersionMapper sagaVersionMapper;
+
+    public SagaMapper(SagaVersionMapper sagaVersionMapper){
+        this.sagaVersionMapper = sagaVersionMapper;
+    }
+
+    public SagaResponseDto mapToDto(SagaEntity sagaEntity){
+        SagaResponseDto sagaResponseDto = new SagaResponseDto(sagaEntity.getId(), sagaEntity.getTitle(), sagaEntity.getDescription(), sagaEntity.getTranslated());
+
+        sagaResponseDto.setSagaVersions(sagaEntity.getSagaVersionEntities().stream()
+        .map(sagaVersionMapper::mapToDto)
+        .collect(Collectors.toSet()));
+
+        return sagaResponseDto;
+    }
+
+    public SagaEntity mapFromDto(SagaRequestDto sagaRequestDto){
+        return new SagaEntity(sagaRequestDto.getId(), sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
+    }
+}
