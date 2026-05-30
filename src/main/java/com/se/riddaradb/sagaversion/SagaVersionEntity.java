@@ -29,51 +29,51 @@ public class SagaVersionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String title;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    String description;
+    private String description;
 
-    SagaDate date;
+    private SagaDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sagaId")
-    SagaEntity sagaEntity;
+    private SagaEntity sagaEntity;
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-bib",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
             inverseJoinColumns = @JoinColumn(name = "bib_id"))
-    Set<BibEntity> bibEntity = new HashSet<>();
+    private Set<BibEntity> bibEntity = new HashSet<>();
 
     @OneToMany(mappedBy = "sagaVersionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
+    private Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-person",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
-    Set<PersonEntity> personEntity = new HashSet<>();
+    private Set<PersonEntity> personEntity = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-place",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
             inverseJoinColumns = @JoinColumn(name = "place_id"))
-    Set<PlaceEntity> placeEntity = new HashSet<>();
+    private Set<PlaceEntity> placeEntity = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-object",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
             inverseJoinColumns = @JoinColumn(name = "object_id"))
-    Set<ObjectEntity> objectEntity = new HashSet<>();
+    private Set<ObjectEntity> objectEntity = new HashSet<>();
 
     @ManyToMany()
     @JoinTable(name = "sagaversion-ms",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
             inverseJoinColumns = @JoinColumn(name = "ms_id"))
-    Set<MsEntity> msEntity = new HashSet<>();
+    private Set<MsEntity> msEntity = new HashSet<>();
 
     protected SagaVersionEntity() {
     }

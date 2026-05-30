@@ -22,6 +22,11 @@ public class SagaVersionController {
         return sagaVersionService.getSagaVersionById(id);
     }
 
+    @GetMapping("/sagas/getsagaversiontitles")
+    Set<SagaVersionTitleDto> getSagaVersionTitles(){
+        return sagaVersionService.getSagaVersionTitles();
+    }
+
     @PostMapping("/sagas/postsagaversion")
     SagaVersionResponseDto postSagas(@RequestBody SagaVersionRequestDto sagaVersionRequestDto){
         return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);

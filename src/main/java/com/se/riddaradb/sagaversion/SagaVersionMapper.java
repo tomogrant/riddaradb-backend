@@ -33,6 +33,8 @@ public class SagaVersionMapper {
         for (SagaVersionMotifEntity sagaVersionMotifEntity : sagaVersionEntity.getSagaVersionMotifEntities()){
             sagaVersionResponseDto.getSagaMotifs().add(new SagaVersionMotifDto
                     (sagaVersionMotifEntity.getMotifEntity().getId(),
+                            sagaVersionMotifEntity.getMotifEntity().getMotifCode(),
+                            sagaVersionMotifEntity.getMotifEntity().getMotifName(),
                             sagaVersionMotifEntity.getPageChapterNumber()));
         }
 
@@ -62,5 +64,9 @@ public class SagaVersionMapper {
     //Consumes request from frontend and produces DB entity for persistence
     public SagaVersionEntity mapFromDto(SagaVersionRequestDto sagaVersionRequestDto){
         return new SagaVersionEntity(sagaVersionRequestDto.getId(), sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate());
+    }
+
+    public SagaVersionTitleDto mapToTitleDto(SagaVersionEntity sagaVersionEntity){
+        return new SagaVersionTitleDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle());
     }
 }

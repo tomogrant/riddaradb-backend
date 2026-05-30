@@ -57,6 +57,13 @@ public class SagaVersionService {
                 .collect(Collectors.toSet());
     }
 
+    public Set<SagaVersionTitleDto> getSagaVersionTitles(){
+        return sagaVersionRepository.findAll()
+                .stream()
+                .map(sagaVersionMapper::mapToTitleDto)
+                .collect(Collectors.toSet());
+    }
+
     public SagaVersionResponseDto getSagaVersionById(int id){
         if (sagaVersionRepository.findById(id).isPresent()){
             return sagaVersionMapper.mapToDto(sagaVersionRepository.findById(id).get());
