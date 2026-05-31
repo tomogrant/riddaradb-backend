@@ -23,6 +23,11 @@ public class MotifController {
         return motifService.getMotifEntryById(id);
     }
 
+    @GetMapping("/motifs/searchmotifs/{searchTerm}")
+    Collection<MotifSearchResult> getMotifEntryById(@PathVariable String searchTerm){
+        return motifService.search(searchTerm);
+    }
+
     @GetMapping("/motifs/getrootmotifs")
     Collection<MotifDto> getRootMotifs(){
         return motifService.getRootMotifs();

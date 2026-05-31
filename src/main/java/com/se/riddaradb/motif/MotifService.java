@@ -4,10 +4,7 @@ import com.se.riddaradb.sagaversion.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -139,6 +136,47 @@ public class MotifService {
         motifRepository.deleteById(id);
     }
 
-    private void removeMotifFromSagaEntries(int id){
+    Set<MotifSearchResult> search(String searchTerm){
+        Set<MotifSearchResult> searchResults = new HashSet<>();
+
+        Set<Integer> motifIds = new HashSet<>();
+        motifRepository.findByMotifCodeContainsIgnoreCase(searchTerm).forEach(motif
+                -> motifIds.add(motif.getId()));
+
+        motifRepository.findByMotifNameContainsIgnoreCase(searchTerm).forEach(motif
+                -> motifIds.add(motif.getId()));
+
+        sagaVersionRepository.findByTitleContainsIgnoreCase(searchTerm).forEach(sagaVersion ->{
+            sagaVersion.getSagaVersionMotifEntities().forEach(sagaMotif -> {
+                motifIds.add(sagaMotif.getMotifEntity().getId());
+            });
+        });
+
+        for (int motifId : motifIds){
+            searchResults.add(new MotifSearchResult(motifId, buildPath(motifId)));
+        }
+
+        return searchResults;
+    }
+
+    Set<Integer> buildPath(int motifId){
+        int localMotifId = motifId;
+        Set<Integer> path = new HashSet<>();
+        boolean hasParent = true;
+
+        while (hasParent){
+            MotifEntity motif = motifRepository.findById(localMotifId).orElseThrow();
+
+            if (motif.getParent() == null){
+                hasParent = false;
+            }
+            else{
+                int parentId = motif.getParent().getId();
+                path.add(parentId);
+                localMotifId = parentId;
+            }
+        }
+
+        return path;
     }
 }
