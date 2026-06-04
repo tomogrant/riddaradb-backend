@@ -12,9 +12,13 @@ public interface MotifRepository extends JpaRepository<MotifEntity, Integer> {
 
     List<MotifEntity> findByParentId(int id);
 
+    List<MotifEntity> findByMotifCodeIgnoreCase(String searchTerm);
+
     List<MotifEntity> findByMotifCodeContainsIgnoreCase(String searchTerm);
 
     List<MotifEntity> findByMotifNameContainsIgnoreCase(String searchTerm);
+
+    List<MotifEntity> findByDescriptionContainsIgnoreCase(String searchTerm);
 
 
 }

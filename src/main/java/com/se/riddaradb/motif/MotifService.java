@@ -64,7 +64,7 @@ public class MotifService {
 
         //Save motif in order to generate ID
         MotifEntity motifEntityToSave = motifMapper.mapFromDto(motifDto);
-        motifEntityToSave.setSagaVersionMotifEntities(new HashSet<>(sagaVersionMotifRepository.findByMotifEntityId(motifEntityToSave.getId())));
+        motifEntityToSave.setSagaVersionMotifEntities(sagaVersionMotifRepository.findByMotifEntityId(motifEntityToSave.getId()));
         MotifEntity motifEntity = motifRepository.save(motifEntityToSave);
 
         //Map of saga-motif join entities already associated with this motif
@@ -146,11 +146,28 @@ public class MotifService {
         motifRepository.findByMotifNameContainsIgnoreCase(searchTerm).forEach(motif
                 -> motifIds.add(motif.getId()));
 
+        motifRepository.findByDescriptionContainsIgnoreCase(searchTerm).forEach(motif
+                -> motifIds.add(motif.getId()));
+
         sagaVersionRepository.findByTitleContainsIgnoreCase(searchTerm).forEach(sagaVersion ->{
             sagaVersion.getSagaVersionMotifEntities().forEach(sagaMotif -> {
                 motifIds.add(sagaMotif.getMotifEntity().getId());
             });
         });
+
+        for (int motifId : motifIds){
+            searchResults.add(new MotifSearchResult(motifId, buildPath(motifId)));
+        }
+
+        return searchResults;
+    }
+
+    Set<MotifSearchResult> searchExact(String searchTerm){
+        Set<MotifSearchResult> searchResults = new HashSet<>();
+
+        Set<Integer> motifIds = new HashSet<>();
+        motifRepository.findByMotifCodeIgnoreCase(searchTerm).forEach(motif
+                -> motifIds.add(motif.getId()));
 
         for (int motifId : motifIds){
             searchResults.add(new MotifSearchResult(motifId, buildPath(motifId)));

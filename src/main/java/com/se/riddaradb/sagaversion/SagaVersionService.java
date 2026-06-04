@@ -23,6 +23,7 @@ public class SagaVersionService {
     final SagaVersionRepository sagaVersionRepository;
     final BibRepository bibRepository;
     final MotifRepository motifRepository;
+    final SagaVersionMotifRepository sagaVersionMotifRepository;
     final PersonRepository personRepository;
     final PlaceRepository placeRepository;
     final ObjectRepository objectRepository;
@@ -33,6 +34,7 @@ public class SagaVersionService {
                               SagaVersionRepository sagaVersionRepository,
                               BibRepository bibRepository,
                               MotifRepository motifRepository,
+                              SagaVersionMotifRepository sagaVersionMotifRepository,
                               PersonRepository personRepository,
                               PlaceRepository placeRepository,
                               ObjectRepository objectRepository,
@@ -43,6 +45,7 @@ public class SagaVersionService {
         this.sagaVersionRepository = sagaVersionRepository;
         this.bibRepository = bibRepository;
         this.motifRepository = motifRepository;
+        this.sagaVersionMotifRepository = sagaVersionMotifRepository;
         this.personRepository = personRepository;
         this.placeRepository = placeRepository;
         this.objectRepository = objectRepository;
@@ -81,7 +84,9 @@ public class SagaVersionService {
         }
 
         sagaVersionEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaVersionRequestDto.getBibIds())));
-//        sagaVersionEntity.setMotifEntity(new HashSet<>(motifRepository.findAllById(sagaVersionRequestDto.getMotifIds())));
+
+        sagaVersionEntity.setSagaVersionMotifEntities(sagaVersionMotifRepository.findBySagaVersionEntityId(sagaVersionEntity.getId()));
+
         sagaVersionEntity.setPersonEntity(new HashSet<>(personRepository.findAllById(sagaVersionRequestDto.getPersonIds())));
         sagaVersionEntity.setPlaceEntity(new HashSet<>(placeRepository.findAllById(sagaVersionRequestDto.getPlaceIds())));
         sagaVersionEntity.setObjectEntity(new HashSet<>(objectRepository.findAllById(sagaVersionRequestDto.getObjectIds())));
@@ -94,7 +99,6 @@ public class SagaVersionService {
 
         if (sagaVersionRepository.existsById(id)){
             removeSagaVersionFromBibEntries(id);
-//            removeSagaVersionFromMotifEntries(id);
             removeSagaVersionFromMsEntries(id);
             removeSagaVersionFromObjectEntries(id);
             removeSagaVersionFromPersonEntries(id);

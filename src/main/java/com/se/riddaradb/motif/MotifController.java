@@ -24,9 +24,15 @@ public class MotifController {
     }
 
     @GetMapping("/motifs/searchmotifs/{searchTerm}")
-    Collection<MotifSearchResult> getMotifEntryById(@PathVariable String searchTerm){
+    Collection<MotifSearchResult> searchMotif(@PathVariable String searchTerm){
         return motifService.search(searchTerm);
     }
+
+    @GetMapping("/motifs/searchmotifsexact/{searchTerm}")
+    Collection<MotifSearchResult> searchMotifExact(@PathVariable String searchTerm){
+        return motifService.searchExact(searchTerm);
+    }
+
 
     @GetMapping("/motifs/getrootmotifs")
     Collection<MotifDto> getRootMotifs(){
