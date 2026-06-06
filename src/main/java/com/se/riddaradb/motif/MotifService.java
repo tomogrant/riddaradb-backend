@@ -73,7 +73,10 @@ public class MotifService {
                 .collect(Collectors.toMap(sagaVersionMotifEntity -> sagaVersionMotifEntity.getSagaVersionEntity().getId(), Function.identity()));
 
         //IDs of sagas to be joined to this motif
-        Set<Integer> newSagaMotifIds = motifDto.getSagaMotifs().stream().map(sagaMotif -> sagaMotif.sagaVersionId).collect(Collectors.toSet());
+        Set<Integer> newSagaMotifIds = motifDto.getSagaMotifs()
+                .stream()
+                .map(sagaMotif -> sagaMotif.sagaVersionId)
+                .collect(Collectors.toSet());
 
 
         for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){

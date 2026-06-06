@@ -22,7 +22,7 @@ public class BibDto {
         String pageNumbers;
         Boolean recommended;
         String description;
-        Set<Integer> SagaVersionIds;
+        Set<Integer> SagaIds;
 
         protected BibDto(){
         }
@@ -63,7 +63,7 @@ public class BibDto {
         this.pageNumbers = pageNumbers;
         this.recommended = recommended;
         this.description = description;
-        SagaVersionIds = new HashSet<>();
+        SagaIds = new HashSet<>();
     }
 
     public int getId() {
@@ -210,11 +210,11 @@ public class BibDto {
         this.description = description;
     }
 
-    public Set<Integer> getSagaVersionIds() {
-        return SagaVersionIds;
+    public Set<Integer> getSagaIds() {
+        return SagaIds;
     }
 
-    public void setSagaVersionIds(Set<Integer> sagaVersionIds) {
-        SagaVersionIds = sagaVersionIds;
+    public void setSagaIds(Set<Integer> sagaIds) {
+        SagaIds = sagaIds;
     }
 }

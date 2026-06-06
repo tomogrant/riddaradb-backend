@@ -25,11 +25,6 @@ public class SagaVersionMapper {
         if (sagaVersionEntity.getSagaEntity() != null)
             sagaVersionResponseDto.setSagaId(sagaVersionEntity.getSagaEntity().getId());
 
-        sagaVersionResponseDto.setBibDto(sagaVersionEntity.getBibEntity()
-                .stream()
-                .map(bibMapper::mapToDto)
-                .collect(Collectors.toSet()));
-
         for (SagaVersionMotifEntity sagaVersionMotifEntity : sagaVersionEntity.getSagaVersionMotifEntities()){
             sagaVersionResponseDto.getSagaMotifs().add(new SagaVersionMotifDto
                     (sagaVersionMotifEntity.getMotifEntity().getId(),

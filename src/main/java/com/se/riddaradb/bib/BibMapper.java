@@ -1,6 +1,6 @@
 package com.se.riddaradb.bib;
 
-import com.se.riddaradb.sagaversion.SagaVersionEntity;
+import com.se.riddaradb.saga.SagaEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -28,9 +28,9 @@ public class BibMapper {
                 bibEntity.getRecommended(),
                 bibEntity.getDescription());
 
-        bibDto.setSagaVersionIds(bibEntity.getSagaVersionEntity()
+        bibDto.setSagaIds(bibEntity.getSagaEntity()
                 .stream()
-                .map(SagaVersionEntity::getId)
+                .map(SagaEntity::getId)
                 .collect(Collectors.toSet()));
 
         return bibDto;

@@ -12,7 +12,6 @@ public class SagaVersionResponseDto {
     String description;
     SagaVersionEntity.SagaDate date;
     Integer sagaId;
-    Set<BibDto> bibDto;
     Set<SagaVersionMotifDto> sagaMotifs;
     Set<Integer> personIds;
     Set<Integer> placeIds;
@@ -69,14 +68,6 @@ public class SagaVersionResponseDto {
 
     public void setSagaId(int sagaId) {
         this.sagaId = sagaId;
-    }
-
-    public Set<BibDto> getBibDto() {
-        return bibDto;
-    }
-
-    public void setBibDto(Set<BibDto> bibDto) {
-        this.bibDto = bibDto;
     }
 
     public Set<SagaVersionMotifDto> getSagaMotifs() {

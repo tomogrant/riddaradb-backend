@@ -21,6 +21,9 @@ public class SagaController {
         return sagaService.getSagaById(id);
     }
 
+    @GetMapping("/sagas/getsagatitles")
+    Set<SagaTitleDto> getSagaTitles() { return sagaService.getSagaTitles();}
+
     @PostMapping("/sagas/postsaga")
     SagaResponseDto postSaga(@RequestBody SagaRequestDto sagaRequestDto){
         return sagaService.saveSaga(sagaRequestDto);

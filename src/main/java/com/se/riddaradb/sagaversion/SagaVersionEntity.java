@@ -42,12 +42,6 @@ public class SagaVersionEntity {
     @JoinColumn(name="sagaId")
     private SagaEntity sagaEntity;
 
-    @ManyToMany()
-    @JoinTable(name = "sagaversion-bib",
-            joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "bib_id"))
-    private Set<BibEntity> bibEntity = new HashSet<>();
-
     @OneToMany(mappedBy = "sagaVersionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
 
@@ -83,11 +77,6 @@ public class SagaVersionEntity {
         this.title = title;
         this.description = description;
         this.date = date;
-    }
-
-    public void addBib(BibEntity bib){
-        bibEntity.add(bib);
-        bib.getSagaVersionEntity().add(this);
     }
 
     public void addMotif(MotifEntity motifEntity, String pageChapterNumber){
@@ -139,14 +128,6 @@ public class SagaVersionEntity {
 
     public void setSagaEntity(SagaEntity sagaEntity) {
         this.sagaEntity = sagaEntity;
-    }
-
-    public Set<BibEntity> getBibEntity() {
-        return bibEntity;
-    }
-
-    public void setBibEntity(Set<BibEntity> bibEntity) {
-        this.bibEntity = bibEntity;
     }
 
     public Set<SagaVersionMotifEntity> getSagaVersionMotifEntities() {

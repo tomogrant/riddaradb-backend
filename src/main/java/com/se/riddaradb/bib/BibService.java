@@ -1,7 +1,8 @@
 package com.se.riddaradb.bib;
 
+import com.se.riddaradb.saga.SagaEntity;
 import com.se.riddaradb.sagaversion.SagaVersionEntity;
-import com.se.riddaradb.sagaversion.SagaVersionRepository;
+import com.se.riddaradb.saga.SagaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +13,12 @@ import java.util.Collection;
 public class BibService {
 
     final BibRepository bibRepository;
-    final SagaVersionRepository sagaVersionRepository;
+    final SagaRepository sagaRepository;
     final BibMapper bibMapper;
 
-    public BibService(BibRepository bibRepository, SagaVersionRepository sagaVersionRepository, BibMapper bibMapper) {
+    public BibService(BibRepository bibRepository, SagaRepository sagaRepository, BibMapper bibMapper) {
         this.bibRepository = bibRepository;
-        this.sagaVersionRepository = sagaVersionRepository;
+        this.sagaRepository = sagaRepository;
         this.bibMapper = bibMapper;
     }
 
@@ -49,8 +50,8 @@ public class BibService {
         BibEntity bibEntity = bibMapper.mapFromDto(bibDto);
 
         //Add bib entry to sagas
-        for (int id : bibDto.getSagaVersionIds()){
-            sagaVersionRepository.findById(id).ifPresent(sagaVersion -> sagaVersion.addBib(bibEntity));
+        for (int id : bibDto.getSagaIds()){
+            sagaRepository.findById(id).ifPresent(saga -> saga.addBib(bibEntity));
         }
 
         return bibMapper.mapToDto(bibRepository.save(bibEntity));
@@ -63,7 +64,7 @@ public class BibService {
     }
 
     private void removeBibFromSagaVersions(int id){
-        for (SagaVersionEntity saga : sagaVersionRepository.findAll()){
+        for (SagaEntity saga : sagaRepository.findAll()){
             saga.getBibEntity().removeIf(bib -> bib.getId() == id);
         }
     }

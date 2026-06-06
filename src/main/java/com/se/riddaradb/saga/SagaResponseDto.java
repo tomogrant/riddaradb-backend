@@ -1,5 +1,6 @@
 package com.se.riddaradb.saga;
 
+import com.se.riddaradb.bib.BibDto;
 import com.se.riddaradb.sagaversion.SagaVersionResponseDto;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ public class SagaResponseDto {
     String description;
     Boolean translated;
     Set<SagaVersionResponseDto> sagaVersions;
+    Set<BibDto> bibDto;
 
     public SagaResponseDto(int id, String title, String description, Boolean translated) {
         this.id = id;
@@ -57,5 +59,13 @@ public class SagaResponseDto {
 
     public void setSagaVersions(Set<SagaVersionResponseDto> sagaVersions) {
         this.sagaVersions = sagaVersions;
+    }
+
+    public Set<BibDto> getBibDto() {
+        return bibDto;
+    }
+
+    public void setBibDto(Set<BibDto> bibDto) {
+        this.bibDto = bibDto;
     }
 }
