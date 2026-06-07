@@ -29,7 +29,7 @@ public class SagaVersionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String title;
 
@@ -72,7 +72,7 @@ public class SagaVersionEntity {
     protected SagaVersionEntity() {
     }
 
-    public SagaVersionEntity(int id, String title, String description, SagaDate date) {
+    public SagaVersionEntity(Integer id, String title, String description, SagaDate date) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -90,11 +90,11 @@ public class SagaVersionEntity {
         motifEntity.getSagaVersionMotifEntities().removeIf(sagaMotif -> sagaMotif.getSagaVersionEntity().getId() == getId());
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

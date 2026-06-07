@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class SagaVersionResponseDto {
 
-    int id;
+    Integer id;
     String title;
     String description;
     SagaVersionEntity.SagaDate date;

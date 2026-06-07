@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SagaVersionRequestDto {
 
-    int id;
+    Integer id;
     String title;
     String description;
     SagaVersionEntity.SagaDate date;
@@ -16,7 +16,7 @@ public class SagaVersionRequestDto {
     Set<Integer> objectIds;
     Set<Integer> msIds;
 
-    public SagaVersionRequestDto(int id, String title, String description, SagaVersionEntity.SagaDate date, Boolean isTranslated) {
+    public SagaVersionRequestDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date, Boolean isTranslated) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,11 +28,11 @@ public class SagaVersionRequestDto {
         msIds = new HashSet<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

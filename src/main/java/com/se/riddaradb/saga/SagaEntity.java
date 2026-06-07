@@ -14,7 +14,7 @@ public class SagaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Integer id;
 
     @NotBlank
     String title;
@@ -24,7 +24,7 @@ public class SagaEntity {
 
     Boolean translated;
 
-    @OneToMany(mappedBy = "sagaEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sagaEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<SagaVersionEntity> sagaVersionEntities = new HashSet<>();
 
     @ManyToMany()
@@ -36,7 +36,7 @@ public class SagaEntity {
     protected SagaEntity(){
     }
 
-    public SagaEntity(int id, String title, String description, Boolean translated) {
+    public SagaEntity(Integer id, String title, String description, Boolean translated) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -58,11 +58,11 @@ public class SagaEntity {
         bib.getSagaEntity().add(this);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

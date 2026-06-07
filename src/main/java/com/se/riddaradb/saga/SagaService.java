@@ -62,48 +62,66 @@ public class SagaService {
                 .collect(Collectors.toSet());
     }
 
-    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
+    public SagaResponseDto updateSaga(SagaRequestDto sagaRequestDto){
 
-        Set<Integer> currentSagaVersions = sagaRepository.findById(sagaRequestDto.getId()).map(saga ->
-            saga.getSagaVersionEntities()
+        SagaEntity sagaEntity = sagaRepository.findById(sagaRequestDto.getId()).orElseThrow();
+
+        sagaEntity.setTitle(sagaRequestDto.getTitle());
+        sagaEntity.setDescription(sagaRequestDto.getDescription());
+        sagaEntity.setTranslated(sagaRequestDto.getTranslated());
+
+        Set<Integer> currentSagaVersions = sagaEntity.getSagaVersionEntities()
                     .stream()
                     .map(SagaVersionEntity::getId)
-                    .collect(Collectors.toSet()))
-                .orElse(Collections.emptySet());
+                    .collect(Collectors.toSet());
 
         Set<Integer> newSagaVersions = sagaRequestDto.getSagaVersions()
                 .stream()
                 .map(SagaVersionRequestDto::getId)
                 .collect(Collectors.toSet());
 
-        SagaEntity sagaEntity = sagaRepository.save(sagaMapper.mapToEntity(sagaRequestDto));
         sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
 
-        sagaRequestDto.getSagaVersions()
-                .stream()
-                .map(sagaVersionMapper::mapFromDto)
-                .forEach(sagaVersionEntity -> {
-                    sagaVersionEntity.setSagaVersionMotifEntities(sagaVersionMotifRepository.findBySagaVersionEntityId(sagaVersionEntity.getId()));
-                    sagaEntity.addSagaVersion(sagaVersionEntity);
-                });
+        //For an update, you can just get the saga version entities attached to the saga entity fetched above.
+        for (SagaVersionRequestDto sagaVersionDto : sagaRequestDto.getSagaVersions()){
+            //Incoming saga version lacks ID; add to saga version
+            System.out.println("Saga version received has ID: " + sagaVersionDto.getId());
 
-        for (int sagaVersionId : currentSagaVersions){
-            if (!newSagaVersions.contains(sagaVersionId)){
-                sagaEntity.removeSagaVersion(sagaVersionId);
+            if (sagaVersionDto.getId() == null){
+                sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionDto.getTitle(), sagaVersionDto.getDescription(), sagaVersionDto.getDate()));
+            }
+            else{
+                //If saga version already present, update it
+                SagaVersionEntity sagaVersionEntity =  sagaEntity.getSagaVersionEntities()
+                        .stream()
+                        .filter(entity -> entity.getId() == sagaVersionDto.getId())
+                        .findFirst()
+                        .orElseThrow();
+
+                sagaVersionEntity.setTitle(sagaVersionDto.getTitle());
+                sagaVersionEntity.setDescription(sagaVersionDto.getDescription());
+                sagaVersionEntity.setDate(sagaVersionDto.getDate());
+            }
+        }
+
+        for (int currentSagaVersionId : currentSagaVersions) {
+            if (!newSagaVersions.contains(currentSagaVersionId)) {
+                sagaEntity.removeSagaVersion(currentSagaVersionId);
             }
         }
 
         return sagaMapper.mapToResponseDto(sagaRepository.save(sagaEntity));
     }
 
-    public SagaResponseDto saveSagaWithVersion(SagaRequestDto sagaRequestDto){
+    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
 
-        SagaVersionEntity sagaVersionEntity = new SagaVersionEntity(0, sagaRequestDto.getTitle(), "", SagaVersionEntity.SagaDate.UNDEFINED);
+        SagaEntity sagaEntity = new SagaEntity(null, sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
 
-        SagaEntity sagaEntity = sagaMapper.mapToEntity(sagaRequestDto);
-        sagaEntity.addSagaVersion(sagaVersionEntity);
+        for (SagaVersionRequestDto sagaVersionRequestDto : sagaRequestDto.getSagaVersions()){
+            sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate()));
+        }
 
-        return sagaMapper.mapToResponseDto(sagaRepository.save(sagaEntity));
+        return sagaMapper.mapToResponseDto(this.sagaRepository.save(sagaEntity));
     }
 
     public void deleteSagaById(int id) {

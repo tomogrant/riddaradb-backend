@@ -36,7 +36,7 @@ public class SagaController {
 
     @PutMapping("/sagas/putsaga")
     SagaResponseDto putSaga(@RequestBody SagaRequestDto sagaRequestDto){
-        return sagaService.saveSaga(sagaRequestDto);
+        return sagaService.updateSaga(sagaRequestDto);
     }
 
     @DeleteMapping("/sagas/deletesaga/{id}")

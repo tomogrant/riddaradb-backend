@@ -33,10 +33,6 @@ public class SagaMapper {
         return sagaResponseDto;
     }
 
-    public SagaEntity mapToEntity(SagaRequestDto sagaRequestDto){
-        return new SagaEntity(sagaRequestDto.getId(), sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
-    }
-
     public SagaTitleDto mapToSagaTitle(SagaEntity sagaEntity){
         return new SagaTitleDto(sagaEntity.getId(), sagaEntity.getTitle());
     }
