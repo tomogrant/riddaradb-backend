@@ -4,30 +4,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BibDto {
-        int id;
-        BibEntity.PublicationType publicationType;
-        String authors;
-        String editors;
-        String translators;
-        String title;
-        String url;
-        String bookEditors;
-        String book;
-        String bookSeries;
-        String volume;
-        String numOfVolumes;
-        String placeOfPublication;
-        String publisher;
-        String publicationYear;
-        String pageNumbers;
-        Boolean recommended;
-        String description;
-        Set<Integer> SagaIds;
+    private Integer id;
+    private BibEntity.PublicationType publicationType;
+    private String authors;
+    private String editors;
+    private String translators;
+    private String title;
+    private String url;
+    private String bookEditors;
+    private String book;
+    private String bookSeries;
+    private String volume;
+    private String numOfVolumes;
+    private String placeOfPublication;
+    private String publisher;
+    private String publicationYear;
+    private String pageNumbers;
+    private Boolean recommended;
+    private String description;
+    private Set<Integer> SagaIds;
 
-        protected BibDto(){
-        }
+    protected BibDto(){
+    }
 
-    public BibDto(int id,
+    public BibDto(Integer id,
                   BibEntity.PublicationType publicationType,
                   String authors,
                   String editors,
@@ -66,11 +66,11 @@ public class BibDto {
         SagaIds = new HashSet<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

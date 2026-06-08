@@ -3,38 +3,33 @@ package com.se.riddaradb.sagaversion;
 import com.se.riddaradb.motif.MotifEntity;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="sagaversionmotif")
 public class SagaVersionMotifEntity {
 
     @EmbeddedId
-    SagaVersionMotifKey id = new SagaVersionMotifKey();
+    private SagaVersionMotifKey id = new SagaVersionMotifKey();
 
     @ManyToOne
     @MapsId("sagaVersionId")
     @JoinColumn(name="sagaversion_id")
-    SagaVersionEntity sagaVersionEntity;
+    private SagaVersionEntity sagaVersionEntity;
 
     @ManyToOne
     @MapsId("motifId")
     @JoinColumn(name="motif_id")
-    MotifEntity motifEntity;
+    private MotifEntity motifEntity;
 
-    String pageChapterNumber;
+    private String pageChapterNumber;
 
     public SagaVersionMotifEntity(){}
-
-    public SagaVersionMotifEntity(SagaVersionEntity sagaVersionEntity, MotifEntity motifEntity) {
-        this.sagaVersionEntity = sagaVersionEntity;
-        this.motifEntity = motifEntity;
-        this.setId(new SagaVersionMotifKey(sagaVersionEntity.getId(), motifEntity.getId()));
-    }
 
     public SagaVersionMotifEntity(SagaVersionEntity sagaVersionEntity, MotifEntity motifEntity, String pageChapterNumber) {
         this.sagaVersionEntity = sagaVersionEntity;
         this.motifEntity = motifEntity;
         this.pageChapterNumber = pageChapterNumber;
-        this.setId(new SagaVersionMotifKey(sagaVersionEntity.getId(), motifEntity.getId()));
     }
 
     public SagaVersionMotifKey getId() {

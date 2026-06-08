@@ -14,22 +14,22 @@ public class SagaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @NotBlank
-    String title;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
-    String description;
+    private String description;
 
-    Boolean translated;
+    private Boolean translated;
 
     @OneToMany(mappedBy = "sagaEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<SagaVersionEntity> sagaVersionEntities = new HashSet<>();
+    private Set<SagaVersionEntity> sagaVersionEntities = new HashSet<>();
 
     @ManyToMany()
-    @JoinTable(name = "sagaversion-bib",
-            joinColumns = @JoinColumn(name = "sagaversion_id"),
+    @JoinTable(name = "saga-bib",
+            joinColumns = @JoinColumn(name = "saga_id"),
             inverseJoinColumns = @JoinColumn(name = "bib_id"))
     private Set<BibEntity> bibEntity = new HashSet<>();
 

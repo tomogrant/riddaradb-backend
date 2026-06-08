@@ -3,8 +3,8 @@ package com.se.riddaradb.motif;
 import java.util.Set;
 
 public class MotifSearchResult {
-    Integer searchResultId;
-    Set<Integer> searchResultPath;
+    private Integer searchResultId;
+    private Set<Integer> searchResultPath;
 
     public MotifSearchResult(Integer searchResultId, Set<Integer> searchResultPath) {
         this.searchResultId = searchResultId;

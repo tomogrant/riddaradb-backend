@@ -14,52 +14,52 @@ public class BibEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    PublicationType publicationType;
+    private PublicationType publicationType;
 
-    String authors;
+    private String authors;
 
-    String editors;
+    private String editors;
 
-    String translators;
+    private String translators;
 
     @NotBlank
-    String title;
+    private String title;
 
-    String url;
+    private String url;
 
-    String bookEditors;
+    private String bookEditors;
 
-    String book;
+    private String book;
 
-    String bookSeries;
+    private String bookSeries;
 
-    String volume;
+    private String volume;
 
-    String numOfVolumes;
+    private String numOfVolumes;
 
-    String placeOfPublication;
+    private String placeOfPublication;
 
-    String publisher;
+    private String publisher;
 
-    String publicationYear;
+    private String publicationYear;
 
-    String pageNumbers;
+    private String pageNumbers;
 
-    Boolean recommended;
+    private Boolean recommended;
 
     @Column(columnDefinition = "TEXT")
-    String description;
+    private String description;
 
     @ManyToMany(mappedBy = "bibEntity")
-    Set<SagaEntity> sagaEntity = new HashSet<>();
+    private Set<SagaEntity> sagaEntity = new HashSet<>();
 
     protected BibEntity(){
     }
 
-    public BibEntity(int id,
+    public BibEntity(Integer id,
                      PublicationType publicationType,
                      String authors,
                      String editors,
@@ -110,11 +110,11 @@ public class BibEntity {
         OTHER
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

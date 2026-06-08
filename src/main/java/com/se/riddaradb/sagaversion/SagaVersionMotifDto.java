@@ -1,23 +1,23 @@
 package com.se.riddaradb.sagaversion;
 
 public class SagaVersionMotifDto {
-    int motifId;
-    String motifCode;
-    String motifName;
-    String pageChapterNumber;
+    private Integer motifId;
+    private String motifCode;
+    private String motifName;
+    private String pageChapterNumber;
 
-    public SagaVersionMotifDto(int motifId, String motifCode, String motifName, String pageChapterNumber) {
+    public SagaVersionMotifDto(Integer motifId, String motifCode, String motifName, String pageChapterNumber) {
         this.motifId = motifId;
         this.motifCode = motifCode;
         this.motifName = motifName;
         this.pageChapterNumber = pageChapterNumber;
     }
 
-    public int getMotifId() {
+    public Integer getMotifId() {
         return motifId;
     }
 
-    public void setMotifId(int motifId) {
+    public void setMotifId(Integer motifId) {
         this.motifId = motifId;
     }
 

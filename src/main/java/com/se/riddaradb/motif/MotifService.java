@@ -60,12 +60,12 @@ public class MotifService {
         return childMotifs;
     }
 
-    public MotifDto saveMotifEntry(MotifDto motifDto){
+    public MotifDto updateMotifEntry(MotifDto motifDto){
+        MotifEntity motifEntity = motifRepository.findById(motifDto.getId()).orElseThrow();
 
-        //Save motif in order to generate ID
-        MotifEntity motifEntityToSave = motifMapper.mapFromDto(motifDto);
-        motifEntityToSave.setSagaVersionMotifEntities(sagaVersionMotifRepository.findByMotifEntityId(motifEntityToSave.getId()));
-        MotifEntity motifEntity = motifRepository.save(motifEntityToSave);
+        motifEntity.setMotifCode(motifDto.getMotifCode());
+        motifEntity.setMotifName(motifDto.getMotifName());
+        motifEntity.setDescription(motifDto.getDescription());
 
         //Map of saga-motif join entities already associated with this motif
         Map<Integer, SagaVersionMotifEntity> currentSagaMotifs = motifEntity.getSagaVersionMotifEntities()
@@ -75,22 +75,19 @@ public class MotifService {
         //IDs of sagas to be joined to this motif
         Set<Integer> newSagaMotifIds = motifDto.getSagaMotifs()
                 .stream()
-                .map(sagaMotif -> sagaMotif.sagaVersionId)
+                .map(MotifSagaVersionDto::getSagaVersionId)
                 .collect(Collectors.toSet());
-
 
         for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
             SagaVersionMotifEntity sagaMotifCurrent = currentSagaMotifs.get(motifSagaDto.getSagaVersionId());
 
             //Saga-motif exists already. Update.
             if (sagaMotifCurrent != null){
-                System.out.println("Updating saga-motif entry");
                 sagaMotifCurrent.setPageChapterNumber(motifSagaDto.getPageChapterNumber());
             }
 
             //Saga-motif does not exist. Create.
             else{
-                System.out.println("Creating new saga-motif entry");
                 sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
                     sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
                 });
@@ -100,20 +97,30 @@ public class MotifService {
         //If set of IDs does not include sagas previously associated with this motif, remove them
         sagaVersionMotifRepository.findByMotifEntityId(motifDto.getId()).forEach(sagaMotif -> {
             if (!newSagaMotifIds.contains(sagaMotif.getSagaVersionEntity().getId())){
-                sagaVersionRepository.findById(sagaMotif.getSagaVersionEntity().getId()).ifPresent(sagaVersion ->{
-                    sagaVersion.removeMotif(motifEntity);
-                });
+                sagaVersionRepository.findById(sagaMotif.getSagaVersionEntity().getId()).ifPresent(sagaVersion -> sagaVersion.removeMotif(motifEntity));
             }
         });
 
         //If this motif is a child motif, add it to its parent.
         motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+                parentMotif.addChildMotif(motifEntity));
+
+        return motifMapper.mapToDto(motifRepository.save(motifEntity));
+    }
+
+    public MotifDto saveMotifEntry(MotifDto motifDto){
+
+        MotifEntity motifEntity = motifRepository.save(new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription()));
+
+        for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
+                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
+                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
+            });
+        }
+
+        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
             parentMotif.addChildMotif(motifEntity));
 
-        //This DTO can never have 'hasChildren' set to true, as
-        //the motif entity passed in is mapped from a DTO without
-        //a child field. This is accounted for in the frontend, but
-        //it might be worth changing this somehow.
         return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }
 

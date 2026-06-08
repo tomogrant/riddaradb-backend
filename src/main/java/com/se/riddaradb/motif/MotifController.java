@@ -33,7 +33,6 @@ public class MotifController {
         return motifService.searchExact(searchTerm);
     }
 
-
     @GetMapping("/motifs/getrootmotifs")
     Collection<MotifDto> getRootMotifs(){
         return motifService.getRootMotifs();
@@ -51,7 +50,7 @@ public class MotifController {
 
     @PutMapping("/motifs/putmotif")
     MotifDto putMotifEntry(@RequestBody MotifDto motifDto){
-        return motifService.saveMotifEntry(motifDto);
+        return motifService.updateMotifEntry(motifDto);
     }
 
     @DeleteMapping("/motifs/deletemotif/{id}")

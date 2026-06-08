@@ -11,30 +11,30 @@ public class SagaVersionMotifKey implements Serializable {
 
     public SagaVersionMotifKey(){}
 
-    public SagaVersionMotifKey(int sagaVersionId, int motifId) {
+    public SagaVersionMotifKey(Integer sagaVersionId, Integer motifId) {
         this.sagaVersionId = sagaVersionId;
         this.motifId = motifId;
     }
 
     @Column(name="sagaversion_id")
-    int sagaVersionId;
+    private Integer sagaVersionId;
 
     @Column(name="motif_id")
-    int motifId;
+    private Integer motifId;
 
-    public int getSagaVersionId() {
+    public Integer getSagaVersionId() {
         return sagaVersionId;
     }
 
-    public void setSagaVersionId(int sagaVersionId) {
+    public void setSagaVersionId(Integer sagaVersionId) {
         this.sagaVersionId = sagaVersionId;
     }
 
-    public int getMotifId() {
+    public Integer getMotifId() {
         return motifId;
     }
 
-    public void setMotifId(int motifId) {
+    public void setMotifId(Integer motifId) {
         this.motifId = motifId;
     }
 

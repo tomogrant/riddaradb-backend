@@ -7,18 +7,18 @@ import java.util.Set;
 
 public class SagaVersionResponseDto {
 
-    Integer id;
-    String title;
-    String description;
-    SagaVersionEntity.SagaDate date;
-    Integer sagaId;
-    Set<SagaVersionMotifDto> sagaMotifs;
-    Set<Integer> personIds;
-    Set<Integer> placeIds;
-    Set<Integer> objectIds;
-    Set<Integer> msIds;
+    private Integer id;
+    private String title;
+    private String description;
+    private SagaVersionEntity.SagaDate date;
+    private Integer sagaId;
+    private Set<SagaVersionMotifDto> sagaMotifs;
+    private Set<Integer> personIds;
+    private Set<Integer> placeIds;
+    private Set<Integer> objectIds;
+    private Set<Integer> msIds;
 
-    public SagaVersionResponseDto(int id, String title, String description, SagaVersionEntity.SagaDate date) {
+    public SagaVersionResponseDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -30,11 +30,11 @@ public class SagaVersionResponseDto {
         msIds = new HashSet<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

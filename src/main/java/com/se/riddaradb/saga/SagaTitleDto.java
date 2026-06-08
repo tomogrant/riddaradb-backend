@@ -1,15 +1,15 @@
 package com.se.riddaradb.saga;
 
 public class SagaTitleDto {
-    int id;
-    String title;
+    private Integer id;
+    private String title;
 
-    public SagaTitleDto(int id, String title) {
+    public SagaTitleDto(Integer id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

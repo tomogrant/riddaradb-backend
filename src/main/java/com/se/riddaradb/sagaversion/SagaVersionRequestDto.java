@@ -5,16 +5,16 @@ import java.util.Set;
 
 public class SagaVersionRequestDto {
 
-    Integer id;
-    String title;
-    String description;
-    SagaVersionEntity.SagaDate date;
-    Integer sagaId;
-    Set<Integer> motifIds;
-    Set<Integer> personIds;
-    Set<Integer> placeIds;
-    Set<Integer> objectIds;
-    Set<Integer> msIds;
+    private Integer id;
+    private String title;
+    private String description;
+    private SagaVersionEntity.SagaDate date;
+    private Integer sagaId;
+    private Set<Integer> motifIds;
+    private Set<Integer> personIds;
+    private Set<Integer> placeIds;
+    private Set<Integer> objectIds;
+    private Set<Integer> msIds;
 
     public SagaVersionRequestDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date, Boolean isTranslated) {
         this.id = id;

@@ -7,15 +7,15 @@ import java.util.Set;
 
 public class MotifDto {
 
-    int id;
-    String motifCode;
-    String motifName;
-    String description;
-    Integer parentId;
-    Boolean hasChildren;
-    Set<MotifSagaVersionDto> sagaMotifs = new HashSet<>();
+    private Integer id;
+    private String motifCode;
+    private String motifName;
+    private String description;
+    private Integer parentId;
+    private Boolean hasChildren;
+    private Set<MotifSagaVersionDto> sagaMotifs = new HashSet<>();
 
-    public MotifDto(int id, String motifCode, String motifName, String description, Boolean hasChildren) {
+    public MotifDto(Integer id, String motifCode, String motifName, String description, Boolean hasChildren) {
         this.id = id;
         this.motifCode = motifCode;
         this.motifName = motifName;
@@ -25,11 +25,11 @@ public class MotifDto {
         Set<SagaVersionMotifDto> sagaMotifs = new HashSet<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

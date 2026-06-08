@@ -1,9 +1,9 @@
 package com.se.riddaradb.sagaversion;
 
 public class SagaVersionTitleDto {
-    int id;
-    int sagaId;
-    String title;
+    private Integer id;
+    private Integer sagaId;
+    private String title;
 
     public SagaVersionTitleDto(int id, int sagaId, String title) {
         this.id = id;
@@ -11,19 +11,19 @@ public class SagaVersionTitleDto {
         this.title = title;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getSagaId() {
+    public Integer getSagaId() {
         return sagaId;
     }
 
-    public void setSagaId(int sagaId) {
+    public void setSagaId(Integer sagaId) {
         this.sagaId = sagaId;
     }
 

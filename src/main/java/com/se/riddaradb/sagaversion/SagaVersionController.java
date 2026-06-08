@@ -27,15 +27,15 @@ public class SagaVersionController {
         return sagaVersionService.getSagaVersionTitles();
     }
 
-    @PostMapping("/sagas/postsagaversion")
-    SagaVersionResponseDto postSagas(@RequestBody SagaVersionRequestDto sagaVersionRequestDto){
-        return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);
-    }
-
-    @PutMapping("/sagas/putsagaversion")
-    SagaVersionResponseDto putSaga(@RequestBody SagaVersionRequestDto sagaVersionRequestDto){
-        return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);
-    }
+//    @PostMapping("/sagas/postsagaversion")
+//    SagaVersionResponseDto postSagas(@RequestBody SagaVersionRequestDto sagaVersionRequestDto){
+//        return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);
+//    }
+//
+//    @PutMapping("/sagas/putsagaversion")
+//    SagaVersionResponseDto putSaga(@RequestBody SagaVersionRequestDto sagaVersionRequestDto){
+//        return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);
+//    }
 
     @DeleteMapping("/sagas/deletesagaversion/{id}")
     void deleteSaga(@PathVariable int id){

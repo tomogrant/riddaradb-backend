@@ -6,25 +6,25 @@ import java.util.Set;
 
 public class SagaRequestDto {
 
-    int id;
-    String title;
-    String description;
-    Boolean translated;
-    Set<SagaVersionRequestDto> sagaVersions;
-    Set<Integer> bibIds;
+    private Integer id;
+    private String title;
+    private String description;
+    private Boolean translated;
+    private Set<SagaVersionRequestDto> sagaVersions;
+    private Set<Integer> bibIds;
 
-    public SagaRequestDto(int id, String title, String description, Boolean translated) {
+    public SagaRequestDto(Integer id, String title, String description, Boolean translated) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.translated = translated;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

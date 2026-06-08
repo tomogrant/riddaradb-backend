@@ -1,19 +1,19 @@
 package com.se.riddaradb.motif;
 
 public class MotifSagaVersionDto {
-    int sagaVersionId;
-    String pageChapterNumber;
+    private Integer sagaVersionId;
+    private String pageChapterNumber;
 
-    public MotifSagaVersionDto(int sagaVersionId, String pageChapterNumber) {
+    public MotifSagaVersionDto(Integer sagaVersionId, String pageChapterNumber) {
         this.sagaVersionId = sagaVersionId;
         this.pageChapterNumber = pageChapterNumber;
     }
 
-    public int getSagaVersionId() {
+    public Integer getSagaVersionId() {
         return sagaVersionId;
     }
 
-    public void setSagaVersionId(int sagaVersionId) {
+    public void setSagaVersionId(Integer sagaVersionId) {
         this.sagaVersionId = sagaVersionId;
     }
 

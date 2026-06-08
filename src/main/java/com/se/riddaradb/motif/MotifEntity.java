@@ -12,28 +12,28 @@ public class MotifEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private Integer id;
 
-    String motifCode;
+    private String motifCode;
 
-    String motifName;
+    private String motifName;
 
-    String description;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_id")
-    MotifEntity parent;
+    private MotifEntity parent;
 
     @OneToMany(mappedBy = "parent")
-    Set<MotifEntity> children = new HashSet<>();
+    private Set<MotifEntity> children = new HashSet<>();
 
     @OneToMany(mappedBy = "motifEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
+    private Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
 
     protected MotifEntity() {
     }
 
-    public MotifEntity(int id,
+    public MotifEntity(Integer id,
                        String motifCode,
                        String motifName,
                        String description) {
@@ -48,8 +48,12 @@ public class MotifEntity {
         childMotif.setParent(this);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getMotifCode() {
@@ -98,9 +102,5 @@ public class MotifEntity {
 
     public void setSagaVersionMotifEntities(Set<SagaVersionMotifEntity> sagaVersionMotifEntities) {
         this.sagaVersionMotifEntities = sagaVersionMotifEntities;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
