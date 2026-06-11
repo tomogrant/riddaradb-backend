@@ -30,7 +30,7 @@ public class MsController {
 
     @PutMapping("/putmsentry")
     MsDto putMsEntry(@RequestBody MsDto msDto){
-        return msService.saveMsEntry(msDto);
+        return msService.updateMsEntry(msDto);
     }
 
     @DeleteMapping("/deletemsentry/{id}")

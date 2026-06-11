@@ -3,6 +3,7 @@ package com.se.riddaradb.saga;
 import com.se.riddaradb.bib.BibDto;
 import com.se.riddaradb.sagaversion.SagaVersionResponseDto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SagaResponseDto {
@@ -13,6 +14,7 @@ public class SagaResponseDto {
     private Boolean translated;
     private Set<SagaVersionResponseDto> sagaVersions;
     private Set<BibDto> bibDto;
+    private Set<SagaMsDto> sagaMsDtos = new HashSet<>();
 
     public SagaResponseDto(Integer id, String title, String description, Boolean translated) {
         this.id = id;
@@ -67,5 +69,13 @@ public class SagaResponseDto {
 
     public void setBibDto(Set<BibDto> bibDto) {
         this.bibDto = bibDto;
+    }
+
+    public Set<SagaMsDto> getSagaMsDtos() {
+        return sagaMsDtos;
+    }
+
+    public void setSagaMsDtos(Set<SagaMsDto> sagaMsDtos) {
+        this.sagaMsDtos = sagaMsDtos;
     }
 }

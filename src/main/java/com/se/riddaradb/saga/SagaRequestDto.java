@@ -2,6 +2,7 @@ package com.se.riddaradb.saga;
 
 import com.se.riddaradb.sagaversion.SagaVersionRequestDto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SagaRequestDto {
@@ -11,7 +12,8 @@ public class SagaRequestDto {
     private String description;
     private Boolean translated;
     private Set<SagaVersionRequestDto> sagaVersions;
-    private Set<Integer> bibIds;
+    private Set<Integer> bibIds = new HashSet<>();
+    private Set<SagaMsDto> sagaMsDtos = new HashSet<>();
 
     public SagaRequestDto(Integer id, String title, String description, Boolean translated) {
         this.id = id;
@@ -66,5 +68,13 @@ public class SagaRequestDto {
 
     public void setBibIds(Set<Integer> bibIds) {
         this.bibIds = bibIds;
+    }
+
+    public Set<SagaMsDto> getSagaMsDtos() {
+        return sagaMsDtos;
+    }
+
+    public void setSagaMsDtos(Set<SagaMsDto> sagaMsDtos) {
+        this.sagaMsDtos = sagaMsDtos;
     }
 }

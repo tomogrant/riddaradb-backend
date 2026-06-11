@@ -1,6 +1,9 @@
 package com.se.riddaradb.ms;
 
+import com.se.riddaradb.saga.SagaEntity;
+import com.se.riddaradb.saga.SagaMsEntity;
 import com.se.riddaradb.sagaversion.SagaVersionEntity;
+import com.se.riddaradb.sagaversion.SagaVersionMotifEntity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -12,32 +15,33 @@ public class MsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private Integer id;
 
-    String name;
+    private String name;
 
-    String shelfMark;
+    private String shelfmark;
 
-    String description;
+    private String description;
 
-    @ManyToMany(mappedBy = "msEntity")
-    Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
+    @OneToMany(mappedBy = "msEntity", orphanRemoval = true)
+    private Set<SagaMsEntity> sagaMsEntities = new HashSet<>();
+
 
     protected MsEntity() {
     }
 
-    public MsEntity(int id, String name, String description, String shelfMark) {
+    public MsEntity(Integer id, String name, String shelfmark, String description) {
         this.id = id;
         this.name = name;
+        this.shelfmark = shelfmark;
         this.description = description;
-        this.shelfMark = shelfMark;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,6 +53,14 @@ public class MsEntity {
         this.name = name;
     }
 
+    public String getShelfmark() {
+        return shelfmark;
+    }
+
+    public void setShelfmark(String shelfmark) {
+        this.shelfmark = shelfmark;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -57,19 +69,11 @@ public class MsEntity {
         this.description = description;
     }
 
-    public String getShelfMark() {
-        return shelfMark;
+    public Set<SagaMsEntity> getSagaMsEntities() {
+        return sagaMsEntities;
     }
 
-    public void setShelfMark(String shelfMark) {
-        this.shelfMark = shelfMark;
-    }
-
-    public Set<SagaVersionEntity> getSagaVersionEntity() {
-        return sagaVersionEntity;
-    }
-
-    public void setSagaVersionEntity(Set<SagaVersionEntity> sagaVersionEntity) {
-        this.sagaVersionEntity = sagaVersionEntity;
+    public void setSagaMsEntities(Set<SagaMsEntity> sagaMsEntities) {
+        this.sagaMsEntities = sagaMsEntities;
     }
 }

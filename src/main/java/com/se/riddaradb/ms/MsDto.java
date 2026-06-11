@@ -3,31 +3,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MsDto {
-        int id;
-        String name;
-        String shelfMark;
-        String description;
-        Set<Integer> SagaVersionIds;
+        private Integer id;
+        private String name;
+        private String shelfmark;
+        private String description;
+        private Set<MsSagaDto> msSagaDtos = new HashSet<>();
 
         protected MsDto(){
         }
 
-    public MsDto(int id,
+    public MsDto(Integer id,
                  String name,
-                 String shelfMark,
+                 String shelfmark,
                  String description) {
         this.id = id;
         this.name = name;
-        this.shelfMark = shelfMark;
+        this.shelfmark = shelfmark;
         this.description = description;
-        SagaVersionIds = new HashSet<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -39,12 +38,12 @@ public class MsDto {
         this.name = name;
     }
 
-    public String getShelfMark() {
-        return shelfMark;
+    public String getShelfmark() {
+        return shelfmark;
     }
 
-    public void setShelfMark(String shelfMark) {
-        this.shelfMark = shelfMark;
+    public void setShelfmark(String shelfMark) {
+        this.shelfmark = shelfMark;
     }
 
     public String getDescription() {
@@ -55,11 +54,11 @@ public class MsDto {
         this.description = description;
     }
 
-    public Set<Integer> getSagaVersionIds() {
-        return SagaVersionIds;
+    public Set<MsSagaDto> getMsSagaDtos() {
+        return msSagaDtos;
     }
 
-    public void setSagaVersionIds(Set<Integer> SagaVersionIds) {
-        this.SagaVersionIds = SagaVersionIds;
+    public void setMsSagaDtos(Set<MsSagaDto> msSagaDtos) {
+        this.msSagaDtos = msSagaDtos;
     }
 }

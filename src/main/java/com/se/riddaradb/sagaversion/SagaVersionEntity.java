@@ -10,6 +10,7 @@ import com.se.riddaradb.saga.SagaEntity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -63,12 +64,6 @@ public class SagaVersionEntity {
             inverseJoinColumns = @JoinColumn(name = "object_id"))
     private Set<ObjectEntity> objectEntity = new HashSet<>();
 
-    @ManyToMany()
-    @JoinTable(name = "sagaversion-ms",
-            joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "ms_id"))
-    private Set<MsEntity> msEntity = new HashSet<>();
-
     protected SagaVersionEntity() {
     }
 
@@ -87,8 +82,8 @@ public class SagaVersionEntity {
     }
 
     public void removeMotif(MotifEntity motifEntity){
-        getSagaVersionMotifEntities().removeIf(sagaMotif -> sagaMotif.getMotifEntity().getId() == motifEntity.getId());
-        motifEntity.getSagaVersionMotifEntities().removeIf(sagaMotif -> sagaMotif.getSagaVersionEntity().getId() == getId());
+        getSagaVersionMotifEntities().removeIf(sagaMotif -> Objects.equals(sagaMotif.getMotifEntity().getId(), motifEntity.getId()));
+        motifEntity.getSagaVersionMotifEntities().removeIf(sagaMotif -> Objects.equals(sagaMotif.getSagaVersionEntity().getId(), getId()));
     }
 
     public Integer getId() {
@@ -161,13 +156,5 @@ public class SagaVersionEntity {
 
     public void setObjectEntity(Set<ObjectEntity> objectEntity) {
         this.objectEntity = objectEntity;
-    }
-
-    public Set<MsEntity> getMsEntity() {
-        return msEntity;
-    }
-
-    public void setMsEntity(Set<MsEntity> msEntity) {
-        this.msEntity = msEntity;
     }
 }

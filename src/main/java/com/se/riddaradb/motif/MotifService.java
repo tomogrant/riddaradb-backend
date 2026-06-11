@@ -67,6 +67,35 @@ public class MotifService {
         motifEntity.setMotifName(motifDto.getMotifName());
         motifEntity.setDescription(motifDto.getDescription());
 
+        updateSagaMotif(motifDto, motifEntity);
+
+        //If this motif is a child motif, add it to its parent.
+        if (motifDto.getParentId() != null){
+            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+                    parentMotif.addChildMotif(motifEntity));
+        }
+
+
+        return motifMapper.mapToDto(motifRepository.save(motifEntity));
+    }
+
+    public MotifDto saveMotifEntry(MotifDto motifDto){
+
+        MotifEntity motifEntity = new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription());
+
+        for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
+                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber()));
+        }
+
+        if (motifDto.getParentId() != null){
+            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+                    parentMotif.addChildMotif(motifEntity));
+        }
+
+        return motifMapper.mapToDto(motifRepository.save(motifEntity));
+    }
+
+    void updateSagaMotif(MotifDto motifDto, MotifEntity motifEntity){
         //Map of saga-motif join entities already associated with this motif
         Map<Integer, SagaVersionMotifEntity> currentSagaMotifs = motifEntity.getSagaVersionMotifEntities()
                 .stream()
@@ -100,31 +129,6 @@ public class MotifService {
                 sagaVersionRepository.findById(sagaMotif.getSagaVersionEntity().getId()).ifPresent(sagaVersion -> sagaVersion.removeMotif(motifEntity));
             }
         });
-
-        //If this motif is a child motif, add it to its parent.
-        if (motifDto.getParentId() != null){
-            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
-                    parentMotif.addChildMotif(motifEntity));
-        }
-
-
-        return motifMapper.mapToDto(motifRepository.save(motifEntity));
-    }
-
-    public MotifDto saveMotifEntry(MotifDto motifDto){
-
-        MotifEntity motifEntity = new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription());
-
-        for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
-                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber()));
-        }
-
-        if (motifDto.getParentId() != null){
-            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
-                    parentMotif.addChildMotif(motifEntity));
-        }
-
-        return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }
 
     public void deleteMotifEntryById(int id){
