@@ -102,24 +102,27 @@ public class MotifService {
         });
 
         //If this motif is a child motif, add it to its parent.
-        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
-                parentMotif.addChildMotif(motifEntity));
+        if (motifDto.getParentId() != null){
+            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+                    parentMotif.addChildMotif(motifEntity));
+        }
+
 
         return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }
 
     public MotifDto saveMotifEntry(MotifDto motifDto){
 
-        MotifEntity motifEntity = motifRepository.save(new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription()));
+        MotifEntity motifEntity = new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription());
 
         for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
-                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
-                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
-            });
+                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber()));
         }
 
-        motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
-            parentMotif.addChildMotif(motifEntity));
+        if (motifDto.getParentId() != null){
+            motifRepository.findById(motifDto.getParentId()).ifPresent(parentMotif ->
+                    parentMotif.addChildMotif(motifEntity));
+        }
 
         return motifMapper.mapToDto(motifRepository.save(motifEntity));
     }

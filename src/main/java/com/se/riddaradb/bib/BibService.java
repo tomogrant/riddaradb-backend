@@ -42,12 +42,21 @@ public class BibService {
 
         //This is the most beautiful code I've ever written.
         //Removes bib entity from sagas
-        if (bibRepository.existsById(bibDto.getId())){
-            removeBibFromSagaVersions(bibDto.getId());
+        if (bibDto.getId() != null){
+            if (bibRepository.existsById(bibDto.getId())){
+                removeBibFromSagaVersions(bibDto.getId());
+            }
         }
 
+        BibEntity bibEntity;
+
         //Creates bib entity
-        BibEntity bibEntity = bibMapper.mapFromDto(bibDto);
+        if (bibDto.getId() == null){
+            bibEntity = bibMapper.mapFromDto(bibDto);
+        }
+        else{
+            bibEntity = bibRepository.findById(bibDto.getId()).orElseThrow();
+        }
 
         //Add bib entry to sagas
         for (int id : bibDto.getSagaIds()){

@@ -27,7 +27,7 @@ public class MotifEntity {
     @OneToMany(mappedBy = "parent")
     private Set<MotifEntity> children = new HashSet<>();
 
-    @OneToMany(mappedBy = "motifEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "motifEntity", orphanRemoval = true)
     private Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
 
     protected MotifEntity() {

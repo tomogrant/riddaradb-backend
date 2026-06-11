@@ -20,7 +20,7 @@ public class MotifDto {
         this.motifCode = motifCode;
         this.motifName = motifName;
         this.description = description;
-        this.parentId = 0;
+        this.parentId = null;
         this.hasChildren = hasChildren;
         Set<SagaVersionMotifDto> sagaMotifs = new HashSet<>();
     }

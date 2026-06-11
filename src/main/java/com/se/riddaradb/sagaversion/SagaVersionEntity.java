@@ -80,9 +80,9 @@ public class SagaVersionEntity {
     }
 
     public void addMotif(MotifEntity motifEntity, String pageChapterNumber){
-        System.out.println("motifEntity.getId() = " + motifEntity.getId());
         SagaVersionMotifEntity sagaVersionMotifEntity = new SagaVersionMotifEntity(this, motifEntity, pageChapterNumber);
-        //getSagaVersionMotifEntities().add(sagaVersionMotifEntity);
+
+        getSagaVersionMotifEntities().add(sagaVersionMotifEntity);
         motifEntity.getSagaVersionMotifEntities().add(sagaVersionMotifEntity);
     }
 
