@@ -1,13 +1,16 @@
 package com.se.riddaradb.saga;
 
 import com.se.riddaradb.bib.BibRepository;
+import com.se.riddaradb.motif.MotifSagaVersionDto;
+import com.se.riddaradb.ms.MsRepository;
 import com.se.riddaradb.sagaversion.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,24 +22,27 @@ public class SagaService {
     final SagaVersionRepository sagaVersionRepository;
     final SagaVersionService sagaVersionService;
     final SagaVersionMapper sagaVersionMapper;
-    final SagaVersionMotifRepository sagaVersionMotifRepository;
+    final SagaMsRepository sagaMsRepository;
     final BibRepository bibRepository;
+    final MsRepository msRepository;
 
     public SagaService(SagaRepository sagaRepository,
                        SagaMapper sagaMapper,
                        SagaVersionRepository sagaVersionRepository,
                        SagaVersionService sagaVersionService,
                        SagaVersionMapper sagaVersionMapper,
-                       SagaVersionMotifRepository sagaVersionMotifRepository,
-                       BibRepository bibRepository) {
+                       SagaMsRepository sagaMsRepository,
+                       BibRepository bibRepository,
+                       MsRepository msRepository) {
 
         this.sagaRepository = sagaRepository;
         this.sagaMapper = sagaMapper;
         this.sagaVersionRepository = sagaVersionRepository;
         this.sagaVersionService = sagaVersionService;
         this.sagaVersionMapper = sagaVersionMapper;
-        this.sagaVersionMotifRepository = sagaVersionMotifRepository;
+        this.sagaMsRepository = sagaMsRepository;
         this.bibRepository = bibRepository;
+        this.msRepository = msRepository;
     }
 
     public Set<SagaResponseDto> getSagas(){
@@ -70,23 +76,48 @@ public class SagaService {
         sagaEntity.setDescription(sagaRequestDto.getDescription());
         sagaEntity.setTranslated(sagaRequestDto.getTranslated());
 
+        updateSagaVersions(sagaEntity, sagaRequestDto);
+
+        sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
+
+        updateMs(sagaEntity, sagaRequestDto);
+
+        return sagaMapper.mapToResponseDto(sagaRepository.save(sagaEntity));
+    }
+
+    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
+
+        SagaEntity sagaEntity = new SagaEntity(null, sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
+
+        //Bib entries
+        sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
+
+        //Saga versions
+        for (SagaVersionRequestDto sagaVersionRequestDto : sagaRequestDto.getSagaVersions()){
+            sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate()));
+        }
+
+        //Manuscript entries
+        for (SagaMsDto sagaMsDto : sagaRequestDto.getSagaMsDtos()){
+            msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> sagaEntity.addMs(ms, sagaMsDto.getFolioNumber()));
+        }
+
+        return sagaMapper.mapToResponseDto(this.sagaRepository.save(sagaEntity));
+    }
+
+    void updateSagaVersions(SagaEntity sagaEntity, SagaRequestDto sagaRequestDto){
         Set<Integer> currentSagaVersions = sagaEntity.getSagaVersionEntities()
-                    .stream()
-                    .map(SagaVersionEntity::getId)
-                    .collect(Collectors.toSet());
+                .stream()
+                .map(SagaVersionEntity::getId)
+                .collect(Collectors.toSet());
 
         Set<Integer> newSagaVersions = sagaRequestDto.getSagaVersions()
                 .stream()
                 .map(SagaVersionRequestDto::getId)
                 .collect(Collectors.toSet());
 
-        sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
-
-        //For an update, you can just get the saga version entities attached to the saga entity fetched above.
         for (SagaVersionRequestDto sagaVersionDto : sagaRequestDto.getSagaVersions()){
             //Incoming saga version lacks ID; add to saga version
-            System.out.println("Saga version received has ID: " + sagaVersionDto.getId());
-
             if (sagaVersionDto.getId() == null){
                 sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionDto.getTitle(), sagaVersionDto.getDescription(), sagaVersionDto.getDate()));
             }
@@ -109,19 +140,46 @@ public class SagaService {
                 sagaEntity.removeSagaVersion(currentSagaVersionId);
             }
         }
-
-        return sagaMapper.mapToResponseDto(sagaRepository.save(sagaEntity));
     }
 
-    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
+    void updateMs(SagaEntity sagaEntity, SagaRequestDto sagaRequestDto){
 
-        SagaEntity sagaEntity = new SagaEntity(null, sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
+        //Map of saga-MS join entities already associated with this saga. Indexed by MS ID.
+        Map<Integer, SagaMsEntity> currentSagaMss = sagaEntity.getSagaMsEntities()
+                .stream()
+                .collect(Collectors.toMap(sagaMsEntity -> sagaMsEntity.getMsEntity().getId(), Function.identity()));
 
-        for (SagaVersionRequestDto sagaVersionRequestDto : sagaRequestDto.getSagaVersions()){
-            sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate()));
+        //IDs of manuscripts to be joined to this motif
+        Set<Integer> newSagaMsIds = sagaRequestDto.getSagaMsDtos()
+                .stream()
+                .map(SagaMsDto::getMsId)
+                .collect(Collectors.toSet());
+
+        //For each saga-MS entity attached to saga...
+        for (SagaMsDto sagaMsDto : sagaRequestDto.getSagaMsDtos()){
+            SagaMsEntity sagaMsCurrent = currentSagaMss.get(sagaMsDto.getMsId());
+
+            //Saga-MS exists already. Update.
+            if (sagaMsCurrent != null){
+                sagaMsCurrent.setFolioNumber(sagaMsDto.getFolioNumber());
+            }
+
+            //Saga-MS does not exist. Fetch MS and attach to saga.
+            else{
+                msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> {
+                    sagaEntity.addMs(ms, sagaMsDto.getFolioNumber());
+                });
+            }
         }
 
-        return sagaMapper.mapToResponseDto(this.sagaRepository.save(sagaEntity));
+        //If set of IDs does not include manuscripts previously associated with
+        // this saga, remove them.
+        sagaMsRepository.findBySagaEntityId(sagaRequestDto.getId()).forEach(sagaMs -> {
+            if (!newSagaMsIds.contains(sagaMs.getMsEntity().getId())){
+                sagaRepository.findById(sagaMs.getSagaEntity().getId()).ifPresent(saga ->
+                        saga.removeMs(msRepository.findById(sagaMs.getMsEntity().getId()).orElseThrow()));
+            }
+        });
     }
 
     public void deleteSagaById(int id) {

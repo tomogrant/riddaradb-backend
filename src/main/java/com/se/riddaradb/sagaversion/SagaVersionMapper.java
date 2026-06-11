@@ -48,11 +48,6 @@ public class SagaVersionMapper {
                 .map(ObjectEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionResponseDto.setMsIds(sagaVersionEntity.getMsEntity()
-                .stream()
-                .map(MsEntity::getId)
-                .collect(Collectors.toSet()));
-
         return sagaVersionResponseDto;
     }
 
