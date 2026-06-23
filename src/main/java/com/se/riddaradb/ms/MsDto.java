@@ -8,6 +8,7 @@ public class MsDto {
         private String shelfmark;
         private String description;
         private Set<MsSagaDto> msSagaDtos = new HashSet<>();
+        private Integer msRepositoryId;
 
         protected MsDto(){
         }
@@ -60,5 +61,13 @@ public class MsDto {
 
     public void setMsSagaDtos(Set<MsSagaDto> msSagaDtos) {
         this.msSagaDtos = msSagaDtos;
+    }
+
+    public Integer getMsRepositoryId() {
+        return msRepositoryId;
+    }
+
+    public void setMsRepositoryId(Integer msRepositoryId) {
+        this.msRepositoryId = msRepositoryId;
     }
 }

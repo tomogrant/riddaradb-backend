@@ -26,6 +26,9 @@ public class MsEntity {
     @OneToMany(mappedBy = "msEntity", orphanRemoval = true)
     private Set<SagaMsEntity> sagaMsEntities = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="msRepositoryId")
+    private MsRepositoryEntity msRepositoryEntity;
 
     protected MsEntity() {
     }
@@ -75,5 +78,13 @@ public class MsEntity {
 
     public void setSagaMsEntities(Set<SagaMsEntity> sagaMsEntities) {
         this.sagaMsEntities = sagaMsEntities;
+    }
+
+    public MsRepositoryEntity getMsRepositoryEntity() {
+        return msRepositoryEntity;
+    }
+
+    public void setMsRepositoryEntity(MsRepositoryEntity msRepositoryEntity) {
+        this.msRepositoryEntity = msRepositoryEntity;
     }
 }

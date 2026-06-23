@@ -20,7 +20,13 @@ public class MsMapper {
                             sagaMsEntity.getFolioNumber()));
         }
 
-        System.out.println("Returning DTO");
+        if (msEntity.getMsRepositoryEntity() != null){
+            msDto.setMsRepositoryId(msEntity.getMsRepositoryEntity().getId());
+        }
+        else{
+            msDto.setMsRepositoryId(null);
+        }
+
         return msDto;
     }
 }

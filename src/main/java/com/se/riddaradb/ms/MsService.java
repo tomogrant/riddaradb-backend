@@ -21,12 +21,14 @@ public class MsService {
     final MsRepository msRepository;
     final SagaRepository sagaRepository;
     final SagaMsRepository sagaMsRepository;
+    final MsRepositoryRepository msRepositoryRepository;
     final MsMapper msMapper;
 
-    public MsService(MsRepository msRepository, SagaRepository sagaRepository, SagaMsRepository sagaMsRepository, MsMapper msMapper) {
+    public MsService(MsRepository msRepository, SagaRepository sagaRepository, SagaMsRepository sagaMsRepository, MsRepositoryRepository msRepositoryRepository, MsMapper msMapper) {
         this.msRepository = msRepository;
         this.sagaRepository = sagaRepository;
         this.sagaMsRepository = sagaMsRepository;
+        this.msRepositoryRepository = msRepositoryRepository;
         this.msMapper = msMapper;
     }
 
@@ -66,7 +68,10 @@ public class MsService {
             sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga -> saga.addMs(msEntity, msSagaDto.getFolioNumber()));
         }
 
-        System.out.println(msEntity.getSagaMsEntities().isEmpty());
+        if (msDto.getMsRepositoryId() != null){
+            msRepositoryRepository.findById(msDto.getMsRepositoryId()).ifPresent(msRepoRepo -> msRepoRepo.addMs(msEntity));
+        }
+
         return msMapper.mapToDto(msRepository.save(msEntity));
     }
 

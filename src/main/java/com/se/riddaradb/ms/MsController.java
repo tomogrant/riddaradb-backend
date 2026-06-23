@@ -13,27 +13,27 @@ public class MsController {
         this.msService = msService;
     }
 
-    @GetMapping("/getmsentries")
+    @GetMapping("/ms/getmsentries")
     Collection<MsDto> getMsEntries(){
         return msService.getMsEntries();
     }
 
-    @GetMapping("/getmsentrybyid/{id}")
+    @GetMapping("/ms/getmsentrybyid/{id}")
     MsDto getMsEntryById(@PathVariable int id){
         return msService.getMsEntryById(id);
     }
 
-    @PostMapping("/postmsentry")
+    @PostMapping("/ms/postmsentry")
     MsDto postMsEntry(@RequestBody MsDto msDto){
         return msService.saveMsEntry(msDto);
     }
 
-    @PutMapping("/putmsentry")
+    @PutMapping("/ms/putmsentry")
     MsDto putMsEntry(@RequestBody MsDto msDto){
         return msService.updateMsEntry(msDto);
     }
 
-    @DeleteMapping("/deletemsentry/{id}")
+    @DeleteMapping("/ms/deletemsentry/{id}")
     void deleteMsEntry(@PathVariable int id){
         msService.deleteMsEntryById(id);
     }
