@@ -1,14 +1,15 @@
 package com.se.riddaradb.saga;
 
 import com.se.riddaradb.bib.BibRepository;
-import com.se.riddaradb.motif.MotifSagaVersionDto;
 import com.se.riddaradb.ms.MsRepository;
 import com.se.riddaradb.sagaversion.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -78,23 +79,29 @@ public class SagaService {
 
         updateSagaVersions(sagaEntity, sagaRequestDto);
 
-        sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
+        sagaEntity.setBibEntities(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
 
         updateMs(sagaEntity, sagaRequestDto);
 
         return sagaMapper.mapToResponseDto(sagaRepository.save(sagaEntity));
     }
 
-    public SagaResponseDto saveSaga(SagaRequestDto sagaRequestDto){
+    public SagaResponseDto saveSaga(@NotNull SagaRequestDto sagaRequestDto){
 
         SagaEntity sagaEntity = new SagaEntity(null, sagaRequestDto.getTitle(), sagaRequestDto.getDescription(), sagaRequestDto.getTranslated());
 
+        // This is actually optimal for objects which are not created in the saga menu,
+        // as you're just linking the saga to objects which already exist via ID. The only
+        // exceptions are composite tables (for e.g. SagaMS) and objects which ARE created in
+        // the saga menu, like saga versions.
+
         //Bib entries
-        sagaEntity.setBibEntity(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
+        sagaEntity.setBibEntities(new HashSet<>(bibRepository.findAllById(sagaRequestDto.getBibIds())));
 
         //Saga versions
         for (SagaVersionRequestDto sagaVersionRequestDto : sagaRequestDto.getSagaVersions()){
             sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionRequestDto.getTitle(), sagaVersionRequestDto.getDescription(), sagaVersionRequestDto.getDate()));
+            System.out.println("Saga ID: " + sagaEntity.getSagaVersionEntities().stream().findFirst().get().getSagaEntity().getId());
         }
 
         //Manuscript entries
@@ -117,7 +124,7 @@ public class SagaService {
                 .collect(Collectors.toSet());
 
         for (SagaVersionRequestDto sagaVersionDto : sagaRequestDto.getSagaVersions()){
-            //Incoming saga version lacks ID; add to saga version
+            //Incoming saga version is new and lacks ID; add to saga version
             if (sagaVersionDto.getId() == null){
                 sagaEntity.addSagaVersion(new SagaVersionEntity(null, sagaVersionDto.getTitle(), sagaVersionDto.getDescription(), sagaVersionDto.getDate()));
             }
@@ -125,7 +132,7 @@ public class SagaService {
                 //If saga version already present, update it
                 SagaVersionEntity sagaVersionEntity =  sagaEntity.getSagaVersionEntities()
                         .stream()
-                        .filter(entity -> entity.getId() == sagaVersionDto.getId())
+                        .filter(entity -> Objects.equals(entity.getId(), sagaVersionDto.getId()))
                         .findFirst()
                         .orElseThrow();
 
@@ -164,7 +171,7 @@ public class SagaService {
                 sagaMsCurrent.setFolioNumber(sagaMsDto.getFolioNumber());
             }
 
-            //Saga-MS does not exist. Fetch MS and attach to saga.
+            //Saga-MS entity does not exist in DB. Fetch MS and attach to saga.
             else{
                 msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> {
                     sagaEntity.addMs(ms, sagaMsDto.getFolioNumber());
@@ -176,8 +183,7 @@ public class SagaService {
         // this saga, remove them.
         sagaMsRepository.findBySagaEntityId(sagaRequestDto.getId()).forEach(sagaMs -> {
             if (!newSagaMsIds.contains(sagaMs.getMsEntity().getId())){
-                sagaRepository.findById(sagaMs.getSagaEntity().getId()).ifPresent(saga ->
-                        saga.removeMs(msRepository.findById(sagaMs.getMsEntity().getId()).orElseThrow()));
+                sagaEntity.removeMs(msRepository.findById(sagaMs.getMsEntity().getId()).orElseThrow());
             }
         });
     }
@@ -199,9 +205,13 @@ public class SagaService {
         }
     }
 
+    public void deleteAll(){
+        sagaRepository.deleteAll();
+    }
+
     private void removeSagaFromBibEntries(int id){
         for (SagaEntity saga : sagaRepository.findAll()) {
-            saga.getBibEntity().removeIf(bib -> bib.getId() == id);
+            saga.getBibEntities().removeIf(bib -> bib.getId() == id);
         }
     }
 }

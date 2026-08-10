@@ -16,7 +16,7 @@ public class SagaVersionRequestDto {
     private Set<Integer> objectIds;
     private Set<Integer> msIds;
 
-    public SagaVersionRequestDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date, Boolean isTranslated) {
+    public SagaVersionRequestDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -26,6 +26,10 @@ public class SagaVersionRequestDto {
         placeIds = new HashSet<>();
         objectIds = new HashSet<>();
         msIds = new HashSet<>();
+    }
+
+    public SagaVersionRequestDto() {
+
     }
 
     public Integer getId() {
@@ -60,11 +64,11 @@ public class SagaVersionRequestDto {
         this.date = date;
     }
 
-    public int getSagaId() {
+    public Integer getSagaId() {
         return sagaId;
     }
 
-    public void setSagaId(int sagaId) {
+    public void setSagaId(Integer sagaId) {
         this.sagaId = sagaId;
     }
 

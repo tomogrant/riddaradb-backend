@@ -11,7 +11,7 @@ public class SagaRequestDto {
     private String title;
     private String description;
     private Boolean translated;
-    private Set<SagaVersionRequestDto> sagaVersions;
+    private Set<SagaVersionRequestDto> sagaVersions = new HashSet<>();
     private Set<Integer> bibIds = new HashSet<>();
     private Set<SagaMsDto> sagaMsDtos = new HashSet<>();
 
@@ -20,6 +20,10 @@ public class SagaRequestDto {
         this.title = title;
         this.description = description;
         this.translated = translated;
+    }
+
+    public SagaRequestDto() {
+
     }
 
     public Integer getId() {
@@ -34,7 +38,7 @@ public class SagaRequestDto {
         return title;
     }
 
-    public void setTitle(String name) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

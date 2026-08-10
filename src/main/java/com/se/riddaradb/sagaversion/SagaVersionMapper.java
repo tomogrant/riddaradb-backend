@@ -12,12 +12,6 @@ import java.util.stream.Collectors;
 @Service
 public class SagaVersionMapper {
 
-    final BibMapper bibMapper;
-
-    public SagaVersionMapper(BibMapper bibMapper){
-        this.bibMapper = bibMapper;
-    }
-
     //Consumes DB entity and produces response for frontend
     public SagaVersionResponseDto mapToDto(SagaVersionEntity sagaVersionEntity){
         SagaVersionResponseDto sagaVersionResponseDto = new SagaVersionResponseDto(sagaVersionEntity.getId(), sagaVersionEntity.getTitle(), sagaVersionEntity.getDescription(), sagaVersionEntity.getDate());

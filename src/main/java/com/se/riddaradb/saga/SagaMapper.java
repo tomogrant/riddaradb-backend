@@ -2,8 +2,6 @@ package com.se.riddaradb.saga;
 
 import com.se.riddaradb.bib.BibMapper;
 import com.se.riddaradb.sagaversion.SagaVersionMapper;
-import com.se.riddaradb.sagaversion.SagaVersionMotifDto;
-import com.se.riddaradb.sagaversion.SagaVersionMotifEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -29,7 +27,7 @@ public class SagaMapper {
                 .collect(Collectors.toSet()));
 
         //Set bibliography entries
-        sagaResponseDto.setBibDto(sagaEntity.getBibEntity()
+        sagaResponseDto.setBibDto(sagaEntity.getBibEntities()
                 .stream()
                 .map(bibMapper::mapToDto)
                 .collect(Collectors.toSet()));

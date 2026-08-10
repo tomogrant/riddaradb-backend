@@ -9,5 +9,4 @@ class RiddaradbApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

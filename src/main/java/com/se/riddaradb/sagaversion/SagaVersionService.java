@@ -46,12 +46,8 @@ public class SagaVersionService {
 
         if (sagaVersionRepository.existsById(id)) {
             sagaVersionRepository.deleteById(id);
-        }
-        else {
+        } else {
             System.out.println("Record not found in database.");
         }
     }
-
-
-
 }

@@ -53,10 +53,10 @@ public class BibEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(mappedBy = "bibEntity")
+    @ManyToMany(mappedBy = "bibEntities")
     private Set<SagaEntity> sagaEntity = new HashSet<>();
 
-    protected BibEntity(){
+    public BibEntity(){
     }
 
     public BibEntity(Integer id,

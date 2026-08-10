@@ -62,11 +62,11 @@ public class SagaVersionResponseDto {
         this.date = date;
     }
 
-    public int getSagaId() {
+    public Integer getSagaId() {
         return sagaId;
     }
 
-    public void setSagaId(int sagaId) {
+    public void setSagaId(Integer sagaId) {
         this.sagaId = sagaId;
     }
 

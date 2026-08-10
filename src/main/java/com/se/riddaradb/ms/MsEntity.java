@@ -30,7 +30,7 @@ public class MsEntity {
     @JoinColumn(name="msRepositoryId")
     private MsRepositoryEntity msRepositoryEntity;
 
-    protected MsEntity() {
+    public MsEntity() {
     }
 
     public MsEntity(Integer id, String name, String shelfmark, String description) {

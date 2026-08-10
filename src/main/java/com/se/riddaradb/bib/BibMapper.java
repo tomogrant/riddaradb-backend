@@ -56,4 +56,23 @@ public class BibMapper {
                 bibDto.getRecommended(),
                 bibDto.getDescription());
     }
+
+    public void updateBibEntity(BibEntity bibEntity, BibDto bibDto){
+        bibEntity.setPublicationType(bibDto.getPublicationType());
+        bibEntity.setAuthors(bibDto.getAuthors());
+        bibEntity.setEditors(bibDto.getEditors());
+        bibEntity.setTranslators(bibDto.getTranslators());
+        bibEntity.setTitle(bibDto.getTitle());
+        bibEntity.setUrl(bibDto.getUrl());
+        bibEntity.setBookEditors(bibDto.getBookEditors());
+        bibEntity.setBook(bibDto.getBook());
+        bibEntity.setBookSeries(bibDto.getBookSeries());
+        bibEntity.setVolume(bibDto.getVolume());
+        bibEntity.setNumOfVolumes(bibDto.getNumOfVolumes());
+        bibEntity.setPublisher(bibDto.getPublisher());
+        bibEntity.setPublicationYear(bibDto.getPublicationYear());
+        bibEntity.setPageNumbers(bibDto.getPageNumbers());
+        bibEntity.setRecommended(bibDto.getRecommended());
+        bibEntity.setDescription(bibDto.getDescription());
+    }
 }

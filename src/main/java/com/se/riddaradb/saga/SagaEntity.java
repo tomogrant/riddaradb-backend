@@ -1,10 +1,8 @@
 package com.se.riddaradb.saga;
 
 import com.se.riddaradb.bib.BibEntity;
-import com.se.riddaradb.motif.MotifEntity;
 import com.se.riddaradb.ms.MsEntity;
 import com.se.riddaradb.sagaversion.SagaVersionEntity;
-import com.se.riddaradb.sagaversion.SagaVersionMotifEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -35,12 +33,12 @@ public class SagaEntity {
     @JoinTable(name = "saga-bib",
             joinColumns = @JoinColumn(name = "saga_id"),
             inverseJoinColumns = @JoinColumn(name = "bib_id"))
-    private Set<BibEntity> bibEntity = new HashSet<>();
+    private Set<BibEntity> bibEntities = new HashSet<>();
 
     @OneToMany(mappedBy = "sagaEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SagaMsEntity> sagaMsEntities = new HashSet<>();
 
-    protected SagaEntity(){
+    public SagaEntity(){
     }
 
     public SagaEntity(Integer id, String title, String description, Boolean translated) {
@@ -61,17 +59,15 @@ public class SagaEntity {
     }
 
     public void addBib(BibEntity bib){
-        bibEntity.add(bib);
+        bibEntities.add(bib);
         bib.getSagaEntity().add(this);
     }
 
-    public void addMs(MsEntity msEntity, String pageChapterNumber){
-        SagaMsEntity sagaMsEntity = new SagaMsEntity(this, msEntity, pageChapterNumber);
+    public void addMs(MsEntity msEntity, String folioNumber){
+        SagaMsEntity sagaMsEntity = new SagaMsEntity(this, msEntity, folioNumber);
 
         getSagaMsEntities().add(sagaMsEntity);
         msEntity.getSagaMsEntities().add(sagaMsEntity);
-
-        System.out.println("Saga-MS entity created with ID: " + sagaMsEntity.getSagaEntity().getId() + sagaMsEntity.getMsEntity().getId());
     }
 
     public void removeMs(MsEntity msEntity){
@@ -119,12 +115,12 @@ public class SagaEntity {
         this.sagaVersionEntities = sagaVersionEntities;
     }
 
-    public Set<BibEntity> getBibEntity() {
-        return bibEntity;
+    public Set<BibEntity> getBibEntities() {
+        return bibEntities;
     }
 
-    public void setBibEntity(Set<BibEntity> bibEntity) {
-        this.bibEntity = bibEntity;
+    public void setBibEntities(Set<BibEntity> bibEntities) {
+        this.bibEntities = bibEntities;
     }
 
     public Set<SagaMsEntity> getSagaMsEntities() {

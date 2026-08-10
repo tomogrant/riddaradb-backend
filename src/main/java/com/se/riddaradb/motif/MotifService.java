@@ -84,7 +84,11 @@ public class MotifService {
         MotifEntity motifEntity = new MotifEntity(null, motifDto.getMotifCode(), motifDto.getMotifName(), motifDto.getDescription());
 
         for (MotifSagaVersionDto motifSagaDto : motifDto.getSagaMotifs()){
-                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber()));
+            System.out.println("There is a MotifSagaDto associated with this DTO, but is there a saga version in the DB?");
+                sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
+                    System.out.println("Saga version found");
+                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
+                });
         }
 
         if (motifDto.getParentId() != null){
@@ -145,7 +149,11 @@ public class MotifService {
         motifRepository.deleteById(id);
     }
 
-    void removeChildren(int id){
+    public void deleteAll(){
+        motifRepository.deleteAll();
+    }
+
+    private void removeChildren(int id){
         motifRepository.findById(id).ifPresent(motif -> {
             motif.getChildren().forEach((child -> removeChildren(child.getId())));
         });

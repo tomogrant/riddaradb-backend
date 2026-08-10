@@ -119,4 +119,8 @@ public class MsService {
 
         msRepository.deleteById(id);
     }
+
+    public void deleteAll(){
+        msRepository.deleteAll();
+    }
 }

@@ -1,36 +1,8 @@
-### Use to build: docker build -t tg:v1 .
-### Use to run: docker run -p9090:9090 tg:v1
-
-#Type
-FROM eclipse-temurin
-
-#Label
-LABEL authors="TGRANT"
-
-#Exposes port
-EXPOSE 8000
-EXPOSE 5432
-
-#Creates directory
-RUN mkdir -p /app
-
-#Sets working directory
-WORKDIR /app
-
-#Copies app to container in /app
-COPY riddaradb-backend/target/riddaradb.jar /app
-
-#Starts app from location when container is run
-ENTRYPOINT ["java","-jar","riddaradb.jar"]
-
 package com.se.riddaradb.bib;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -54,9 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @DirtiesContext
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class BibIntegrationTest {
+
+    @BeforeEach
+    void cleanDatabase(){
+        bibService.deleteAll();
+    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,43 +44,19 @@ class BibIntegrationTest {
     private BibService bibService;
 
     @Test
-    @Order(1)
     public void postBibEntry_shouldReturnBibEntryWithAllFieldsCorrect() throws Exception {
-        BibDto bibDto = new BibDto(
-                null,
-                BibEntity.PublicationType.JOURNAL_ARTICLE,
-                "Author",
-                "Editor",
-                "Translator",
-                "Title",
-                "www.url.com",
-                "Book editors",
-                "Journal title",
-                "Book series",
-                "10",
-                "2",
-                "Cambridge",
-                "Cambridge University Press",
-                "2026",
-                "10-22",
-                false,
-                "Description");
 
-        MvcResult mvcResult = mockMvc.perform(post("/bibentries/postbibentry")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(bibDto)))
-                .andExpect(status().isOk())
-                .andReturn();
+        BibDto bibDtoResult = postBib();
 
-        BibDto bibDtoResult = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BibDto.class);
-
-        assertThat(bibDtoResult.getId()).isEqualTo(1);
-        checkBibFields(bibDto, bibDtoResult);
+        assertThat(bibDtoResult.getId()).isNotNull();
+        checkBibFields(createBibDto(), bibDtoResult);
     }
 
     @Test
-    @Order(2)
     public void getBibEntries_shouldReturnBibEntries() throws Exception {
+
+        postBib();
+
         MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries"))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -114,32 +66,16 @@ class BibIntegrationTest {
         assertThat(bibDtoResult).isNotEmpty();
         assertThat(bibDtoResult)
                 .singleElement()
-                .satisfies(element -> assertEquals(element.getId(), 1));
+                .satisfies(element -> assertThat(element.getId()).isNotNull());
     }
 
     @Test
-    @Order(3)
     public void putBibEntry_shouldReturnBibEntryWithAllFieldsUpdated() throws Exception {
 
-        BibDto bibDto = new BibDto(
-                1,
-                BibEntity.PublicationType.JOURNAL_ARTICLE,
-                "Author new",
-                "Editor new",
-                "Translator new",
-                "Title new",
-                "www.urlnew.com",
-                "Book editors new",
-                "Journal title new",
-                "Book series new",
-                "11",
-                "3",
-                "Cambridge new",
-                "Cambridge University Press new",
-                "2026 new",
-                "10-22 new",
-                true,
-                "Description new");
+        BibDto bibDto = postBib();
+
+        bibDto.setAuthors("Author new");
+        bibDto.setTitle("Title new");
 
         MvcResult mvcResult = mockMvc.perform(put("/bibentries/putbibentry")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,10 +90,11 @@ class BibIntegrationTest {
     }
 
     @Test
-    @Order(4)
     public void deleteBibEntry_bibEntryIsRemoved() throws Exception{
 
-        mockMvc.perform(delete("/bibentries/deletebibentry/1"))
+        BibDto bibDto = postBib();
+
+        mockMvc.perform(delete("/bibentries/deletebibentry/" + bibDto.getId()))
                 .andExpect(status().isOk());
 
         MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries"))
@@ -167,7 +104,6 @@ class BibIntegrationTest {
         Set<BibDto> bibDtoResult = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
 
         assertThat(bibDtoResult).isEmpty();
-
     }
 
     void checkBibFields(BibDto bibDto, BibDto bibDtoResult){
@@ -187,5 +123,38 @@ class BibIntegrationTest {
         assertThat(bibDtoResult.getPageNumbers()).isEqualTo(bibDto.getPageNumbers());
         assertThat(bibDtoResult.getRecommended()).isEqualTo(bibDto.getRecommended());
         assertThat(bibDtoResult.getDescription()).isEqualTo(bibDto.getDescription());
+    }
+
+    BibDto postBib() throws Exception{
+
+        MvcResult mvcResult = mockMvc.perform(post("/bibentries/postbibentry")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createBibDto())))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BibDto.class);
+    }
+
+    BibDto createBibDto(){
+        return new BibDto(
+                null,
+                BibEntity.PublicationType.JOURNAL_ARTICLE,
+                "Author",
+                "Editor",
+                "Translator",
+                "Title",
+                "www.url.com",
+                "Book editors",
+                "Journal title",
+                "Book series",
+                "10",
+                "2",
+                "Cambridge",
+                "Cambridge University Press",
+                "2026",
+                "10-22",
+                false,
+                "Description");
     }
 }

@@ -64,7 +64,7 @@ public class SagaVersionEntity {
             inverseJoinColumns = @JoinColumn(name = "object_id"))
     private Set<ObjectEntity> objectEntity = new HashSet<>();
 
-    protected SagaVersionEntity() {
+    public SagaVersionEntity() {
     }
 
     public SagaVersionEntity(Integer id, String title, String description, SagaDate date) {

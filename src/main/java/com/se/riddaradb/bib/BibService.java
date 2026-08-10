@@ -1,7 +1,6 @@
 package com.se.riddaradb.bib;
 
 import com.se.riddaradb.saga.SagaEntity;
-import com.se.riddaradb.sagaversion.SagaVersionEntity;
 import com.se.riddaradb.saga.SagaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +29,9 @@ public class BibService {
     }
 
     public BibDto getBibEntryById(int id){
-        if (bibRepository.findById(id).isPresent()){
-            return bibMapper.mapToDto(bibRepository.findById(id).get());
-        }
-        else {
-            return null;
-        }
+        return bibRepository.findById(id)
+                .map(bibMapper::mapToDto)
+                .orElse(null);
     }
 
     public BibDto saveBibEntry(BibDto bibDto){
@@ -56,6 +52,7 @@ public class BibService {
         }
         else{
             bibEntity = bibRepository.findById(bibDto.getId()).orElseThrow();
+            bibMapper.updateBibEntity(bibEntity, bibDto);
         }
 
         //Add bib entry to sagas
@@ -72,9 +69,13 @@ public class BibService {
         bibRepository.deleteById(id);
     }
 
+    public void deleteAll(){
+        bibRepository.deleteAll();
+    }
+
     private void removeBibFromSagaVersions(int id){
         for (SagaEntity saga : sagaRepository.findAll()){
-            saga.getBibEntity().removeIf(bib -> bib.getId() == id);
+            saga.getBibEntities().removeIf(bib -> bib.getId() == id);
         }
     }
 }

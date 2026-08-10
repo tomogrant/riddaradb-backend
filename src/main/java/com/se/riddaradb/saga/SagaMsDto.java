@@ -5,10 +5,16 @@ public class SagaMsDto {
     private String shelfmark;
     private String folioNumber;
 
+    public SagaMsDto(){}
+
     public SagaMsDto(Integer msId, String shelfmark, String folioNumber) {
         this.msId = msId;
         this.shelfmark = shelfmark;
         this.folioNumber = folioNumber;
+    }
+
+    public SagaMsDto(Integer msId) {
+        this.msId = msId;
     }
 
     public Integer getMsId() {
