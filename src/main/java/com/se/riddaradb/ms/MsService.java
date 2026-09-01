@@ -53,8 +53,8 @@ public class MsService {
         MsEntity msEntity = msRepository.findById(msDto.getId()).orElseThrow();
 
         msEntity.setName(msDto.getName());
-        msEntity.setDescription(msDto.getDescription());
         msEntity.setShelfmark(msDto.getShelfmark());
+        msEntity.setDescription(msDto.getDescription());
 
         updateSaga(msEntity, msDto);
 
@@ -62,7 +62,7 @@ public class MsService {
     }
 
     public MsDto saveMsEntry(MsDto msDto){
-        MsEntity msEntity = new MsEntity(msDto.getId(), msDto.getName(), msDto.getDescription(), msDto.getShelfmark());
+        MsEntity msEntity = new MsEntity(msDto.getId(), msDto.getName(), msDto.getShelfmark(), msDto.getDescription());
 
         for (MsSagaDto msSagaDto : msDto.getMsSagaDtos()){
             sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga -> saga.addMs(msEntity, msSagaDto.getFolioNumber()));

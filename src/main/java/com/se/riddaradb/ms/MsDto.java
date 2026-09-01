@@ -13,14 +13,14 @@ public class MsDto {
         protected MsDto(){
         }
 
-    public MsDto(Integer id,
-                 String name,
-                 String shelfmark,
-                 String description) {
-        this.id = id;
-        this.name = name;
-        this.shelfmark = shelfmark;
-        this.description = description;
+        public MsDto(Integer id,
+                     String name,
+                     String shelfmark,
+                     String description) {
+            this.id = id;
+            this.name = name;
+            this.shelfmark = shelfmark;
+            this.description = description;
     }
 
     public Integer getId() {
@@ -43,8 +43,8 @@ public class MsDto {
         return shelfmark;
     }
 
-    public void setShelfmark(String shelfMark) {
-        this.shelfmark = shelfMark;
+    public void setShelfmark(String shelfmark) {
+        this.shelfmark = shelfmark;
     }
 
     public String getDescription() {

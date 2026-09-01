@@ -53,4 +53,6 @@ public class MsRepositoryService {
         msRepositoryRepository.deleteById(id);
     }
 
+    void deleteAll(){ msRepositoryRepository.deleteAll(); }
+
 }
