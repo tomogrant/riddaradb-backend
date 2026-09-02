@@ -49,6 +49,9 @@ public class MsIntegrationTest {
     @Autowired
     private MsRepositoryService msRepositoryService;
 
+    @Autowired
+    private MsRepositoryMapper msRepositoryMapper;
+
     @AfterEach
     void cleanDatabase(){
         sagaService.deleteAll();
@@ -110,6 +113,29 @@ public class MsIntegrationTest {
     }
 
     @Test
+    public void putMsRepository_shouldReturnMsRepositoryWithAllFieldsCorrect() throws Exception {
+
+        MsDto msDto = postMs();
+
+        MsRepositoryDto msRepositoryDto = msRepositoryService.getMsRepositoryById(msDto.getMsRepositoryId());
+
+        msRepositoryDto.setName("Arnamagnaean Institute");
+
+        MvcResult mvcResult = mockMvc.perform(put("/ms/putmsrepository")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(msRepositoryDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        MsRepositoryDto result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), MsRepositoryDto.class);
+
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getId()).isEqualTo(msRepositoryDto.getId());
+        assertThat(result.getName()).isEqualTo(msRepositoryDto.getName());
+    }
+
+    @Test
     public void getMs_shouldReturnMs() throws Exception {
 
         postMs();
@@ -140,6 +166,29 @@ public class MsIntegrationTest {
 
         Set<MotifDto> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
 
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void deleteMsRepository_RepositoryAndMsAreRemoved() throws Exception{
+
+        MsDto msDto = postMs();
+
+        mockMvc.perform(delete("/ms/deletemsrepository/" + msDto.getMsRepositoryId()))
+                .andExpect(status().isOk());
+
+        //Has the repository been deleted?
+        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsrepositories"))
+                .andExpect(status().isOk())
+                .andReturn();
+        Set<MsRepositoryDto> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
+        assertThat(result).isEmpty();
+
+        //Has the associated manuscript been deleted?
+        mvcResult = mockMvc.perform(get("/ms/getmsentries"))
+                .andExpect(status().isOk())
+                .andReturn();
+        result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
         assertThat(result).isEmpty();
     }
 
