@@ -13,7 +13,7 @@ public class SagaResponseDto {
     private String description;
     private Boolean translated;
     private Set<SagaVersionResponseDto> sagaVersions;
-    private Set<BibDto> bibDto;
+    private Set<BibDto> bibDtos;
     private Set<SagaMsDto> sagaMsDtos = new HashSet<>();
 
     public SagaResponseDto(Integer id, String title, String description, Boolean translated) {
@@ -63,12 +63,12 @@ public class SagaResponseDto {
         this.sagaVersions = sagaVersions;
     }
 
-    public Set<BibDto> getBibDto() {
-        return bibDto;
+    public Set<BibDto> getBibDtos() {
+        return bibDtos;
     }
 
-    public void setBibDto(Set<BibDto> bibDto) {
-        this.bibDto = bibDto;
+    public void setBibDtos(Set<BibDto> bibDtos) {
+        this.bibDtos = bibDtos;
     }
 
     public Set<SagaMsDto> getSagaMsDtos() {

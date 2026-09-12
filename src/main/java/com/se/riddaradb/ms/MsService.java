@@ -80,7 +80,8 @@ public class MsService {
         //Map of saga-MS join entities already associated with this saga. Indexed by saga ID.
         Map<Integer, SagaMsEntity> currentSagaMss = msEntity.getSagaMsEntities()
                 .stream()
-                .collect(Collectors.toMap(sagaMsEntity -> sagaMsEntity.getSagaEntity().getId(), Function.identity()));
+                .collect(Collectors.toMap(sagaMsEntity ->
+                        sagaMsEntity.getSagaEntity().getId(), Function.identity()));
 
         //IDs of sagas to be joined to this MS
         Set<Integer> newMsSagaIds = msDto.getMsSagaDtos()
@@ -99,9 +100,9 @@ public class MsService {
 
             //Saga-MS does not exist. Fetch saga and attach MS.
             else{
-                sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga -> {
-                    saga.addMs(msEntity, msSagaDto.getFolioNumber());
-                });
+                sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga ->
+                    saga.addMs(msEntity, msSagaDto.getFolioNumber())
+                );
             }
         }
 

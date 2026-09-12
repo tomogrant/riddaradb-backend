@@ -27,7 +27,7 @@ public class SagaMapper {
                 .collect(Collectors.toSet()));
 
         //Set bibliography entries
-        sagaResponseDto.setBibDto(sagaEntity.getBibEntities()
+        sagaResponseDto.setBibDtos(sagaEntity.getBibEntities()
                 .stream()
                 .map(bibMapper::mapToDto)
                 .collect(Collectors.toSet()));

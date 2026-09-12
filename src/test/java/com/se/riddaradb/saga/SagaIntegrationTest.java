@@ -61,7 +61,7 @@ public class SagaIntegrationTest {
         SagaResponseDto result = postSaga();
 
         SagaVersionResponseDto sagaVersionResponseDto = result.getSagaVersions().stream().findFirst().orElseThrow();
-        BibDto bibDtoResult = result.getBibDto().stream().findFirst().orElseThrow();
+        BibDto bibDtoResult = result.getBibDtos().stream().findFirst().orElseThrow();
         SagaMsDto sagaMsDtoResult = result.getSagaMsDtos().stream().findFirst().orElseThrow();
 
         checkSagaFields(createSagaRequestDto(), result);
@@ -104,7 +104,7 @@ public class SagaIntegrationTest {
                 SagaVersionEntity.SagaDate.UNDEFINED);
 
         sagaRequestDto.setSagaVersions(Set.of(sagaVersionRequestDto));
-        sagaRequestDto.setBibIds(Set.of(sagaResponseDto.getBibDto().stream().findFirst().orElseThrow().getId()));
+        sagaRequestDto.setBibIds(Set.of(sagaResponseDto.getBibDtos().stream().findFirst().orElseThrow().getId()));
         sagaRequestDto.setSagaMsDtos(sagaResponseDto.getSagaMsDtos());
 
         MvcResult mvcResult = mockMvc.perform(put("/sagas/putsaga")
@@ -117,7 +117,7 @@ public class SagaIntegrationTest {
         SagaResponseDto result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), SagaResponseDto.class);
 
         SagaVersionResponseDto sagaVersionResponseDto = result.getSagaVersions().stream().findFirst().orElseThrow();
-        BibDto bibDtoResult = result.getBibDto().stream().findFirst().orElseThrow();
+        BibDto bibDtoResult = result.getBibDtos().stream().findFirst().orElseThrow();
         SagaMsDto sagaMsDtoResult = result.getSagaMsDtos().stream().findFirst().orElseThrow();
 
         checkSagaFields(sagaRequestDto, result);
