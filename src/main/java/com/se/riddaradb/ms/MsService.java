@@ -39,6 +39,13 @@ public class MsService {
                 .toList();
     }
 
+    public Collection<MsDto> findByRepoId(Integer id){
+        return msRepository.findByMsRepositoryEntityId(id)
+                .stream()
+                .map(msMapper::mapToDto)
+                .toList();
+    }
+
     public MsDto getMsEntryById(int id){
         if (msRepository.findById(id).isPresent()){
             return msMapper.mapToDto(msRepository.findById(id).get());
