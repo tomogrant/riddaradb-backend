@@ -1,5 +1,6 @@
-package com.se.riddaradb.object;
+package com.se.riddaradb.location;
 
+import com.se.riddaradb.character.CharacterEntity;
 import com.se.riddaradb.sagaversion.SagaVersionEntity;
 import jakarta.persistence.*;
 
@@ -7,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "object")
-public class ObjectEntity {
+@Table(name = "location")
+public class LocationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,25 +17,28 @@ public class ObjectEntity {
 
     String name;
 
-    String description;
-
     @Enumerated(EnumType.STRING)
     Type type;
 
     public enum Type {
-        ARMOUR, WEAPON, JEWELLERY, CLOTHING, OTHER
+        COUNTRY, SETTLEMENT, SITE, OTHER
     }
 
-    @ManyToMany(mappedBy = "objectEntity")
+    @ManyToMany()
+    @JoinTable(name = "location-character",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id"))
+    Set<CharacterEntity> characterEntity = new HashSet<>();
+
+    @ManyToMany(mappedBy = "locationEntity")
     Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
-    protected ObjectEntity() {
+    protected LocationEntity() {
     }
 
-    public ObjectEntity(int id, String name, String description, Type type) {
+    public LocationEntity(int id, String name, Type type) {
         this.id = id;
         this.name = name;
-        this.description = description;
         this.type = type;
     }
 
@@ -54,20 +58,20 @@ public class ObjectEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Set<CharacterEntity> getCharacterEntity() {
+        return characterEntity;
+    }
+
+    public void setCharacterEntity(Set<CharacterEntity> characterEntity) {
+        this.characterEntity = characterEntity;
     }
 
     public Set<SagaVersionEntity> getSagaVersionEntity() {

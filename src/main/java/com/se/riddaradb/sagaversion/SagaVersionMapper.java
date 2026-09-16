@@ -1,11 +1,7 @@
 package com.se.riddaradb.sagaversion;
 
-import com.se.riddaradb.bib.BibMapper;
-import com.se.riddaradb.character.PersonEntity;
-import com.se.riddaradb.motif.MotifSagaVersionDto;
-import com.se.riddaradb.ms.MsEntity;
-import com.se.riddaradb.object.ObjectEntity;
-import com.se.riddaradb.place.PlaceEntity;
+import com.se.riddaradb.character.CharacterEntity;
+import com.se.riddaradb.location.LocationEntity;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
@@ -27,19 +23,14 @@ public class SagaVersionMapper {
                             sagaVersionMotifEntity.getPageChapterNumber()));
         }
 
-        sagaVersionResponseDto.setPersonIds(sagaVersionEntity.getPersonEntity()
+        sagaVersionResponseDto.setCharacterIds(sagaVersionEntity.getCharacterEntity()
                 .stream()
-                .map(PersonEntity::getId)
+                .map(CharacterEntity::getId)
                 .collect(Collectors.toSet()));
 
-        sagaVersionResponseDto.setPlaceIds(sagaVersionEntity.getPlaceEntity()
+        sagaVersionResponseDto.setLocationIds(sagaVersionEntity.getLocationEntity()
                 .stream()
-                .map(PlaceEntity::getId)
-                .collect(Collectors.toSet()));
-
-        sagaVersionResponseDto.setObjectIds(sagaVersionEntity.getObjectEntity()
-                .stream()
-                .map(ObjectEntity::getId)
+                .map(LocationEntity::getId)
                 .collect(Collectors.toSet()));
 
         return sagaVersionResponseDto;

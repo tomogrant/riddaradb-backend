@@ -1,11 +1,8 @@
 package com.se.riddaradb.sagaversion;
 
-import com.se.riddaradb.bib.BibEntity;
-import com.se.riddaradb.character.PersonEntity;
+import com.se.riddaradb.character.CharacterEntity;
 import com.se.riddaradb.motif.MotifEntity;
-import com.se.riddaradb.ms.MsEntity;
-import com.se.riddaradb.object.ObjectEntity;
-import com.se.riddaradb.place.PlaceEntity;
+import com.se.riddaradb.location.LocationEntity;
 import com.se.riddaradb.saga.SagaEntity;
 import jakarta.persistence.*;
 
@@ -20,6 +17,7 @@ public class SagaVersionEntity {
     public enum SagaDate {
         UNDEFINED,
         UNKNOWN,
+        _1200_1250,
         _1250_1300,
         _1300_1350,
         _1350_1400,
@@ -47,22 +45,17 @@ public class SagaVersionEntity {
     private Set<SagaVersionMotifEntity> sagaVersionMotifEntities = new HashSet<>();
 
     @ManyToMany()
-    @JoinTable(name = "sagaversion-person",
+    @JoinTable(name = "sagaversion-character",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private Set<PersonEntity> personEntity = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "character_id"))
+    private Set<CharacterEntity> characterEntity = new HashSet<>();
 
     @ManyToMany()
-    @JoinTable(name = "sagaversion-place",
+    @JoinTable(name = "sagaversion-location",
             joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "place_id"))
-    private Set<PlaceEntity> placeEntity = new HashSet<>();
-
-    @ManyToMany()
-    @JoinTable(name = "sagaversion-object",
-            joinColumns = @JoinColumn(name = "sagaversion_id"),
-            inverseJoinColumns = @JoinColumn(name = "object_id"))
-    private Set<ObjectEntity> objectEntity = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private Set<LocationEntity> locationEntity = new HashSet<>();
+    
 
     public SagaVersionEntity() {
     }
@@ -134,27 +127,19 @@ public class SagaVersionEntity {
         this.sagaVersionMotifEntities = sagaVersionMotifEntities;
     }
 
-    public Set<PersonEntity> getPersonEntity() {
-        return personEntity;
+    public Set<CharacterEntity> getCharacterEntity() {
+        return characterEntity;
     }
 
-    public void setPersonEntity(Set<PersonEntity> personEntity) {
-        this.personEntity = personEntity;
+    public void setCharacterEntity(Set<CharacterEntity> characterEntity) {
+        this.characterEntity = characterEntity;
     }
 
-    public Set<PlaceEntity> getPlaceEntity() {
-        return placeEntity;
+    public Set<LocationEntity> getLocationEntity() {
+        return locationEntity;
     }
 
-    public void setPlaceEntity(Set<PlaceEntity> placeEntity) {
-        this.placeEntity = placeEntity;
-    }
-
-    public Set<ObjectEntity> getObjectEntity() {
-        return objectEntity;
-    }
-
-    public void setObjectEntity(Set<ObjectEntity> objectEntity) {
-        this.objectEntity = objectEntity;
+    public void setLocationEntity(Set<LocationEntity> locationEntity) {
+        this.locationEntity = locationEntity;
     }
 }

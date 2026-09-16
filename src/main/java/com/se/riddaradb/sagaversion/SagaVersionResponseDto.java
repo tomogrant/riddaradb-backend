@@ -13,8 +13,8 @@ public class SagaVersionResponseDto {
     private SagaVersionEntity.SagaDate date;
     private Integer sagaId;
     private Set<SagaVersionMotifDto> sagaMotifs;
-    private Set<Integer> personIds;
-    private Set<Integer> placeIds;
+    private Set<Integer> characterIds;
+    private Set<Integer> locationIds;
     private Set<Integer> objectIds;
     private Set<Integer> msIds;
 
@@ -24,8 +24,8 @@ public class SagaVersionResponseDto {
         this.description = description;
         this.date = date;
         sagaMotifs = new HashSet<>();
-        personIds = new HashSet<>();
-        placeIds = new HashSet<>();
+        characterIds = new HashSet<>();
+        locationIds = new HashSet<>();
         objectIds = new HashSet<>();
         msIds = new HashSet<>();
     }
@@ -78,20 +78,20 @@ public class SagaVersionResponseDto {
         this.sagaMotifs = sagaMotifs;
     }
 
-    public Set<Integer> getPersonIds() {
-        return personIds;
+    public Set<Integer> getCharacterIds() {
+        return characterIds;
     }
 
-    public void setPersonIds(Set<Integer> personIds) {
-        this.personIds = personIds;
+    public void setCharacterIds(Set<Integer> characterIds) {
+        this.characterIds = characterIds;
     }
 
-    public Set<Integer> getPlaceIds() {
-        return placeIds;
+    public Set<Integer> getLocationIds() {
+        return locationIds;
     }
 
-    public void setPlaceIds(Set<Integer> placeIds) {
-        this.placeIds = placeIds;
+    public void setLocationIds(Set<Integer> locationIds) {
+        this.locationIds = locationIds;
     }
 
     public Set<Integer> getObjectIds() {

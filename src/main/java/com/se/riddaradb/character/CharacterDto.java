@@ -3,16 +3,16 @@ package com.se.riddaradb.character;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PersonDto {
+public class CharacterDto {
 
     int id;
     String name;
-    PersonEntity.Species species;
+    CharacterEntity.Species species;
     String realWorldRef;
     Set<Integer> placeIds;
     Set<Integer> SagaVersionIds;
 
-    public PersonDto(int id, String name, PersonEntity.Species species, String realWorldRef) {
+    public CharacterDto(int id, String name, CharacterEntity.Species species, String realWorldRef) {
         this.id = id;
         this.name = name;
         this.species = species;
@@ -37,11 +37,11 @@ public class PersonDto {
         this.name = name;
     }
 
-    public PersonEntity.Species getSpecies() {
+    public CharacterEntity.Species getSpecies() {
         return species;
     }
 
-    public void setSpecies(PersonEntity.Species species) {
+    public void setSpecies(CharacterEntity.Species species) {
         this.species = species;
     }
 

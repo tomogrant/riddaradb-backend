@@ -1,6 +1,6 @@
 package com.se.riddaradb.character;
 
-import com.se.riddaradb.place.PlaceEntity;
+import com.se.riddaradb.location.LocationEntity;
 import com.se.riddaradb.sagaversion.SagaVersionEntity;
 import jakarta.persistence.*;
 
@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "person")
-public class PersonEntity {
+@Table(name = "character")
+public class CharacterEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,24 +18,24 @@ public class PersonEntity {
     String name;
 
     @Enumerated(EnumType.STRING)
-    PersonEntity.Species species;
+    CharacterEntity.Species species;
 
     public enum Species {
-        HUMAN, DVERGR, JOTUNN, RISI, TROLL
+        HUMAN, GIANT, TROLL, DWARF, ELF, OBJECT
     }
 
     String realWorldRef;
 
-    @ManyToMany(mappedBy = "personEntity")
-    Set<PlaceEntity> placeEntity = new HashSet<>();
+    @ManyToMany(mappedBy = "characterEntity")
+    Set<LocationEntity> locationEntity = new HashSet<>();
 
-    @ManyToMany(mappedBy = "personEntity")
+    @ManyToMany(mappedBy = "characterEntity")
     Set<SagaVersionEntity> sagaVersionEntity = new HashSet<>();
 
-    protected PersonEntity() {
+    protected CharacterEntity() {
     }
 
-    public PersonEntity(int id, String name, Species species, String realWorldRef) {
+    public CharacterEntity(int id, String name, Species species, String realWorldRef) {
         this.id = id;
         this.name = name;
         this.species = species;
@@ -74,12 +74,12 @@ public class PersonEntity {
         this.realWorldRef = realWorldRef;
     }
 
-    public Set<PlaceEntity> getPlaceEntity() {
-        return placeEntity;
+    public Set<LocationEntity> getPlaceEntity() {
+        return locationEntity;
     }
 
-    public void setPlaceEntity(Set<PlaceEntity> placeEntity) {
-        this.placeEntity = placeEntity;
+    public void setPlaceEntity(Set<LocationEntity> locationEntity) {
+        this.locationEntity = locationEntity;
     }
 
     public Set<SagaVersionEntity> getSagaVersionEntity() {

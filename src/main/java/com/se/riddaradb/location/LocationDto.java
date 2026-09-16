@@ -1,22 +1,22 @@
-package com.se.riddaradb.place;
+package com.se.riddaradb.location;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class PlaceDto {
+public class LocationDto {
 
     int id;
     String name;
-    PlaceEntity.Type type;
-    Set<Integer> personIds;
+    LocationEntity.Type type;
+    Set<Integer> characterIds;
     Set<Integer> SagaVersionIds;
 
-    public PlaceDto(int id, String name, PlaceEntity.Type type) {
+    public LocationDto(int id, String name, LocationEntity.Type type) {
         this.id = id;
         this.name = name;
         this.type = type;
         SagaVersionIds = new HashSet<>();
-        personIds = new HashSet<>();
+        characterIds = new HashSet<>();
     }
 
     public int getId() {
@@ -35,20 +35,20 @@ public class PlaceDto {
         this.name = name;
     }
 
-    public PlaceEntity.Type getType() {
+    public LocationEntity.Type getType() {
         return type;
     }
 
-    public void setType(PlaceEntity.Type type) {
+    public void setType(LocationEntity.Type type) {
         this.type = type;
     }
 
-    public Set<Integer> getPersonIds() {
-        return personIds;
+    public Set<Integer> getCharacterIds() {
+        return characterIds;
     }
 
-    public void setPersonIds(Set<Integer> personIds) {
-        this.personIds = personIds;
+    public void setCharacterIds(Set<Integer> characterIds) {
+        this.characterIds = characterIds;
     }
 
     public Set<Integer> getSagaVersionIds() {

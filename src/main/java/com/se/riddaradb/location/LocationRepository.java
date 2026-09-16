@@ -1,8 +1,8 @@
-package com.se.riddaradb.character;
+package com.se.riddaradb.location;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonRepository extends JpaRepository<PersonEntity, Integer> {
+public interface LocationRepository extends JpaRepository<LocationEntity, Integer> {
 }
