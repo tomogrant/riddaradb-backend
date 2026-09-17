@@ -74,11 +74,11 @@ public class CharacterEntity {
         this.realWorldRef = realWorldRef;
     }
 
-    public Set<LocationEntity> getPlaceEntity() {
+    public Set<LocationEntity> getLocationEntity() {
         return locationEntity;
     }
 
-    public void setPlaceEntity(Set<LocationEntity> locationEntity) {
+    public void setLocationEntity(Set<LocationEntity> locationEntity) {
         this.locationEntity = locationEntity;
     }
 

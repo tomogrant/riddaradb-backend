@@ -21,6 +21,12 @@ public class MsEntity {
 
     private String shelfmark;
 
+    private String date;
+
+    private String handritLink;
+
+    private String fasnlLink;
+
     private String description;
 
     @OneToMany(mappedBy = "msEntity", orphanRemoval = true)
@@ -33,10 +39,13 @@ public class MsEntity {
     public MsEntity() {
     }
 
-    public MsEntity(Integer id, String name, String shelfmark, String description) {
+    public MsEntity(Integer id, String name, String shelfmark, String date, String handritLink, String fasnlLink, String description) {
         this.id = id;
         this.name = name;
         this.shelfmark = shelfmark;
+        this.date = date;
+        this.handritLink = handritLink;
+        this.fasnlLink = fasnlLink;
         this.description = description;
     }
 
@@ -62,6 +71,30 @@ public class MsEntity {
 
     public void setShelfmark(String shelfmark) {
         this.shelfmark = shelfmark;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHandritLink() {
+        return handritLink;
+    }
+
+    public void setHandritLink(String handritLink) {
+        this.handritLink = handritLink;
+    }
+
+    public String getFasnlLink() {
+        return fasnlLink;
+    }
+
+    public void setFasnlLink(String fasnlLink) {
+        this.fasnlLink = fasnlLink;
     }
 
     public String getDescription() {

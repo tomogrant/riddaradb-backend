@@ -12,6 +12,8 @@ public class MsRepositoryMapper {
 
         msRepositoryDto.setId(msRepositoryEntity.getId());
         msRepositoryDto.setName(msRepositoryEntity.getName());
+        msRepositoryDto.setCity(msRepositoryEntity.getCity());
+        msRepositoryDto.setCountry(msRepositoryEntity.getCountry());
 
         msRepositoryDto.setMsIds(msRepositoryEntity.getMsEntities()
                 .stream()

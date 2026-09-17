@@ -231,6 +231,9 @@ public class MsIntegrationTest {
                 null,
                 "Codex Regius",
                 "GKS 2365 4to",
+                "1600",
+                "www.handrit.is",
+                "www.fasnl.net",
                 "Also known as Konungsbók"
         );
     }
@@ -254,14 +257,17 @@ public class MsIntegrationTest {
     private MsSagaDto createMsSagaDto(){
         return new MsSagaDto(
                 null,
-                "10v - 30r"
+                "10v - 30r",
+                "note"
         );
     }
 
     private MsRepositoryDto createMsRepositoryDto(){
         return new MsRepositoryDto(
                 null,
-                "Gammel kongelig Samling");
+                "Gammel kongelig Samling",
+                "Copenhagen",
+                "Denmark");
     }
 
 

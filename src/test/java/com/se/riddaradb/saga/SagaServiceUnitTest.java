@@ -96,8 +96,8 @@ public class SagaServiceUnitTest {
 
         MsEntity msEntity = new MsEntity();
         msEntity.setId(1);
-        sagaEntity.addMs(msEntity, "old folio number");
-        SagaMsEntity sagaMsEntity = new SagaMsEntity(sagaEntity, msEntity, "old folio number");
+        sagaEntity.addMs(msEntity, "old folio number", "old note");
+        SagaMsEntity sagaMsEntity = new SagaMsEntity(sagaEntity, msEntity, "old folio number", "old note");
 
         BibEntity bibEntity = new BibEntity();
         bibEntity.setId(1);
@@ -122,6 +122,7 @@ public class SagaServiceUnitTest {
 
         SagaMsDto sagaMsDto = new SagaMsDto(1);
         sagaMsDto.setFolioNumber("New folio number");
+        sagaMsDto.setNote("New note");
         sagaRequestDto.setSagaMsDtos(Set.of(sagaMsDto));
 
         sagaRequestDto.setBibIds(Set.of(1));
@@ -237,8 +238,8 @@ public class SagaServiceUnitTest {
 
         MsEntity msEntity = new MsEntity();
         msEntity.setId(1);
-        sagaEntity.addMs(msEntity, "old folio number");
-        SagaMsEntity sagaMsEntity = new SagaMsEntity(sagaEntity, msEntity, "old folio number");
+        sagaEntity.addMs(msEntity, "old folio number", "old note");
+        SagaMsEntity sagaMsEntity = new SagaMsEntity(sagaEntity, msEntity, "old folio number", "old note");
 
         BibEntity bibEntity = new BibEntity();
         bibEntity.setId(1);

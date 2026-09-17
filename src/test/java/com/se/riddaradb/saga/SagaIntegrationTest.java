@@ -262,6 +262,9 @@ public class SagaIntegrationTest {
                 null,
                 "Name",
                 "Shelfmark",
+                "1300",
+                "www.handrit.is",
+                "www.fasnl.net",
                 "Description");
     }
 
@@ -269,6 +272,8 @@ public class SagaIntegrationTest {
         return new SagaMsDto(
                 null,
                 "Shelfmark",
-                "Folio number");
+                "Folio number",
+                "1800",
+                "note");
     }
 }

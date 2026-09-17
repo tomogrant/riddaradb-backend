@@ -12,7 +12,7 @@ public class CharacterMapper {
     public CharacterDto mapToDto(CharacterEntity characterEntity){
         CharacterDto characterDto = new CharacterDto(characterEntity.getId(), characterEntity.getName(), characterEntity.getSpecies(), characterEntity.getRealWorldRef());
 
-        characterDto.setPlaceIds(characterEntity.getPlaceEntity()
+        characterDto.setLocationIds(characterEntity.getLocationEntity()
                 .stream()
                 .map(LocationEntity::getId)
                 .collect(Collectors.toSet()));

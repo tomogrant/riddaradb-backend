@@ -6,6 +6,9 @@ public class MsDto {
         private Integer id;
         private String name;
         private String shelfmark;
+        private String date;
+        private String handritLink;
+        private String fasnlLink;
         private String description;
         private Set<MsSagaDto> msSagaDtos = new HashSet<>();
         private Integer msRepositoryId;
@@ -16,10 +19,16 @@ public class MsDto {
         public MsDto(Integer id,
                      String name,
                      String shelfmark,
+                     String date,
+                     String handritLink,
+                     String fasnlLink,
                      String description) {
             this.id = id;
             this.name = name;
             this.shelfmark = shelfmark;
+            this.date = date;
+            this.handritLink = handritLink;
+            this.fasnlLink = fasnlLink;
             this.description = description;
     }
 
@@ -45,6 +54,30 @@ public class MsDto {
 
     public void setShelfmark(String shelfmark) {
         this.shelfmark = shelfmark;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHandritLink() {
+        return handritLink;
+    }
+
+    public void setHandritLink(String handritLink) {
+        this.handritLink = handritLink;
+    }
+
+    public String getFasnlLink() {
+        return fasnlLink;
+    }
+
+    public void setFasnlLink(String fasnlLink) {
+        this.fasnlLink = fasnlLink;
     }
 
     public String getDescription() {

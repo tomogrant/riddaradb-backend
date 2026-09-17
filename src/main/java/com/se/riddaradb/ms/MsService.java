@@ -61,6 +61,9 @@ public class MsService {
 
         msEntity.setName(msDto.getName());
         msEntity.setShelfmark(msDto.getShelfmark());
+        msEntity.setDate(msDto.getDate());
+        msEntity.setHandritLink(msDto.getHandritLink());
+        msEntity.setFasnlLink(msDto.getFasnlLink());
         msEntity.setDescription(msDto.getDescription());
 
         updateSaga(msEntity, msDto);
@@ -69,10 +72,10 @@ public class MsService {
     }
 
     public MsDto saveMsEntry(MsDto msDto){
-        MsEntity msEntity = new MsEntity(msDto.getId(), msDto.getName(), msDto.getShelfmark(), msDto.getDescription());
+        MsEntity msEntity = new MsEntity(msDto.getId(), msDto.getName(), msDto.getShelfmark(), msDto.getDate(), msDto.getHandritLink(), msDto.getFasnlLink(), msDto.getDescription());
 
         for (MsSagaDto msSagaDto : msDto.getMsSagaDtos()){
-            sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga -> saga.addMs(msEntity, msSagaDto.getFolioNumber()));
+            sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga -> saga.addMs(msEntity, msSagaDto.getFolioNumber(), msSagaDto.getNote()));
         }
 
         if (msDto.getMsRepositoryId() != null){
@@ -103,12 +106,13 @@ public class MsService {
             //Saga-MS exists already. Update.
             if (sagaMsCurrent != null){
                 sagaMsCurrent.setFolioNumber(msSagaDto.getFolioNumber());
+                sagaMsCurrent.setNote(msSagaDto.getNote());
             }
 
             //Saga-MS does not exist. Fetch saga and attach MS.
             else{
                 sagaRepository.findById(msSagaDto.getSagaId()).ifPresent(saga ->
-                    saga.addMs(msEntity, msSagaDto.getFolioNumber())
+                    saga.addMs(msEntity, msSagaDto.getFolioNumber(), msSagaDto.getNote())
                 );
             }
         }

@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
 public class MsMapper {
 
     public MsDto mapToDto(MsEntity msEntity){
-        MsDto msDto = new MsDto(msEntity.getId(), msEntity.getName(), msEntity.getShelfmark(),  msEntity.getDescription());
+        MsDto msDto = new MsDto(msEntity.getId(), msEntity.getName(), msEntity.getShelfmark(), msEntity.getDate(), msEntity.getHandritLink(), msEntity.getFasnlLink(), msEntity.getDescription());
 
         //Set saga entries
         for (SagaMsEntity sagaMsEntity : msEntity.getSagaMsEntities()){
             msDto.getMsSagaDtos().add(new MsSagaDto
                     (sagaMsEntity.getSagaEntity().getId(),
-                            sagaMsEntity.getFolioNumber()));
+                            sagaMsEntity.getFolioNumber(),
+                            sagaMsEntity.getNote()));
         }
 
         if (msEntity.getMsRepositoryEntity() != null){

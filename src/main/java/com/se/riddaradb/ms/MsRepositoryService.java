@@ -37,6 +37,8 @@ public class MsRepositoryService {
 
         msRepositoryEntity.setId(msRepositoryDto.getId());
         msRepositoryEntity.setName(msRepositoryDto.getName());
+        msRepositoryEntity.setCity(msRepositoryDto.getCity());
+        msRepositoryEntity.setCountry(msRepositoryDto.getCountry());
 
         return msRepositoryMapper.mapToDto(msRepositoryRepository.save(msRepositoryEntity));
     }
@@ -45,6 +47,8 @@ public class MsRepositoryService {
         MsRepositoryEntity msRepositoryEntity = msRepositoryRepository.findById(msRepositoryDto.getId()).orElseThrow();
 
         msRepositoryEntity.setName(msRepositoryDto.getName());
+        msRepositoryEntity.setCity(msRepositoryDto.getCity());
+        msRepositoryEntity.setCountry(msRepositoryDto.getCountry());
 
         return msRepositoryMapper.mapToDto(msRepositoryEntity);
     }

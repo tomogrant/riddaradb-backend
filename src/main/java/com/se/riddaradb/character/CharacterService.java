@@ -41,7 +41,7 @@ public class CharacterService {
     public CharacterDto saveCharacterEntry(CharacterDto characterDto){
         CharacterEntity characterEntity = characterMapper.mapFromDto(characterDto);
         characterEntity.setSagaVersionEntity(new HashSet<>(sagaVersionRepository.findAllById(characterDto.getSagaVersionIds())));
-        characterEntity.setPlaceEntity(new HashSet<>(locationRepository.findAllById(characterDto.getPlaceIds())));
+        characterEntity.setLocationEntity(new HashSet<>(locationRepository.findAllById(characterDto.getLocationIds())));
         return characterMapper.mapToDto(characterRepository.save(characterEntity));
     }
 

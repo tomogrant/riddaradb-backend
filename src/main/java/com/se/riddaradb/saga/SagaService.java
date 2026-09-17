@@ -106,7 +106,7 @@ public class SagaService {
 
         //Manuscript entries
         for (SagaMsDto sagaMsDto : sagaRequestDto.getSagaMsDtos()){
-            msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> sagaEntity.addMs(ms, sagaMsDto.getFolioNumber()));
+            msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> sagaEntity.addMs(ms, sagaMsDto.getFolioNumber(), sagaMsDto.getNote()));
         }
 
         return sagaMapper.mapToResponseDto(this.sagaRepository.save(sagaEntity));
@@ -169,12 +169,13 @@ public class SagaService {
             //Saga-MS exists already. Update.
             if (sagaMsCurrent != null){
                 sagaMsCurrent.setFolioNumber(sagaMsDto.getFolioNumber());
+                sagaMsCurrent.setNote(sagaMsDto.getNote());
             }
 
             //Saga-MS entity does not exist in DB. Fetch MS and attach to saga.
             else{
                 msRepository.findById(sagaMsDto.getMsId()).ifPresent(ms -> {
-                    sagaEntity.addMs(ms, sagaMsDto.getFolioNumber());
+                    sagaEntity.addMs(ms, sagaMsDto.getFolioNumber(), sagaMsDto.getNote());
                 });
             }
         }

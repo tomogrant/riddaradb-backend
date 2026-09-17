@@ -33,11 +33,15 @@ public class SagaMapper {
                 .collect(Collectors.toSet()));
 
         //Set MS entries
+        //SagaMsDto contains a shelfmark and date from the MS entity itself to avoid
+        //having to build this separately in the frontend.
         for (SagaMsEntity sagaMsEntity : sagaEntity.getSagaMsEntities()){
             sagaResponseDto.getSagaMsDtos().add(new SagaMsDto
                     (sagaMsEntity.getMsEntity().getId(),
                             sagaMsEntity.getMsEntity().getShelfmark(),
-                            sagaMsEntity.getFolioNumber()));
+                            sagaMsEntity.getMsEntity().getDate(),
+                            sagaMsEntity.getFolioNumber(),
+                            sagaMsEntity.getNote()));
         }
 
         return sagaResponseDto;

@@ -22,12 +22,15 @@ public class SagaMsEntity {
 
     private String folioNumber;
 
+    private String note;
+
     public SagaMsEntity(){}
 
-    public SagaMsEntity(SagaEntity sagaEntity, MsEntity msEntity, String folioNumber) {
+    public SagaMsEntity(SagaEntity sagaEntity, MsEntity msEntity, String folioNumber, String note) {
         this.sagaEntity = sagaEntity;
         this.msEntity = msEntity;
         this.folioNumber = folioNumber;
+        this.note = note;
     }
 
     public SagaMsKey getId() {
@@ -60,5 +63,13 @@ public class SagaMsEntity {
 
     public void setFolioNumber(String folioNumber) {
         this.folioNumber = folioNumber;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

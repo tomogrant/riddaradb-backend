@@ -12,7 +12,7 @@ public class CharacterController {
         this.characterService = characterService;
     }
 
-    @GetMapping("/getcharacter")
+    @GetMapping("/getcharacters")
     Collection<CharacterDto> getCharacterEntry(){
         return characterService.getCharacterEntries();
     }

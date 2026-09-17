@@ -9,7 +9,7 @@ public class CharacterDto {
     String name;
     CharacterEntity.Species species;
     String realWorldRef;
-    Set<Integer> placeIds;
+    Set<Integer> locationIds;
     Set<Integer> SagaVersionIds;
 
     public CharacterDto(int id, String name, CharacterEntity.Species species, String realWorldRef) {
@@ -17,7 +17,7 @@ public class CharacterDto {
         this.name = name;
         this.species = species;
         this.realWorldRef = realWorldRef;
-        placeIds = new HashSet<>();
+        locationIds = new HashSet<>();
         SagaVersionIds = new HashSet<>();
     }
 
@@ -53,12 +53,12 @@ public class CharacterDto {
         this.realWorldRef = realWorldRef;
     }
 
-    public Set<Integer> getPlaceIds() {
-        return placeIds;
+    public Set<Integer> getLocationIds() {
+        return locationIds;
     }
 
-    public void setPlaceIds(Set<Integer> placeIds) {
-        this.placeIds = placeIds;
+    public void setLocationIds(Set<Integer> locationIds) {
+        this.locationIds = locationIds;
     }
 
     public Set<Integer> getSagaVersionIds() {

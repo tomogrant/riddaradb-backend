@@ -12,7 +12,7 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping("/getlocation")
+    @GetMapping("/getlocations")
     Collection<LocationDto> getLocationEntry(){
         return locationService.getLocationEntries();
     }

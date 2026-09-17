@@ -3,14 +3,18 @@ package com.se.riddaradb.saga;
 public class SagaMsDto {
     private Integer msId;
     private String shelfmark;
+    private String date;
     private String folioNumber;
+    private String note;
 
     public SagaMsDto(){}
 
-    public SagaMsDto(Integer msId, String shelfmark, String folioNumber) {
+    public SagaMsDto(Integer msId, String shelfmark, String date, String folioNumber, String note) {
         this.msId = msId;
         this.shelfmark = shelfmark;
+        this.date = date;
         this.folioNumber = folioNumber;
+        this.note = note;
     }
 
     public SagaMsDto(Integer msId) {
@@ -33,11 +37,27 @@ public class SagaMsDto {
         this.shelfmark = shelfmark;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getFolioNumber() {
         return folioNumber;
     }
 
     public void setFolioNumber(String folioNumber) {
         this.folioNumber = folioNumber;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

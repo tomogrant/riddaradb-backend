@@ -63,8 +63,8 @@ public class SagaEntity {
         bib.getSagaEntity().add(this);
     }
 
-    public void addMs(MsEntity msEntity, String folioNumber){
-        SagaMsEntity sagaMsEntity = new SagaMsEntity(this, msEntity, folioNumber);
+    public void addMs(MsEntity msEntity, String folioNumber, String note){
+        SagaMsEntity sagaMsEntity = new SagaMsEntity(this, msEntity, folioNumber, note);
 
         getSagaMsEntities().add(sagaMsEntity);
         msEntity.getSagaMsEntities().add(sagaMsEntity);

@@ -14,6 +14,10 @@ public class MsRepositoryEntity {
 
     private String name;
 
+    private String city;
+
+    private String country;
+
     @OneToMany(mappedBy = "msRepositoryEntity", cascade = CascadeType.ALL)
     private Set<MsEntity> msEntities = new HashSet<>();
 
@@ -36,6 +40,22 @@ public class MsRepositoryEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Set<MsEntity> getMsEntities() {
