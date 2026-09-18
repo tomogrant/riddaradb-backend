@@ -1,7 +1,5 @@
 package com.se.riddaradb.sagaversion;
 
-import com.se.riddaradb.bib.BibDto;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,8 +13,6 @@ public class SagaVersionResponseDto {
     private Set<SagaVersionMotifDto> sagaMotifs;
     private Set<Integer> characterIds;
     private Set<Integer> locationIds;
-    private Set<Integer> objectIds;
-    private Set<Integer> msIds;
 
     public SagaVersionResponseDto(Integer id, String title, String description, SagaVersionEntity.SagaDate date) {
         this.id = id;
@@ -26,8 +22,6 @@ public class SagaVersionResponseDto {
         sagaMotifs = new HashSet<>();
         characterIds = new HashSet<>();
         locationIds = new HashSet<>();
-        objectIds = new HashSet<>();
-        msIds = new HashSet<>();
     }
 
     public Integer getId() {
@@ -92,21 +86,5 @@ public class SagaVersionResponseDto {
 
     public void setLocationIds(Set<Integer> locationIds) {
         this.locationIds = locationIds;
-    }
-
-    public Set<Integer> getObjectIds() {
-        return objectIds;
-    }
-
-    public void setObjectIds(Set<Integer> objectIds) {
-        this.objectIds = objectIds;
-    }
-
-    public Set<Integer> getMsIds() {
-        return msIds;
-    }
-
-    public void setMsIds(Set<Integer> msIds) {
-        this.msIds = msIds;
     }
 }
