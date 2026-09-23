@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
+@RequestMapping("/msrepository/")
 public class MsRepositoryController {
 
     final MsRepositoryService msRepositoryService;
@@ -13,27 +14,27 @@ public class MsRepositoryController {
         this.msRepositoryService = msRepositoryService;
     }
 
-    @GetMapping("/ms/getmsrepositories")
+    @GetMapping("getmsrepositories")
     Collection<MsRepositoryDto> getMsEntries(){
         return msRepositoryService.getMsRepositories();
     }
 
-    @GetMapping("/ms/getmsrepositorybyid/{id}")
+    @GetMapping("getmsrepositorybyid/{id}")
     MsRepositoryDto getMsEntryById(@PathVariable int id){
         return msRepositoryService.getMsRepositoryById(id);
     }
 
-    @PostMapping("/ms/postmsrepository")
+    @PostMapping("postmsrepository")
     MsRepositoryDto postMsEntry(@RequestBody MsRepositoryDto msRepositoryDto){
         return msRepositoryService.saveMsRepository(msRepositoryDto);
     }
 
-    @PutMapping("/ms/putmsrepository")
+    @PutMapping("putmsrepository")
     MsRepositoryDto putMsEntry(@RequestBody MsRepositoryDto msRepositoryDto){
         return msRepositoryService.updateMsRepository(msRepositoryDto);
     }
 
-    @DeleteMapping("/ms/deletemsrepository/{id}")
+    @DeleteMapping("deletemsrepository/{id}")
     void deleteMsEntry(@PathVariable int id){
         msRepositoryService.deleteMsRepositoryById(id);
     }

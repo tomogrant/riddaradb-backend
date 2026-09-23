@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    username: tg
+    password: admin
+    url: jdbc:postgresql://localhost:5432/riddaradb-postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

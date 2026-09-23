@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
+@RequestMapping("/locations/")
 public class LocationController {
 
     final LocationService locationService;

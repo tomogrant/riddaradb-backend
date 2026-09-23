@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/sagaversions/")
 public class SagaVersionController {
 
     final SagaVersionService sagaVersionService;
@@ -12,17 +13,17 @@ public class SagaVersionController {
         this.sagaVersionService = sagaVersionService;
     }
 
-    @GetMapping("/sagas/getsagaversions")
+    @GetMapping("getsagaversions")
     Set<SagaVersionResponseDto> getSagas(){
         return sagaVersionService.getSagaVersions();
     }
 
-    @GetMapping("/sagas/getsagaversionbyid/{id}")
+    @GetMapping("getsagaversionbyid/{id}")
     SagaVersionResponseDto getSagaById(@PathVariable int id){
         return sagaVersionService.getSagaVersionById(id);
     }
 
-    @GetMapping("/sagas/getsagaversiontitles")
+    @GetMapping("getsagaversiontitles")
     Set<SagaVersionTitleDto> getSagaVersionTitles(){
         return sagaVersionService.getSagaVersionTitles();
     }
@@ -37,7 +38,7 @@ public class SagaVersionController {
 //        return sagaVersionService.saveSagaVersion(sagaVersionRequestDto);
 //    }
 
-    @DeleteMapping("/sagas/deletesagaversion/{id}")
+    @DeleteMapping("deletesagaversion/{id}")
     void deleteSaga(@PathVariable int id){
         sagaVersionService.deleteSagaVersionById(id);
     }

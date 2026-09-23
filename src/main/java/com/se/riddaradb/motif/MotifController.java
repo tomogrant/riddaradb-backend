@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
+@RequestMapping("/motifs/")
 public class MotifController {
 
     final MotifService motifService;
@@ -13,47 +14,47 @@ public class MotifController {
         this.motifService = motifService;
     }
 
-    @GetMapping("/motifs/getmotifs")
+    @GetMapping("getmotifs")
     Collection<MotifDto> getMotifEntries(){
         return motifService.getMotifEntries();
     }
 
-    @GetMapping("/motifs/getmotifbyid/{id}")
+    @GetMapping("getmotifbyid/{id}")
     MotifDto getMotifEntryById(@PathVariable int id){
         return motifService.getMotifEntryById(id);
     }
 
-    @GetMapping("/motifs/searchmotifs/{searchTerm}")
+    @GetMapping("searchmotifs/{searchTerm}")
     Collection<MotifSearchResult> searchMotif(@PathVariable String searchTerm){
         return motifService.search(searchTerm);
     }
 
-    @GetMapping("/motifs/searchmotifsexact/{searchTerm}")
+    @GetMapping("searchmotifsexact/{searchTerm}")
     Collection<MotifSearchResult> searchMotifExact(@PathVariable String searchTerm){
         return motifService.searchExact(searchTerm);
     }
 
-    @GetMapping("/motifs/getrootmotifs")
+    @GetMapping("getrootmotifs")
     Collection<MotifDto> getRootMotifs(){
         return motifService.getRootMotifs();
     }
 
-    @GetMapping("/motifs/getchildmotifsbyid/{id}")
+    @GetMapping("getchildmotifsbyid/{id}")
     Collection<MotifDto> getChildMotifsById(@PathVariable int id){
         return motifService.getChildMotifs(id);
     }
 
-    @PostMapping("/motifs/postmotif")
+    @PostMapping("postmotif")
     MotifDto postMotifEntry(@RequestBody MotifDto motifDto){
         return motifService.saveMotifEntry(motifDto);
     }
 
-    @PutMapping("/motifs/putmotif")
+    @PutMapping("putmotif")
     MotifDto putMotifEntry(@RequestBody MotifDto motifDto){
         return motifService.updateMotifEntry(motifDto);
     }
 
-    @DeleteMapping("/motifs/deletemotif/{id}")
+    @DeleteMapping("deletemotif/{id}")
     void deleteMotifEntry(@PathVariable int id){
         motifService.deleteMotifEntryById(id);
     }

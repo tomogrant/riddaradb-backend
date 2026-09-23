@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/sagas/")
 public class SagaController {
 
     final SagaService sagaService;
@@ -11,30 +12,30 @@ public class SagaController {
         this.sagaService = sagaService;
     }
 
-    @GetMapping("/sagas/getsagas")
+    @GetMapping("getsagas")
     Set<SagaResponseDto> getSagas(){
         return sagaService.getSagas();
     }
 
-    @GetMapping("/sagas/getsagabyid/{id}")
+    @GetMapping("getsagabyid/{id}")
     SagaResponseDto getSagaById(@PathVariable int id){
         return sagaService.getSagaById(id);
     }
 
-    @GetMapping("/sagas/getsagatitles")
+    @GetMapping("getsagatitles")
     Set<SagaTitleDto> getSagaTitles() { return sagaService.getSagaTitles();}
 
-    @PostMapping("/sagas/postsaga")
+    @PostMapping("postsaga")
     SagaResponseDto postSaga(@RequestBody SagaRequestDto sagaRequestDto){
         return sagaService.saveSaga(sagaRequestDto);
     }
 
-    @PutMapping("/sagas/putsaga")
+    @PutMapping("putsaga")
     SagaResponseDto putSaga(@RequestBody SagaRequestDto sagaRequestDto){
         return sagaService.updateSaga(sagaRequestDto);
     }
 
-    @DeleteMapping("/sagas/deletesaga/{id}")
+    @DeleteMapping("deletesaga/{id}")
     void deleteSaga(@PathVariable int id){
         sagaService.deleteSagaById(id);
     }
