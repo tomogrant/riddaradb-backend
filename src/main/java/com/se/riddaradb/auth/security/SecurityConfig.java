@@ -6,20 +6,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.security.core.userdetails.User.builder;
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -27,8 +30,41 @@ public class SecurityConfig {
 
 
     @Bean
+    public AuthenticationManager authenticationManager
+            (AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry(){
+        return new SessionRegistryImpl();
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher(){
+        return new HttpSessionEventPublisher();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        //Allows the frontend to request cookies etc
+        corsConfiguration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return source;
     }
 
     @Bean
@@ -37,7 +73,7 @@ public class SecurityConfig {
         final String adminPattern = "/admin/**";
         final String sagaPattern = "/sagas/**";
         final String sagaVersionPattern = "/sagaversions/**";
-        final String bibPattern = "/bib/**";
+        final String bibPattern = "/bibentries/**";
         final String motifPattern = "/motifs/**";
         final String msPattern = "/ms/**";
         final String msRepoPattern = "/msrepository/**";
@@ -45,14 +81,19 @@ public class SecurityConfig {
         final String locationPattern = "/locations/**";
 
         httpSecurity
-                .csrf(csrf ->
-                        csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                //Enable CORS settings as defined in the CorsConfigurationSource bean
+                .cors(Customizer.withDefaults())
 
+                //Generate CSRF cookie for Single Page Application
+                .csrf(CsrfConfigurer::spa)
+
+//                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
 
                         //Authentication; me and log out only if authenticated; anyone can log in and get the CSRF
                         .requestMatchers("/auth/me", "/auth/logout").authenticated()
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/csrf").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
 
                         //Admin actions
                         .requestMatchers(adminPattern).hasRole(Role.ADMINISTRATOR.name())
@@ -97,8 +138,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, locationPattern).hasRole(Role.ADMINISTRATOR.name())
                         .requestMatchers(locationPattern).authenticated()
                 )
-                //No form as there will be an Angular form
-                .formLogin(AbstractHttpConfigurer::disable)
+
+                //Maximum number of sessions
+                .sessionManagement(session ->
+                        session.maximumSessions(1))
+
+                //Form login
+                .formLogin(form -> form
+                        .loginProcessingUrl("/auth/login")
+                        .successHandler(((request, response, authentication) ->
+                                response.setStatus(HttpServletResponse.SC_NO_CONTENT)))
+                        .failureHandler(((request, response, exception) ->
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)))
+                )
+
                 //Log out endpoint
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
@@ -107,14 +160,15 @@ public class SecurityConfig {
                         .logoutSuccessHandler(
                                 (request, response, authentication) ->
                                 response.setStatus(HttpServletResponse.SC_NO_CONTENT))
+                )
+
+                // Spring Security normally reroutes unauthenticated requests to Spring's own login page.
+                // Instead, we want to just send a HTTP response
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 );
 
         return httpSecurity.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager
-            (AuthenticationConfiguration authenticationConfiguration) throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
     }
 }

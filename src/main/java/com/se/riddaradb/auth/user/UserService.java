@@ -1,5 +1,7 @@
 package com.se.riddaradb.auth.user;
 
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,13 +18,16 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final SessionRegistry sessionRegistry;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserMapper userMapper,
-                       UserRepository userRepository){
+                       UserRepository userRepository,
+                       SessionRegistry sessionRegistry){
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.userRepository = userRepository;
+        this.sessionRegistry = sessionRegistry;
     }
 
     public Set<UserDto> getUsers(){
@@ -61,6 +66,10 @@ public class UserService {
     }
 
     public void deleteUser(String username){
+
+        sessionRegistry.getAllSessions(username, false)
+                .forEach(SessionInformation::expireNow);
+
         userRepository.deleteByUsername(username);
     }
 }

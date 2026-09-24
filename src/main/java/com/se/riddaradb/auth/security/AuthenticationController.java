@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth/")
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
 
-    public AuthenticationController(AuthenticationManager authenticationManager){
-        this.authenticationManager = authenticationManager;
+    public AuthenticationController(){
     }
 
     @GetMapping("csrf")
@@ -29,43 +28,39 @@ public class AuthenticationController {
         return csrfToken;
     }
 
-    @PostMapping("login")
-    public ResponseEntity<?> login(
-            //Record containing credentials supplied by user
-            @RequestBody LoginRequest loginRequest,
-            //Gives controller access to underlying HTTP request
-            HttpServletRequest httpServletRequest){
-
-        //Creates empty security container
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-
-        //Searches for user with UserDetailsService and decrypts password.
-        //If there's a match, return an athenticated Authentication object;
-        //if not, throw an exception.
-        Authentication authentication = authenticationManager.authenticate(
-                //Authentication token built from credentials supplied by user
-                new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
-        );
-
-        //Assigns authentication object to the security container
-        securityContext.setAuthentication(authentication);
-
-        //Gets the HTTP session associated with this request. true =
-        //if there isn't currently a session, create one.
-        HttpSession httpSession = httpServletRequest.getSession(true);
-
-        //Persists the security context container to the session.
-        httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-
-        return ResponseEntity.ok(new LoginResponse(authentication.getName()));
-    }
+//    @PostMapping("login")
+//    public ResponseEntity<?> login(
+//            //Record containing credentials supplied by user
+//            @RequestBody LoginRequest loginRequest,
+//            //Gives controller access to underlying HTTP request
+//            HttpServletRequest httpServletRequest){
+//
+//        //Creates empty security container
+//        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//
+//        //Searches for user with UserDetailsService and decrypts password.
+//        //If there's a match, return an athenticated Authentication object;
+//        //if not, throw an exception.
+//        Authentication authentication = authenticationManager.authenticate(
+//                //Authentication token built from credentials supplied by user
+//                new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
+//        );
+//
+//        //Assigns authentication object to the security container
+//        securityContext.setAuthentication(authentication);
+//
+//        //Gets the HTTP session associated with this request. true =
+//        //if there isn't currently a session, create one.
+//        HttpSession httpSession = httpServletRequest.getSession(true);
+//
+//        //Persists the security context container to the session.
+//        httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+//
+//        return ResponseEntity.ok(new LoginResponse(authentication.getName()));
+//    }
 
     @GetMapping("me")
     public ResponseEntity<UserResponse> me (Authentication authentication){
-
-        if (authentication == null || !authentication.isAuthenticated()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         return ResponseEntity.ok( new UserResponse(authentication.getName(),
                 authentication.getAuthorities()
