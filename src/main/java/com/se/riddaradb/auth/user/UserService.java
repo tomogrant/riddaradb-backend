@@ -67,6 +67,13 @@ public class UserService {
 
     public void deleteUser(String username){
 
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (user.getRoles().contains(Role.ADMINISTRATOR)){
+            throw new IllegalArgumentException("Cannot delete admin");
+        }
+
         sessionRegistry.getAllSessions(username, false)
                 .forEach(SessionInformation::expireNow);
 

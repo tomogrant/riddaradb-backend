@@ -5,17 +5,11 @@ import java.util.Set;
 public class UserDto {
 
     private Integer id;
-
     private String username;
-
     private String email;
-
     private String firstName;
-
     private String lastNames;
-
     private String password;
-
     private Set<Role> roles;
 
     public UserDto() {
