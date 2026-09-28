@@ -9,15 +9,17 @@ public class SagaRequestDto {
 
     private Integer id;
     private String title;
+    private String translatedTitle;
     private String description;
     private Boolean translated;
     private Set<SagaVersionRequestDto> sagaVersions = new HashSet<>();
     private Set<Integer> bibIds = new HashSet<>();
     private Set<SagaMsDto> sagaMsDtos = new HashSet<>();
 
-    public SagaRequestDto(Integer id, String title, String description, Boolean translated) {
+    public SagaRequestDto(Integer id, String title, String translatedTitle, String description, Boolean translated) {
         this.id = id;
         this.title = title;
+        this.translatedTitle = translatedTitle;
         this.description = description;
         this.translated = translated;
     }
@@ -40,6 +42,14 @@ public class SagaRequestDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTranslatedTitle() {
+        return translatedTitle;
+    }
+
+    public void setTranslatedTitle(String translatedTitle) {
+        this.translatedTitle = translatedTitle;
     }
 
     public String getDescription() {

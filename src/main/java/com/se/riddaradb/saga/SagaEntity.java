@@ -21,6 +21,9 @@ public class SagaEntity {
     @NotBlank
     private String title;
 
+    @NotBlank
+    private String translatedTitle;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -41,9 +44,10 @@ public class SagaEntity {
     public SagaEntity(){
     }
 
-    public SagaEntity(Integer id, String title, String description, Boolean translated) {
+    public SagaEntity(Integer id, String title, String translatedTitle, String description, Boolean translated) {
         this.id = id;
         this.title = title;
+        this.translatedTitle = translatedTitle;
         this.description = description;
         this.translated = translated;
     }
@@ -89,6 +93,14 @@ public class SagaEntity {
 
     public void setTitle(@NotBlank String title) {
         this.title = title;
+    }
+
+    public String getTranslatedTitle() {
+        return translatedTitle;
+    }
+
+    public void setTranslatedTitle(String translatedTitle) {
+        this.translatedTitle = translatedTitle;
     }
 
     public String getDescription() {

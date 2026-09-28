@@ -20,7 +20,8 @@ public class SagaVersionMapper {
                     (sagaVersionMotifEntity.getMotifEntity().getId(),
                             sagaVersionMotifEntity.getMotifEntity().getMotifCode(),
                             sagaVersionMotifEntity.getMotifEntity().getMotifName(),
-                            sagaVersionMotifEntity.getPageChapterNumber()));
+                            sagaVersionMotifEntity.getPageChapterNumber(),
+                            sagaVersionMotifEntity.getInBoberg()));
         }
 
         sagaVersionResponseDto.setCharacterIds(sagaVersionEntity.getCharacterEntity()

@@ -67,8 +67,8 @@ public class SagaVersionEntity {
         this.date = date;
     }
 
-    public void addMotif(MotifEntity motifEntity, String pageChapterNumber){
-        SagaVersionMotifEntity sagaVersionMotifEntity = new SagaVersionMotifEntity(this, motifEntity, pageChapterNumber);
+    public void addMotif(MotifEntity motifEntity, String pageChapterNumber, Boolean inBoberg){
+        SagaVersionMotifEntity sagaVersionMotifEntity = new SagaVersionMotifEntity(this, motifEntity, pageChapterNumber, inBoberg);
 
         getSagaVersionMotifEntities().add(sagaVersionMotifEntity);
         motifEntity.getSagaVersionMotifEntities().add(sagaVersionMotifEntity);

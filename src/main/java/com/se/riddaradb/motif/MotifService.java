@@ -87,7 +87,7 @@ public class MotifService {
             System.out.println("There is a MotifSagaDto associated with this DTO, but is there a saga version in the DB?");
                 sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
                     System.out.println("Saga version found");
-                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
+                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber(), motifSagaDto.getInBoberg());
                 });
         }
 
@@ -117,12 +117,13 @@ public class MotifService {
             //Saga-motif exists already. Update.
             if (sagaMotifCurrent != null){
                 sagaMotifCurrent.setPageChapterNumber(motifSagaDto.getPageChapterNumber());
+                sagaMotifCurrent.setInBoberg(motifSagaDto.getInBoberg());
             }
 
             //Saga-motif does not exist. Create.
             else{
                 sagaVersionRepository.findById(motifSagaDto.getSagaVersionId()).ifPresent(sagaVersion -> {
-                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber());
+                    sagaVersion.addMotif(motifEntity, motifSagaDto.getPageChapterNumber(), motifSagaDto.getInBoberg());
                 });
             }
         }

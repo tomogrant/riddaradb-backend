@@ -5,12 +5,14 @@ public class SagaVersionMotifDto {
     private String motifCode;
     private String motifName;
     private String pageChapterNumber;
+    private Boolean inBoberg;
 
-    public SagaVersionMotifDto(Integer motifId, String motifCode, String motifName, String pageChapterNumber) {
+    public SagaVersionMotifDto(Integer motifId, String motifCode, String motifName, String pageChapterNumber, Boolean inBoberg) {
         this.motifId = motifId;
         this.motifCode = motifCode;
         this.motifName = motifName;
         this.pageChapterNumber = pageChapterNumber;
+        this.inBoberg = inBoberg;
     }
 
     public Integer getMotifId() {
@@ -43,5 +45,13 @@ public class SagaVersionMotifDto {
 
     public void setPageChapterNumber(String pageChapterNumber) {
         this.pageChapterNumber = pageChapterNumber;
+    }
+
+    public Boolean getInBoberg() {
+        return inBoberg;
+    }
+
+    public void setInBoberg(Boolean inBoberg) {
+        this.inBoberg = inBoberg;
     }
 }

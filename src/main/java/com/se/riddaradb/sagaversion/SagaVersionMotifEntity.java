@@ -24,9 +24,11 @@ public class SagaVersionMotifEntity {
 
     private String pageChapterNumber;
 
+    private Boolean inBoberg;
+
     public SagaVersionMotifEntity(){}
 
-    public SagaVersionMotifEntity(SagaVersionEntity sagaVersionEntity, MotifEntity motifEntity, String pageChapterNumber) {
+    public SagaVersionMotifEntity(SagaVersionEntity sagaVersionEntity, MotifEntity motifEntity, String pageChapterNumber, Boolean inBoberg) {
         this.sagaVersionEntity = sagaVersionEntity;
         this.motifEntity = motifEntity;
         this.pageChapterNumber = pageChapterNumber;
@@ -62,5 +64,13 @@ public class SagaVersionMotifEntity {
 
     public void setPageChapterNumber(String pageChapterNumber) {
         this.pageChapterNumber = pageChapterNumber;
+    }
+
+    public Boolean getInBoberg() {
+        return inBoberg;
+    }
+
+    public void setInBoberg(Boolean inBoberg) {
+        this.inBoberg = inBoberg;
     }
 }

@@ -1,7 +1,5 @@
 package com.se.riddaradb.saga;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.se.riddaradb.bib.BibDto;
 import com.se.riddaradb.bib.BibEntity;
 import com.se.riddaradb.bib.BibService;
@@ -13,12 +11,14 @@ import com.se.riddaradb.sagaversion.SagaVersionResponseDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Set;
 
@@ -93,6 +93,7 @@ public class SagaIntegrationTest {
         SagaRequestDto sagaRequestDto = new SagaRequestDto(
                 sagaResponseDto.getId(),
                 "New title",
+                "New translated title",
                 "New description",
                 false
         );
@@ -223,6 +224,7 @@ public class SagaIntegrationTest {
         return new SagaRequestDto(
                 null,
                 "Title",
+                "Translated title",
                 "Description",
                 false);
     }

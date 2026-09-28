@@ -12,7 +12,8 @@ public class MotifMapper {
         for (SagaVersionMotifEntity sagaVersionMotifEntity : motifEntity.getSagaVersionMotifEntities()){
             motifDto.getSagaMotifs().add(new MotifSagaVersionDto
                     (sagaVersionMotifEntity.getSagaVersionEntity().getId(),
-                    sagaVersionMotifEntity.getPageChapterNumber()));
+                    sagaVersionMotifEntity.getPageChapterNumber(),
+                    sagaVersionMotifEntity.getInBoberg()));
         }
 
         if (motifEntity.getParent() != null){
