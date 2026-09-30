@@ -16,6 +16,8 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.core.type.TypeReference;
@@ -24,6 +26,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@WithMockUser(username="admin", roles="ADMINISTRATOR")
+@ActiveProfiles("test")
 public class MsIntegrationTest {
 
     @Autowired
@@ -92,6 +97,7 @@ public class MsIntegrationTest {
         msDto.setMsSagaDtos(Set.of(msSagaDto));
 
         MvcResult mvcResult = mockMvc.perform(put("/ms/putmsentry")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(msDto)))
                 .andDo(print())
@@ -120,8 +126,11 @@ public class MsIntegrationTest {
         MsRepositoryDto msRepositoryDto = msRepositoryService.getMsRepositoryById(msDto.getMsRepositoryId());
 
         msRepositoryDto.setName("Arnamagnaean Institute");
+        msRepositoryDto.setCountry("Denmark");
+        msRepositoryDto.setCity("Copenhagen");
 
-        MvcResult mvcResult = mockMvc.perform(put("/ms/putmsrepository")
+        MvcResult mvcResult = mockMvc.perform(put("/msrepository/putmsrepository")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(msRepositoryDto)))
                 .andDo(print())
@@ -140,7 +149,8 @@ public class MsIntegrationTest {
 
         postMs();
 
-        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsentries"))
+        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsentries")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -157,10 +167,12 @@ public class MsIntegrationTest {
 
         MsDto msDto = postMs();
 
-        mockMvc.perform(delete("/ms/deletemsentry/" + msDto.getId()))
+        mockMvc.perform(delete("/ms/deletemsentry/" + msDto.getId())
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsentries"))
+        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsentries")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -174,18 +186,20 @@ public class MsIntegrationTest {
 
         MsDto msDto = postMs();
 
-        mockMvc.perform(delete("/ms/deletemsrepository/" + msDto.getMsRepositoryId()))
+        mockMvc.perform(delete("/msrepository/deletemsrepository/" + msDto.getMsRepositoryId())
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
         //Has the repository been deleted?
-        MvcResult mvcResult = mockMvc.perform(get("/ms/getmsrepositories"))
+        MvcResult mvcResult = mockMvc.perform(get("/msrepository/getmsrepositories"))
                 .andExpect(status().isOk())
                 .andReturn();
         Set<MsRepositoryDto> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
         assertThat(result).isEmpty();
 
         //Has the associated manuscript been deleted?
-        mvcResult = mockMvc.perform(get("/ms/getmsentries"))
+        mvcResult = mockMvc.perform(get("/ms/getmsentries")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
         result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>(){});
@@ -217,6 +231,7 @@ public class MsIntegrationTest {
         msDto.setMsSagaDtos(Set.of(msSagaDto));
 
         MvcResult mvcResult = mockMvc.perform(post("/ms/postmsentry")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(msDto)))
                 .andDo(print())

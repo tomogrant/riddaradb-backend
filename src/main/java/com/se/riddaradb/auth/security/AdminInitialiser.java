@@ -4,6 +4,7 @@ import com.se.riddaradb.auth.user.Role;
 import com.se.riddaradb.auth.user.UserEntity;
 import com.se.riddaradb.auth.user.UserRepository;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +18,11 @@ public class AdminInitialiser implements ApplicationRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //Make these secret in production
-    private String username = "admin";
-    private String password = "password";
+    @Value("${app.admin.username}")
+    private String username;
+
+    @Value("${app.admin.password}")
+    private String password;
 
     public AdminInitialiser(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;

@@ -8,7 +8,5 @@ public class RiddaradbApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(RiddaradbApplication.class, args);
-
     }
-
 }

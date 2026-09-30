@@ -12,6 +12,8 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.core.type.TypeReference;
@@ -21,6 +23,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(username="admin", roles="ADMINISTRATOR")
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class MotifIntegrationTest {
 
@@ -80,6 +85,7 @@ public class MotifIntegrationTest {
         motifDto.setSagaMotifs(Set.of(motifSagaVersionDto));
 
         MvcResult mvcResult = mockMvc.perform(put("/motifs/putmotif")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(motifDto)))
                 .andDo(print())
@@ -104,7 +110,8 @@ public class MotifIntegrationTest {
 
         postMotif();
 
-        MvcResult mvcResult = mockMvc.perform(get("/motifs/getmotifs"))
+        MvcResult mvcResult = mockMvc.perform(get("/motifs/getmotifs")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -121,10 +128,12 @@ public class MotifIntegrationTest {
 
         MotifDto motifDto = postMotif();
 
-        mockMvc.perform(delete("/motifs/deletemotif/" + motifDto.getId()))
+        mockMvc.perform(delete("/motifs/deletemotif/" + motifDto.getId())
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = mockMvc.perform(get("/motifs/getmotifs"))
+        MvcResult mvcResult = mockMvc.perform(get("/motifs/getmotifs")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -155,6 +164,7 @@ public class MotifIntegrationTest {
         motifDto.setSagaMotifs(Set.of(motifSagaVersionDto));
 
         MvcResult mvcResult = mockMvc.perform(post("/motifs/postmotif")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(motifDto)))
                 .andDo(print())

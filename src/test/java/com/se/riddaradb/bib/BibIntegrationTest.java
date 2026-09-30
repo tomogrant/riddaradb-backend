@@ -7,7 +7,9 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.core.type.TypeReference;
@@ -16,23 +18,22 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @DirtiesContext
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@WithMockUser(username="admin", roles="ADMINISTRATOR")
 class BibIntegrationTest {
 
     @BeforeEach
-    void cleanDatabase(){
+    void setup() {
         bibService.deleteAll();
     }
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -56,7 +57,8 @@ class BibIntegrationTest {
 
         postBib();
 
-        MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries"))
+        MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -77,6 +79,7 @@ class BibIntegrationTest {
         bibDto.setTitle("Title new");
 
         MvcResult mvcResult = mockMvc.perform(put("/bibentries/putbibentry")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bibDto)))
                 .andExpect(status().isOk())
@@ -93,10 +96,12 @@ class BibIntegrationTest {
 
         BibDto bibDto = postBib();
 
-        mockMvc.perform(delete("/bibentries/deletebibentry/" + bibDto.getId()))
+        mockMvc.perform(delete("/bibentries/deletebibentry/" + bibDto.getId())
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries"))
+        MvcResult mvcResult = mockMvc.perform(get("/bibentries/getbibentries")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -127,6 +132,7 @@ class BibIntegrationTest {
     BibDto postBib() throws Exception{
 
         MvcResult mvcResult = mockMvc.perform(post("/bibentries/postbibentry")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createBibDto())))
                 .andExpect(status().isOk())

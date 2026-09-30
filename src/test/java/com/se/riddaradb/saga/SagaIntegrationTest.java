@@ -15,6 +15,8 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import tools.jackson.core.type.TypeReference;
@@ -23,12 +25,15 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(username="admin", roles="ADMINISTRATOR")
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 
 public class SagaIntegrationTest {
@@ -75,7 +80,8 @@ public class SagaIntegrationTest {
 
         SagaResponseDto sagaResponseDto = postSaga();
 
-        MvcResult mvcResult = mockMvc.perform(get("/sagas/getsagabyid/" + sagaResponseDto.getId()))
+        MvcResult mvcResult = mockMvc.perform(get("/sagas/getsagabyid/" + sagaResponseDto.getId())
+                        .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -109,6 +115,7 @@ public class SagaIntegrationTest {
         sagaRequestDto.setSagaMsDtos(sagaResponseDto.getSagaMsDtos());
 
         MvcResult mvcResult = mockMvc.perform(put("/sagas/putsaga")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sagaRequestDto)))
                 .andDo(print())
@@ -132,10 +139,12 @@ public class SagaIntegrationTest {
 
         SagaResponseDto sagaResponseDto = postSaga();
 
-        mockMvc.perform(delete("/sagas/deletesaga/" + sagaResponseDto.getId()))
+        mockMvc.perform(delete("/sagas/deletesaga/" + sagaResponseDto.getId())
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = mockMvc.perform(get("/sagas/getsagas"))
+        MvcResult mvcResult = mockMvc.perform(get("/sagas/getsagas")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -170,6 +179,7 @@ public class SagaIntegrationTest {
         sagaRequestDto.setBibIds(Set.of(savedBibDto.getId()));
 
         MvcResult mvcResult = mockMvc.perform(post("/sagas/postsaga")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sagaRequestDto)))
                 .andDo(print())
