@@ -33,6 +33,7 @@ public class UserService {
     public Set<UserDto> getUsers(){
         return userRepository.findAll()
                 .stream()
+                .filter(user -> !user.getRoles().contains(Role.ADMINISTRATOR))
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toSet());
     }
@@ -45,7 +46,7 @@ public class UserService {
         userEntity.setFirstName(userDto.getFirstName());
         userEntity.setLastNames(userDto.getLastNames());
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userEntity.setRoles(userDto.getRoles());
+        userEntity.setRoles(Set.of(Role.CONTRIBUTOR));
 
         return userMapper.mapToDto(userRepository.save(userEntity));
     }
@@ -58,10 +59,11 @@ public class UserService {
         userEntity.setEmail(userDto.getEmail());
         userEntity.setFirstName(userDto.getFirstName());
         userEntity.setLastNames(userDto.getLastNames());
-        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userEntity.setRoles(userDto.getRoles());
 
-        System.out.println("Saving...");
+        if (userDto.getPassword() != null && !userDto.getPassword().trim().isBlank()){
+            userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
+
         return userMapper.mapToDto(userRepository.save(userEntity));
     }
 

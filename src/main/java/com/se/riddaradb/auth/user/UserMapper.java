@@ -12,8 +12,7 @@ public class UserMapper {
                 userEntity.getEmail(),
                 userEntity.getFirstName(),
                 userEntity.getLastNames(),
-                "Password hidden",
-                userEntity.getRoles()
+                "Password hidden"
                 );
     }
 }

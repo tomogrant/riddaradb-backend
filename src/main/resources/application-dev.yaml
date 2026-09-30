@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    username: tg
+    password: admin
     url: jdbc:postgresql://localhost:5432/riddaradb-postgres
     driverClassName: org.postgresql.Driver
   jpa:

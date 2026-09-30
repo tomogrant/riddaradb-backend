@@ -10,19 +10,17 @@ public class UserDto {
     private String firstName;
     private String lastNames;
     private String password;
-    private Set<Role> roles;
 
     public UserDto() {
     }
 
-    public UserDto(Integer id, String username, String email, String firstName, String lastNames, String password, Set<Role> roles) {
+    public UserDto(Integer id, String username, String email, String firstName, String lastNames, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastNames = lastNames;
         this.password = password;
-        this.roles = roles;
     }
 
     public Integer getId() {
@@ -71,13 +69,5 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }
